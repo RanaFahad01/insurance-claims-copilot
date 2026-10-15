@@ -1,0 +1,16 @@
+From: Helen Park
+To: claims@example.invalid
+Subject: Burglary claim
+
+Dear Sir or Madam,
+
+On 3 June 2026 my house was burgled and the thieves took my television and a
+camera. I am Helen Park, policy HG-9941-02. The items were worth EUR 1,150.
+
+Kind regards,
+Helen Park
+14 Rosewood Lane, Apartment 3B, 40012 Springfield
+Phone: 555-0142
+
+This email and any attachments are confidential and intended solely for the
+addressee. Reference number 7788221, valid until 31 December 2027.

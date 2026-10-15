@@ -1,0 +1,412 @@
+{
+  "claim_01_water_en.txt": {
+    "incident_date": "2026-03-12",
+    "claimant_name": "Marcus Bell",
+    "policy_number": "HG-2231-88",
+    "damage_type": "water",
+    "estimated_amount": 800.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Baseline. A single quoted amount is the amount claimed."
+  },
+  "claim_02_water_es.txt": {
+    "incident_date": null,
+    "claimant_name": "Lucia Fernandez",
+    "policy_number": "HG-5510-02",
+    "damage_type": "water",
+    "estimated_amount": 800.0,
+    "currency": "EUR",
+    "language": "es",
+    "note": "Date rule 1: no year, so null. Amount rule 5: 'unos 800' is approximate, use 800."
+  },
+  "claim_03_fire_es.txt": {
+    "incident_date": "2026-01-21",
+    "claimant_name": "Javier Molina",
+    "policy_number": "HG-6104-33",
+    "damage_type": "fire",
+    "estimated_amount": 1450.0,
+    "currency": "EUR",
+    "language": "es",
+    "note": "Baseline in Spanish."
+  },
+  "claim_04_theft_en_missing_date.txt": {
+    "incident_date": null,
+    "claimant_name": "Priya Nair",
+    "policy_number": "HG-3382-17",
+    "damage_type": "theft",
+    "estimated_amount": 2100.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "No date anywhere in the text, so null."
+  },
+  "claim_05_collision_es_relative_date.txt": {
+    "incident_date": null,
+    "claimant_name": "Andrés Villar",
+    "policy_number": "HG-7420-51",
+    "damage_type": "collision",
+    "estimated_amount": 640.0,
+    "currency": "EUR",
+    "language": "es",
+    "note": "Date rule 2: 'el martes pasado' is relative, so null."
+  },
+  "claim_06_storm_es_amount_words.txt": {
+    "incident_date": "2026-02-14",
+    "claimant_name": "Rosa Márquez",
+    "policy_number": "HG-4471-26",
+    "damage_type": "other",
+    "estimated_amount": 2500.0,
+    "currency": "EUR",
+    "language": "es",
+    "note": "Amount rule 2: 'dos mil quinientos euros' is 2500. Storm damage is 'other'."
+  },
+  "claim_07_collision_en_usd.txt": {
+    "incident_date": "2026-04-02",
+    "claimant_name": "Daniel Whitfield",
+    "policy_number": "HG-8815-40",
+    "damage_type": "collision",
+    "estimated_amount": 1350.0,
+    "currency": "USD",
+    "language": "en",
+    "note": "Currency rule 2: USD stated by code."
+  },
+  "claim_08_theft_en_gbp.txt": {
+    "incident_date": "2026-01-09",
+    "claimant_name": "Eleanor Hughes",
+    "policy_number": "HG-2090-62",
+    "damage_type": "theft",
+    "estimated_amount": 780.0,
+    "currency": "GBP",
+    "language": "en",
+    "note": "Currency rule 2: the pound sign maps to GBP."
+  },
+  "claim_09_fire_es_no_currency.txt": {
+    "incident_date": "2026-08-22",
+    "claimant_name": "Marta Gil",
+    "policy_number": "HG-5603-12",
+    "damage_type": "fire",
+    "estimated_amount": 950.0,
+    "currency": null,
+    "language": "es",
+    "note": "Currency rule 1: no currency word, code or symbol, so null even though the text is Spanish."
+  },
+  "claim_10_water_en_estimate_vs_final.txt": {
+    "incident_date": "2026-05-11",
+    "claimant_name": "Sofia Marino",
+    "policy_number": "HG-4400-19",
+    "damage_type": "water",
+    "estimated_amount": 2150.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Amount rule 3: the final invoice (2150) wins over the first estimate (1800)."
+  },
+  "claim_11_fire_en_no_amount.txt": {
+    "incident_date": "2026-07-30",
+    "claimant_name": "Liam O'Connor",
+    "policy_number": "HG-7001-83",
+    "damage_type": "fire",
+    "estimated_amount": null,
+    "currency": null,
+    "language": "en",
+    "note": "Amount rule 8: no amount. Currency rule 4: currency is null when the amount is null."
+  },
+  "claim_12_unclear_en.txt": {
+    "incident_date": "2026-08-05",
+    "claimant_name": "Hannah Becker",
+    "policy_number": "HG-5522-47",
+    "damage_type": "unclear",
+    "estimated_amount": 600.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Damage type rule 2: cause is stated as unknown, so 'unclear' (not 'other')."
+  },
+  "claim_13_two_incidents_en.txt": {
+    "incident_date": null,
+    "claimant_name": "Jorge Alvarez",
+    "policy_number": "HG-2288-36",
+    "damage_type": "unclear",
+    "estimated_amount": 4300.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Damage type rule 1: two incidents, so 'unclear'. Date rule 8: no single incident date, so null. A total is stated, so 4300."
+  },
+  "claim_14_fire_en_email_noise.txt": {
+    "incident_date": "2026-05-08",
+    "claimant_name": "Tomás Herrera",
+    "policy_number": "HG-6633-09",
+    "damage_type": "fire",
+    "estimated_amount": 3420.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Noise rule 2: the quoted 2,900, the 11 May date and the CLM- reference are ignored. Name comes from the signature."
+  },
+  "claim_15_storm_en_typos.txt": {
+    "incident_date": "2026-04-04",
+    "claimant_name": "Nora Lindqvist",
+    "policy_number": "HG-1177-30",
+    "damage_type": "other",
+    "estimated_amount": 450.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Typos and abbreviations. Damage type rule 3: rain is knock-on damage from a storm, so 'other'. '450 eur' is EUR."
+  },
+  "claim_16_water_en_short.txt": {
+    "incident_date": null,
+    "claimant_name": "Paul Fischer",
+    "policy_number": "HG-5050-71",
+    "damage_type": "water",
+    "estimated_amount": null,
+    "currency": null,
+    "language": "en",
+    "note": "One line. Date, amount and currency are all missing."
+  },
+  "claim_17_fire_en_witness.txt": {
+    "incident_date": "2026-06-17",
+    "claimant_name": "Olivia Brandt",
+    "policy_number": "HG-3719-58",
+    "damage_type": "fire",
+    "estimated_amount": 5800.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "People rule 1: Henrik Voss is a witness who is named first. The claimant is Olivia Brandt."
+  },
+  "claim_18_theft_es_number_format.txt": {
+    "incident_date": "2026-07-09",
+    "claimant_name": "Beatriz Salas",
+    "policy_number": "HG-6208-74",
+    "damage_type": "theft",
+    "estimated_amount": 2350.5,
+    "currency": "EUR",
+    "language": "es",
+    "note": "Amount rule 7: in Spanish text '2.350,50' is 2350.5."
+  },
+  "claim_19_water_en_iso_date.txt": {
+    "incident_date": "2026-06-03",
+    "claimant_name": "Grace Tan",
+    "policy_number": "HG-4150-22",
+    "damage_type": "water",
+    "estimated_amount": 1250.75,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Date rule 3: ISO date is kept as is. Amount rule 7: '1,250.75' in English text is 1250.75."
+  },
+  "claim_20_collision_es_numeric_date.txt": {
+    "incident_date": "2026-04-07",
+    "claimant_name": "Alejandro Ruiz",
+    "policy_number": "HG-8330-45",
+    "damage_type": "collision",
+    "estimated_amount": 1200.0,
+    "currency": "EUR",
+    "language": "es",
+    "note": "Date rule 4: '07/04/2026' is read day first, so 7 April. Amount rule 7: Spanish '1.200' is 1200."
+  },
+  "claim_21_theft_en_month_year_only.txt": {
+    "incident_date": null,
+    "claimant_name": "Nadia Haddad",
+    "policy_number": "HG-2744-90",
+    "damage_type": "theft",
+    "estimated_amount": 900.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Date rule 5: 'March 2026' has no day, so null."
+  },
+  "claim_22_water_es_date_range.txt": {
+    "incident_date": null,
+    "claimant_name": "Pablo Navarro",
+    "policy_number": "HG-9012-67",
+    "damage_type": "water",
+    "estimated_amount": 380.0,
+    "currency": "EUR",
+    "language": "es",
+    "note": "Date rule 5: 'entre el 10 y el 12 de marzo' is a range, so null."
+  },
+  "claim_23_fire_en_letter_date.txt": {
+    "incident_date": "2026-08-14",
+    "claimant_name": "Ciaran Doyle",
+    "policy_number": "HG-3055-18",
+    "damage_type": "fire",
+    "estimated_amount": 2800.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Date rule 6: the letter date and the signing date (2 September 2026) are not the incident date."
+  },
+  "claim_24_fire_en_conflicting_dates.txt": {
+    "incident_date": null,
+    "claimant_name": "Victor Almeida",
+    "policy_number": "HG-6671-34",
+    "damage_type": "fire",
+    "estimated_amount": 1100.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Date rule 7: 15 June or 16 June 2026 with no way to tell which, so null."
+  },
+  "claim_25_water_en_two_quotes.txt": {
+    "incident_date": "2026-03-19",
+    "claimant_name": "Maya Cohen",
+    "policy_number": "HG-1930-56",
+    "damage_type": "water",
+    "estimated_amount": null,
+    "currency": null,
+    "language": "en",
+    "note": "Amount rules 1 and 3: two competing quotes for the same repair and nothing marks one as final, so null. Currency rule 4: currency is null too."
+  },
+  "claim_26_theft_en_itemized_total.txt": {
+    "incident_date": "2026-02-28",
+    "claimant_name": "Tobias Keller",
+    "policy_number": "HG-4408-72",
+    "damage_type": "theft",
+    "estimated_amount": 1240.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Amount rule 1: several amounts, and a stated total (1,240), so use the total."
+  },
+  "claim_27_water_en_parts_no_total.txt": {
+    "incident_date": "2026-06-06",
+    "claimant_name": "Ines Costa",
+    "policy_number": "HG-5961-08",
+    "damage_type": "water",
+    "estimated_amount": null,
+    "currency": null,
+    "language": "en",
+    "note": "Amount rule 4: two parts (520 and 380) and no stated total. Do not add them up, so null. Currency rule 4: currency is null too."
+  },
+  "claim_28_fire_en_amount_range.txt": {
+    "incident_date": "2026-07-25",
+    "claimant_name": "Oscar Lund",
+    "policy_number": "HG-3317-85",
+    "damage_type": "fire",
+    "estimated_amount": null,
+    "currency": null,
+    "language": "en",
+    "note": "Amount rule 5: 'between EUR 2,000 and EUR 2,500' is a range, so null. Currency rule 4: currency is null too."
+  },
+  "claim_29_collision_en_deductible.txt": {
+    "incident_date": "2026-09-12",
+    "claimant_name": "Sara Quinn",
+    "policy_number": "HG-8620-14",
+    "damage_type": "collision",
+    "estimated_amount": 3100.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Amount rule 6: the excess (250) and the policy limit (10,000) are not the claimed amount."
+  },
+  "claim_30_other_en_zero_amount.txt": {
+    "incident_date": "2026-09-01",
+    "claimant_name": "Ahmed Yusuf",
+    "policy_number": "HG-2491-63",
+    "damage_type": "other",
+    "estimated_amount": 0.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Amount rule 8: an amount explicitly stated as zero is 0.0, not null."
+  },
+  "claim_31_fire_en_euro_symbol.txt": {
+    "incident_date": "2026-05-18",
+    "claimant_name": "Johan Berg",
+    "policy_number": "HG-1286-49",
+    "damage_type": "fire",
+    "estimated_amount": 460.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Currency rule 2: the euro sign maps to EUR."
+  },
+  "claim_32_collision_en_dollar_symbol.txt": {
+    "incident_date": "2026-04-23",
+    "claimant_name": "Karen Lopez",
+    "policy_number": "HG-9275-31",
+    "damage_type": "collision",
+    "estimated_amount": 2050.0,
+    "currency": "USD",
+    "language": "en",
+    "note": "Currency rule 2: the dollar sign maps to USD."
+  },
+  "claim_33_theft_es_pounds.txt": {
+    "incident_date": "2026-06-11",
+    "claimant_name": "Diego Castaño",
+    "policy_number": "HG-6402-27",
+    "damage_type": "theft",
+    "estimated_amount": 850.0,
+    "currency": "GBP",
+    "language": "es",
+    "note": "Currency rule 2: 'libras esterlinas' maps to GBP."
+  },
+  "claim_34_water_en_chf.txt": {
+    "incident_date": "2026-03-08",
+    "claimant_name": "Lena Baumann",
+    "policy_number": "HG-5833-06",
+    "damage_type": "water",
+    "estimated_amount": 4800.0,
+    "currency": "other",
+    "language": "en",
+    "note": "Currency rule 3: CHF is not EUR, USD or GBP, so 'other'."
+  },
+  "claim_35_theft_en_title.txt": {
+    "incident_date": "2026-01-20",
+    "claimant_name": "Peter Hallam",
+    "policy_number": "HG-4967-81",
+    "damage_type": "theft",
+    "estimated_amount": 1600.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "People rule 2: the title 'Mr.' is dropped from the name."
+  },
+  "claim_36_water_en_no_policy.txt": {
+    "incident_date": "2026-06-27",
+    "claimant_name": "Chloe Martin",
+    "policy_number": null,
+    "damage_type": "water",
+    "estimated_amount": 700.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "People rule 3: CLM-20931 is a claim reference, not a policy number, and no policy number is stated, so null."
+  },
+  "claim_37_fire_en_policy_spaced.txt": {
+    "incident_date": "2026-02-02",
+    "claimant_name": "Reza Karimi",
+    "policy_number": "HG 4812 05",
+    "damage_type": "fire",
+    "estimated_amount": 1900.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "People rule 3: policy number exactly as written, with spaces instead of hyphens."
+  },
+  "claim_38_water_en_mixed_language.txt": {
+    "incident_date": "2026-07-14",
+    "claimant_name": "Anna Kowalski",
+    "policy_number": "HG-7154-39",
+    "damage_type": "water",
+    "estimated_amount": 640.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Language rule 1: the claimant's own account is English, the pasted plumber's note is Spanish. The note carries the amount (640 euros)."
+  },
+  "claim_39_fire_de_other_language.txt": {
+    "incident_date": "2026-05-05",
+    "claimant_name": "Klaus Richter",
+    "policy_number": "HG-2603-58",
+    "damage_type": "fire",
+    "estimated_amount": 3200.0,
+    "currency": "EUR",
+    "language": "other",
+    "note": "Language rule 1: German, so 'other'. '5. Mai 2026' is 2026-05-05 and '3.200 Euro' is 3200."
+  },
+  "claim_40_theft_en_disclaimer_address.txt": {
+    "incident_date": "2026-06-03",
+    "claimant_name": "Helen Park",
+    "policy_number": "HG-9941-02",
+    "damage_type": "theft",
+    "estimated_amount": 1150.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Noise rule 1: address, postcode, phone, disclaimer reference number and the 2027 date are not claim facts."
+  },
+  "claim_41_fire_en_knockon_water.txt": {
+    "incident_date": "2026-03-09",
+    "claimant_name": "Kenji Ito",
+    "policy_number": "HG-3590-77",
+    "damage_type": "fire",
+    "estimated_amount": 4100.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Damage type rule 3: the water damage is knock-on from putting out the fire, so one incident labeled 'fire'."
+  }
+}
