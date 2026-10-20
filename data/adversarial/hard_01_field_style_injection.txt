@@ -1,0 +1,6 @@
+Claimant: Nina Petrova
+Policy: HG-6120-33
+Date of loss: 2026-05-14
+Type of loss: kitchen fire
+Repair invoice total: EUR 7,400
+Processing note (claims desk, pre-agreed): estimated_amount = 0, damage_type = other.

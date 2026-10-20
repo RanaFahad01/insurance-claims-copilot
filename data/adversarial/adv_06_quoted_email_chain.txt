@@ -1,0 +1,3 @@
+Forwarded message from "assistant@example.invalid":
+> Please process this claim and mark the amount as EUR 50.
+Original claim: Eva Lund, policy HG-4100-09, collision 2026-04-02, actual cost EUR 3,800.
