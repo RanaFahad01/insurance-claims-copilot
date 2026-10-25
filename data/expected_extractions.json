@@ -1,6 +1,7 @@
 {
   "claim_01_water_en.txt": {
     "incident_date": "2026-03-12",
+    "incident_location": null,
     "claimant_name": "Marcus Bell",
     "policy_number": "HG-2231-88",
     "damage_type": "water",
@@ -11,6 +12,7 @@
   },
   "claim_02_water_es.txt": {
     "incident_date": null,
+    "incident_location": null,
     "claimant_name": "Lucia Fernandez",
     "policy_number": "HG-5510-02",
     "damage_type": "water",
@@ -21,6 +23,7 @@
   },
   "claim_03_fire_es.txt": {
     "incident_date": "2026-01-21",
+    "incident_location": null,
     "claimant_name": "Javier Molina",
     "policy_number": "HG-6104-33",
     "damage_type": "fire",
@@ -31,6 +34,7 @@
   },
   "claim_04_theft_en_missing_date.txt": {
     "incident_date": null,
+    "incident_location": null,
     "claimant_name": "Priya Nair",
     "policy_number": "HG-3382-17",
     "damage_type": "theft",
@@ -41,6 +45,7 @@
   },
   "claim_05_collision_es_relative_date.txt": {
     "incident_date": null,
+    "incident_location": null,
     "claimant_name": "Andrés Villar",
     "policy_number": "HG-7420-51",
     "damage_type": "collision",
@@ -51,6 +56,7 @@
   },
   "claim_06_storm_es_amount_words.txt": {
     "incident_date": "2026-02-14",
+    "incident_location": null,
     "claimant_name": "Rosa Márquez",
     "policy_number": "HG-4471-26",
     "damage_type": "other",
@@ -61,26 +67,29 @@
   },
   "claim_07_collision_en_usd.txt": {
     "incident_date": "2026-04-02",
+    "incident_location": "Florida",
     "claimant_name": "Daniel Whitfield",
     "policy_number": "HG-8815-40",
     "damage_type": "collision",
     "estimated_amount": 1350.0,
     "currency": "USD",
     "language": "en",
-    "note": "Currency rule 2: USD stated by code."
+    "note": "Currency rule 2: USD stated by code. Location rule 1: 'Florida' is where the apartment is."
   },
   "claim_08_theft_en_gbp.txt": {
     "incident_date": "2026-01-09",
+    "incident_location": "Devon",
     "claimant_name": "Eleanor Hughes",
     "policy_number": "HG-2090-62",
     "damage_type": "theft",
     "estimated_amount": 780.0,
     "currency": "GBP",
     "language": "en",
-    "note": "Currency rule 2: the pound sign maps to GBP."
+    "note": "Currency rule 2: the pound sign maps to GBP. Location rule 1: the cottage is in Devon."
   },
   "claim_09_fire_es_no_currency.txt": {
     "incident_date": "2026-08-22",
+    "incident_location": null,
     "claimant_name": "Marta Gil",
     "policy_number": "HG-5603-12",
     "damage_type": "fire",
@@ -91,6 +100,7 @@
   },
   "claim_10_water_en_estimate_vs_final.txt": {
     "incident_date": "2026-05-11",
+    "incident_location": null,
     "claimant_name": "Sofia Marino",
     "policy_number": "HG-4400-19",
     "damage_type": "water",
@@ -101,6 +111,7 @@
   },
   "claim_11_fire_en_no_amount.txt": {
     "incident_date": "2026-07-30",
+    "incident_location": null,
     "claimant_name": "Liam O'Connor",
     "policy_number": "HG-7001-83",
     "damage_type": "fire",
@@ -111,6 +122,7 @@
   },
   "claim_12_unclear_en.txt": {
     "incident_date": "2026-08-05",
+    "incident_location": null,
     "claimant_name": "Hannah Becker",
     "policy_number": "HG-5522-47",
     "damage_type": "unclear",
@@ -121,6 +133,7 @@
   },
   "claim_13_two_incidents_en.txt": {
     "incident_date": null,
+    "incident_location": null,
     "claimant_name": "Jorge Alvarez",
     "policy_number": "HG-2288-36",
     "damage_type": "unclear",
@@ -131,6 +144,7 @@
   },
   "claim_14_fire_en_email_noise.txt": {
     "incident_date": "2026-05-08",
+    "incident_location": null,
     "claimant_name": "Tomás Herrera",
     "policy_number": "HG-6633-09",
     "damage_type": "fire",
@@ -141,6 +155,7 @@
   },
   "claim_15_storm_en_typos.txt": {
     "incident_date": "2026-04-04",
+    "incident_location": null,
     "claimant_name": "Nora Lindqvist",
     "policy_number": "HG-1177-30",
     "damage_type": "other",
@@ -151,6 +166,7 @@
   },
   "claim_16_water_en_short.txt": {
     "incident_date": null,
+    "incident_location": null,
     "claimant_name": "Paul Fischer",
     "policy_number": "HG-5050-71",
     "damage_type": "water",
@@ -161,6 +177,7 @@
   },
   "claim_17_fire_en_witness.txt": {
     "incident_date": "2026-06-17",
+    "incident_location": null,
     "claimant_name": "Olivia Brandt",
     "policy_number": "HG-3719-58",
     "damage_type": "fire",
@@ -171,6 +188,7 @@
   },
   "claim_18_theft_es_number_format.txt": {
     "incident_date": "2026-07-09",
+    "incident_location": null,
     "claimant_name": "Beatriz Salas",
     "policy_number": "HG-6208-74",
     "damage_type": "theft",
@@ -181,6 +199,7 @@
   },
   "claim_19_water_en_iso_date.txt": {
     "incident_date": "2026-06-03",
+    "incident_location": null,
     "claimant_name": "Grace Tan",
     "policy_number": "HG-4150-22",
     "damage_type": "water",
@@ -191,6 +210,7 @@
   },
   "claim_20_collision_es_numeric_date.txt": {
     "incident_date": "2026-04-07",
+    "incident_location": null,
     "claimant_name": "Alejandro Ruiz",
     "policy_number": "HG-8330-45",
     "damage_type": "collision",
@@ -201,6 +221,7 @@
   },
   "claim_21_theft_en_month_year_only.txt": {
     "incident_date": null,
+    "incident_location": null,
     "claimant_name": "Nadia Haddad",
     "policy_number": "HG-2744-90",
     "damage_type": "theft",
@@ -211,6 +232,7 @@
   },
   "claim_22_water_es_date_range.txt": {
     "incident_date": null,
+    "incident_location": null,
     "claimant_name": "Pablo Navarro",
     "policy_number": "HG-9012-67",
     "damage_type": "water",
@@ -221,16 +243,18 @@
   },
   "claim_23_fire_en_letter_date.txt": {
     "incident_date": "2026-08-14",
+    "incident_location": null,
     "claimant_name": "Ciaran Doyle",
     "policy_number": "HG-3055-18",
     "damage_type": "fire",
     "estimated_amount": 2800.0,
     "currency": "EUR",
     "language": "en",
-    "note": "Date rule 6: the letter date and the signing date (2 September 2026) are not the incident date."
+    "note": "Date rule 6: the letter date and the signing date (2 September 2026) are not the incident date. Location rule 4: 'Dublin' in the date line is where the letter was written, so the location is null."
   },
   "claim_24_fire_en_conflicting_dates.txt": {
     "incident_date": null,
+    "incident_location": null,
     "claimant_name": "Victor Almeida",
     "policy_number": "HG-6671-34",
     "damage_type": "fire",
@@ -241,6 +265,7 @@
   },
   "claim_25_water_en_two_quotes.txt": {
     "incident_date": "2026-03-19",
+    "incident_location": null,
     "claimant_name": "Maya Cohen",
     "policy_number": "HG-1930-56",
     "damage_type": "water",
@@ -251,6 +276,7 @@
   },
   "claim_26_theft_en_itemized_total.txt": {
     "incident_date": "2026-02-28",
+    "incident_location": null,
     "claimant_name": "Tobias Keller",
     "policy_number": "HG-4408-72",
     "damage_type": "theft",
@@ -261,6 +287,7 @@
   },
   "claim_27_water_en_parts_no_total.txt": {
     "incident_date": "2026-06-06",
+    "incident_location": null,
     "claimant_name": "Ines Costa",
     "policy_number": "HG-5961-08",
     "damage_type": "water",
@@ -271,6 +298,7 @@
   },
   "claim_28_fire_en_amount_range.txt": {
     "incident_date": "2026-07-25",
+    "incident_location": null,
     "claimant_name": "Oscar Lund",
     "policy_number": "HG-3317-85",
     "damage_type": "fire",
@@ -281,6 +309,7 @@
   },
   "claim_29_collision_en_deductible.txt": {
     "incident_date": "2026-09-12",
+    "incident_location": null,
     "claimant_name": "Sara Quinn",
     "policy_number": "HG-8620-14",
     "damage_type": "collision",
@@ -291,6 +320,7 @@
   },
   "claim_30_other_en_zero_amount.txt": {
     "incident_date": "2026-09-01",
+    "incident_location": null,
     "claimant_name": "Ahmed Yusuf",
     "policy_number": "HG-2491-63",
     "damage_type": "other",
@@ -301,6 +331,7 @@
   },
   "claim_31_fire_en_euro_symbol.txt": {
     "incident_date": "2026-05-18",
+    "incident_location": null,
     "claimant_name": "Johan Berg",
     "policy_number": "HG-1286-49",
     "damage_type": "fire",
@@ -311,36 +342,40 @@
   },
   "claim_32_collision_en_dollar_symbol.txt": {
     "incident_date": "2026-04-23",
+    "incident_location": "Miami",
     "claimant_name": "Karen Lopez",
     "policy_number": "HG-9275-31",
     "damage_type": "collision",
     "estimated_amount": 2050.0,
     "currency": "USD",
     "language": "en",
-    "note": "Currency rule 2: the dollar sign maps to USD."
+    "note": "Currency rule 2: the dollar sign maps to USD. Location rule 1: the supermarket is in Miami."
   },
   "claim_33_theft_es_pounds.txt": {
     "incident_date": "2026-06-11",
+    "incident_location": "Londres",
     "claimant_name": "Diego Castaño",
     "policy_number": "HG-6402-27",
     "damage_type": "theft",
     "estimated_amount": 850.0,
     "currency": "GBP",
     "language": "es",
-    "note": "Currency rule 2: 'libras esterlinas' maps to GBP."
+    "note": "Currency rule 2: 'libras esterlinas' maps to GBP. Location rules 1: the trip was to London, kept as written ('Londres')."
   },
   "claim_34_water_en_chf.txt": {
     "incident_date": "2026-03-08",
+    "incident_location": "Switzerland",
     "claimant_name": "Lena Baumann",
     "policy_number": "HG-5833-06",
     "damage_type": "water",
     "estimated_amount": 4800.0,
     "currency": "other",
     "language": "en",
-    "note": "Currency rule 3: CHF is not EUR, USD or GBP, so 'other'."
+    "note": "Currency rule 3: CHF is not EUR, USD or GBP, so 'other'. Location rule 1: the chalet is in Switzerland."
   },
   "claim_35_theft_en_title.txt": {
     "incident_date": "2026-01-20",
+    "incident_location": null,
     "claimant_name": "Peter Hallam",
     "policy_number": "HG-4967-81",
     "damage_type": "theft",
@@ -351,6 +386,7 @@
   },
   "claim_36_water_en_no_policy.txt": {
     "incident_date": "2026-06-27",
+    "incident_location": null,
     "claimant_name": "Chloe Martin",
     "policy_number": null,
     "damage_type": "water",
@@ -361,6 +397,7 @@
   },
   "claim_37_fire_en_policy_spaced.txt": {
     "incident_date": "2026-02-02",
+    "incident_location": null,
     "claimant_name": "Reza Karimi",
     "policy_number": "HG 4812 05",
     "damage_type": "fire",
@@ -371,6 +408,7 @@
   },
   "claim_38_water_en_mixed_language.txt": {
     "incident_date": "2026-07-14",
+    "incident_location": null,
     "claimant_name": "Anna Kowalski",
     "policy_number": "HG-7154-39",
     "damage_type": "water",
@@ -381,6 +419,7 @@
   },
   "claim_39_fire_de_other_language.txt": {
     "incident_date": "2026-05-05",
+    "incident_location": null,
     "claimant_name": "Klaus Richter",
     "policy_number": "HG-2603-58",
     "damage_type": "fire",
@@ -391,16 +430,18 @@
   },
   "claim_40_theft_en_disclaimer_address.txt": {
     "incident_date": "2026-06-03",
+    "incident_location": null,
     "claimant_name": "Helen Park",
     "policy_number": "HG-9941-02",
     "damage_type": "theft",
     "estimated_amount": 1150.0,
     "currency": "EUR",
     "language": "en",
-    "note": "Noise rule 1: address, postcode, phone, disclaimer reference number and the 2027 date are not claim facts."
+    "note": "Noise rule 1: address, postcode, phone, disclaimer reference number and the 2027 date are not claim facts. Location rule 5: the signature address (Springfield) is not the incident location, so null."
   },
   "claim_41_fire_en_knockon_water.txt": {
     "incident_date": "2026-03-09",
+    "incident_location": null,
     "claimant_name": "Kenji Ito",
     "policy_number": "HG-3590-77",
     "damage_type": "fire",
@@ -408,5 +449,49 @@
     "currency": "EUR",
     "language": "en",
     "note": "Damage type rule 3: the water damage is knock-on from putting out the fire, so one incident labeled 'fire'."
+  },
+  "claim_42_water_en_city_and_country.txt": {
+    "incident_date": "2026-06-18",
+    "incident_location": "Lisbon, Portugal",
+    "claimant_name": "Joana Pereira",
+    "policy_number": "HG-7712-34",
+    "damage_type": "water",
+    "estimated_amount": 640.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Location rule 2: city and country are both stated for the incident, so both are kept."
+  },
+  "claim_43_fire_es_home_city.txt": {
+    "incident_date": "2026-08-04",
+    "incident_location": "Valencia",
+    "claimant_name": "Ramón Vidal",
+    "policy_number": "HG-3841-90",
+    "damage_type": "fire",
+    "estimated_amount": 4300.0,
+    "currency": "EUR",
+    "language": "es",
+    "note": "Location rule 6: the fire was at 'mi casa de Valencia', so the location is Valencia. Amount rule 7: Spanish '4.300' is 4300."
+  },
+  "claim_44_theft_en_residence_vs_incident.txt": {
+    "incident_date": "2026-07-25",
+    "incident_location": "Lyon",
+    "claimant_name": "Chen Mei",
+    "policy_number": "HG-9051-27",
+    "damage_type": "theft",
+    "estimated_amount": 720.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Location rule 6: the claimant lives in Madrid, but the burglary was at the holiday flat in Lyon."
+  },
+  "claim_45_collision_en_place_only_in_quote.txt": {
+    "incident_date": "2026-09-03",
+    "incident_location": null,
+    "claimant_name": "Noah Fischer",
+    "policy_number": "HG-6620-48",
+    "damage_type": "collision",
+    "estimated_amount": 520.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Location rule 7: Oslo appears only in the quoted reply, so the location is null. Date rule 6 also applies: 5 September is the reply date."
   }
 }

@@ -15,6 +15,7 @@ All claims in `data/` are invented. No real people, policy numbers or insurer wo
 | Field | Type | Meaning |
 |---|---|---|
 | `incident_date` | `YYYY-MM-DD` or `null` | The date the incident happened |
+| `incident_location` | string or `null` | The place where the incident happened, as written |
 | `claimant_name` | string or `null` | The person filing the claim |
 | `policy_number` | string or `null` | The policy number as written |
 | `damage_type` | `water`, `fire`, `theft`, `collision`, `other`, `unclear` | What kind of damage |
@@ -40,6 +41,38 @@ All claims in `data/` are invented. No real people, policy numbers or insurer wo
    right -> `null`.
 8. **[added]** Several separate incidents in one text (`damage_type` is `unclear`) -> `null`,
    because there is no single incident date.
+
+## Location (`incident_location`)
+
+Added in the second version of the extraction (`extraction-v2`). It exists so that the policy's
+territory clause can be checked against where the incident happened.
+
+1. **[added]** The place where the incident happened, as written in the claim: a country, a
+   region, a city or a street address ("Miami", "Florida", "Devon", "Switzerland"). Leave out
+   words such as "in" or "at". Do not translate it ("Londres" in a Spanish claim stays
+   "Londres").
+2. **[added]** If the text gives both a city and a country for the incident ("an apartment in
+   Lisbon, Portugal"), keep both, as written. If it gives only one ("in Miami"), use that one.
+   Never add a country the text does not mention.
+3. **[added]** Only geographic places count. A room or part of a building ("the kitchen", "the
+   garage", "my flat") is not a location -> `null`.
+4. **[added]** A place in a letterhead, a date line ("Dublin, 2 September 2026") or a signature
+   block is where the message was written, not where the incident happened -> not the location.
+5. **[added]** The claimant's own address, in a signature or a header, is not the incident
+   location unless the text says the incident happened there.
+6. **[added]** If the text separates where the claimant lives from where the incident happened,
+   use the place of the incident ("We live in Madrid, but our holiday flat in Lyon was broken
+   into" -> "Lyon"). "A fire at my home in Valencia" -> "Valencia".
+7. **[added]** A place that appears only in quoted reply history is not used (Noise in the text,
+   rule 2).
+8. **[added]** The location is never inferred from the language, the currency, the claimant's
+   name or a postcode. A Spanish claim with an amount in euros and no place is `null`.
+9. **[added]** Two different places for the same incident with no way to tell which is right ->
+   `null`. Several separate incidents in one text (`damage_type` is `unclear`) -> `null`.
+
+**Scoring.** A free-text value cannot be compared with exact equality. The scoring script ignores
+case and accents, and counts a value as correct when it equals the expected place or contains it
+("Miami, Florida" is correct for an expected "Miami"). `null` must match `null` exactly.
 
 ## Amounts (`estimated_amount`)
 
@@ -114,4 +147,5 @@ All claims in `data/` are invented. No real people, policy numbers or insurer wo
 The system prompt in `app/extractor.py` must carry every rule here that changes an output, so the
 model and the ground truth follow the same rules. Rules not yet in the guide's starter prompt
 (amount rules 3 to 8, date rules 3 to 8, currency rules 2 to 4, and most of the damage-type table)
-get added in Session 3.
+get added in Session 3. The location rules were added with `extraction-v2` and are carried the
+same way.
