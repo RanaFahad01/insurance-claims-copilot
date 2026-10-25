@@ -7,6 +7,7 @@ from fakes import FakeEmbedder
 from app.rag.chunker import load_policy_chunks, policy_hash
 from app.rag.index import ingest
 from app.rag.retriever import (
+    DISTANCE_CUTOFF,
     Clause,
     available_languages,
     build_query,
@@ -129,6 +130,10 @@ def test_empty_index_returns_nothing(embedder):
     empty = client.create_collection(name, embedding_function=None)
     assert retrieve_clauses(empty, embedder, "water") == []
     client.delete_collection(name)
+
+
+def test_distance_cutoff_is_a_plausible_cosine_distance():
+    assert 0.0 < DISTANCE_CUTOFF < 1.0
 
 
 # ---- exact lookup

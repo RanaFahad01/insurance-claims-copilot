@@ -7,6 +7,11 @@ from .embeddings import Embedder
 
 TOP_K = 4
 
+# If even the best match is further than this (cosine distance), nothing in the policy is treated as relevant.
+# Calibrated on 20 in-scope, 5 gap and 2 off-topic cases (see docs/phase-notes/phase3.md). It is a backstop for text
+# far from the policy, not a gap detector: gaps sit as close to the policy as in-scope claims do.
+DISTANCE_CUTOFF = 0.65
+
 # How the extracted damage type is phrased in the search query. 'other' and 'unclear' add no words.
 DAMAGE_PHRASES = {
     "water": "water damage",

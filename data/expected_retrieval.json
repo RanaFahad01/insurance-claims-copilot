@@ -1,0 +1,380 @@
+[
+  {
+    "id": "claim_01",
+    "category": "in_scope",
+    "source": "claims/claim_01_water_en.txt",
+    "language": "en",
+    "damage_type": "water",
+    "summary": "A pipe burst under the kitchen sink and flooded the floor.",
+    "expected_clause_ids": [
+      "C2.1"
+    ],
+    "companion_clause_ids": [
+      "C2.3",
+      "C2.4"
+    ],
+    "note": "Burst pipe: covering clause plus the two water exclusions."
+  },
+  {
+    "id": "claim_02",
+    "category": "in_scope",
+    "source": "claims/claim_02_water_es.txt",
+    "language": "es",
+    "damage_type": "water",
+    "summary": "A pipe broke in the kitchen and flooded the floor, with the plumber estimating the damage at 800 euros.",
+    "expected_clause_ids": [
+      "C2.1"
+    ],
+    "companion_clause_ids": [
+      "C2.3",
+      "C2.4"
+    ],
+    "note": "Same event as claim_01 in a Spanish claim."
+  },
+  {
+    "id": "claim_03",
+    "category": "in_scope",
+    "source": "claims/claim_03_fire_es.txt",
+    "language": "es",
+    "damage_type": "fire",
+    "summary": "Javier Molina reports a kitchen fire caused by a fryer malfunction, damaging the cabinets and extractor hood.",
+    "expected_clause_ids": [
+      "C3.1"
+    ],
+    "companion_clause_ids": [
+      "C3.2"
+    ],
+    "note": "Kitchen fire from an appliance fault, Spanish claim."
+  },
+  {
+    "id": "claim_04",
+    "category": "in_scope",
+    "source": "claims/claim_04_theft_en_missing_date.txt",
+    "language": "en",
+    "damage_type": "theft",
+    "summary": "Someone broke into Priya Nair’s flat and stole a laptop, a camera, and jewellery valued at EUR 2,100.",
+    "expected_clause_ids": [
+      "C4.1"
+    ],
+    "companion_clause_ids": [
+      "C4.4"
+    ],
+    "note": "Burglary of a flat."
+  },
+  {
+    "id": "claim_05",
+    "category": "in_scope",
+    "source": "claims/claim_05_collision_es_relative_date.txt",
+    "language": "es",
+    "damage_type": "collision",
+    "summary": "A truck hit Andrés Villar’s parked car, damaging the bumper and headlight, and the repair is estimated at 640 euros.",
+    "expected_clause_ids": [
+      "C6.1"
+    ],
+    "companion_clause_ids": [
+      "C6.3"
+    ],
+    "note": "Parked car hit by a truck, Spanish claim."
+  },
+  {
+    "id": "claim_06",
+    "category": "in_scope",
+    "source": "claims/claim_06_storm_es_amount_words.txt",
+    "language": "es",
+    "damage_type": "other",
+    "summary": "A storm tore off part of the roof of Rosa Márquez’s home, with a roofer’s estimate of €2,500.",
+    "expected_clause_ids": [
+      "C5.1"
+    ],
+    "companion_clause_ids": [
+      "C5.3",
+      "C8.2"
+    ],
+    "note": "Storm tears off part of a roof, Spanish claim."
+  },
+  {
+    "id": "claim_07",
+    "category": "in_scope",
+    "source": "claims/claim_07_collision_en_usd.txt",
+    "language": "en",
+    "damage_type": "collision",
+    "summary": "A delivery van reversed into the garage door of the claimant’s holiday apartment, bending its frame.",
+    "expected_clause_ids": [
+      "C1.3",
+      "C6.2"
+    ],
+    "companion_clause_ids": [],
+    "note": "Florida holiday apartment: territory (C1.3) decides, vehicle impact (C6.2) would otherwise apply."
+  },
+  {
+    "id": "claim_10",
+    "category": "in_scope",
+    "source": "claims/claim_10_water_en_estimate_vs_final.txt",
+    "language": "en",
+    "damage_type": "water",
+    "summary": "On 11 May 2026, a split washing-machine hose caused water damage to the bathroom floor and hallway.",
+    "expected_clause_ids": [
+      "C2.1"
+    ],
+    "companion_clause_ids": [
+      "C2.3",
+      "C2.4"
+    ],
+    "note": "Washing machine hose splits."
+  },
+  {
+    "id": "claim_11",
+    "category": "in_scope",
+    "source": "claims/claim_11_fire_en_no_amount.txt",
+    "language": "en",
+    "damage_type": "fire",
+    "summary": "A short circuit caused a fire in the utility room, destroying the washing machine and part of the wall.",
+    "expected_clause_ids": [
+      "C3.1"
+    ],
+    "companion_clause_ids": [
+      "C3.2"
+    ],
+    "note": "Fire from a short circuit."
+  },
+  {
+    "id": "claim_15",
+    "category": "in_scope",
+    "source": "claims/claim_15_storm_en_typos.txt",
+    "language": "en",
+    "damage_type": "other",
+    "summary": "A storm smashed the bedroom window, allowing rain to damage the carpet and curtains.",
+    "expected_clause_ids": [
+      "C5.1",
+      "C5.2"
+    ],
+    "companion_clause_ids": [
+      "C5.3"
+    ],
+    "note": "Storm breaks a window and rain gets in: covering and extension clauses, plus the open-opening exclusion."
+  },
+  {
+    "id": "claim_17",
+    "category": "in_scope",
+    "source": "claims/claim_17_fire_en_witness.txt",
+    "language": "en",
+    "damage_type": "fire",
+    "summary": "A fire damaged the claimant’s garage, destroying tools and the garage door.",
+    "expected_clause_ids": [
+      "C3.1"
+    ],
+    "companion_clause_ids": [
+      "C3.2"
+    ],
+    "note": "Garage fire."
+  },
+  {
+    "id": "claim_19",
+    "category": "in_scope",
+    "source": "claims/claim_19_water_en_iso_date.txt",
+    "language": "en",
+    "damage_type": "water",
+    "summary": "A leaking radiator valve soaked the living room floor and lifted the wooden boards.",
+    "expected_clause_ids": [
+      "C2.1",
+      "C2.3"
+    ],
+    "companion_clause_ids": [],
+    "note": "Radiator valve leak with lifted boards: sudden against gradual (A1), both clauses needed."
+  },
+  {
+    "id": "claim_21",
+    "category": "in_scope",
+    "source": "claims/claim_21_theft_en_month_year_only.txt",
+    "language": "en",
+    "damage_type": "theft",
+    "summary": "Nadia Haddad reports that her bicycle was stolen from her building’s shared storage room sometime in March 2026.",
+    "expected_clause_ids": [
+      "C4.1"
+    ],
+    "companion_clause_ids": [
+      "C4.4"
+    ],
+    "note": "Bicycle stolen from a shared storage room (A3)."
+  },
+  {
+    "id": "claim_29",
+    "category": "in_scope",
+    "source": "claims/claim_29_collision_en_deductible.txt",
+    "language": "en",
+    "damage_type": "collision",
+    "summary": "A cyclist collided with the claimant’s parked car, denting the door.",
+    "expected_clause_ids": [
+      "C6.1"
+    ],
+    "companion_clause_ids": [
+      "C6.3"
+    ],
+    "note": "Parked car hit by a cyclist."
+  },
+  {
+    "id": "claim_32",
+    "category": "in_scope",
+    "source": "claims/claim_32_collision_en_dollar_symbol.txt",
+    "language": "en",
+    "damage_type": "collision",
+    "summary": "Karen Lopez reports that a hit-and-run damaged her parked car at a supermarket in Miami, with repairs estimated at $2,050.",
+    "expected_clause_ids": [
+      "C1.3",
+      "C6.1"
+    ],
+    "companion_clause_ids": [],
+    "note": "Hit and run in Miami: territory decides, collision clause would otherwise apply."
+  },
+  {
+    "id": "claim_33",
+    "category": "in_scope",
+    "source": "claims/claim_33_theft_es_pounds.txt",
+    "language": "es",
+    "damage_type": "theft",
+    "summary": "Diego Castaño reports that his wallet and mobile phone were stolen during a trip to London, with a total claimed value of 850 pounds sterling.",
+    "expected_clause_ids": [
+      "C4.3"
+    ],
+    "companion_clause_ids": [
+      "C4.4"
+    ],
+    "note": "Wallet and phone stolen on a trip to London, Spanish claim."
+  },
+  {
+    "id": "claim_34",
+    "category": "in_scope",
+    "source": "claims/claim_34_water_en_chf.txt",
+    "language": "en",
+    "damage_type": "water",
+    "summary": "Frozen pipes burst in the claimant’s ski chalet in Switzerland, causing water damage with repairs estimated at CHF 4,800.",
+    "expected_clause_ids": [
+      "C2.2"
+    ],
+    "companion_clause_ids": [],
+    "note": "Frozen pipes burst in a ski chalet (A2)."
+  },
+  {
+    "id": "claim_35",
+    "category": "in_scope",
+    "source": "claims/claim_35_theft_en_title.txt",
+    "language": "en",
+    "damage_type": "theft",
+    "summary": "Peter Hallam reports that two bicycles worth EUR 1,600 were stolen from his shed.",
+    "expected_clause_ids": [
+      "C4.2"
+    ],
+    "companion_clause_ids": [
+      "C4.4"
+    ],
+    "note": "Bicycles stolen from a shed."
+  },
+  {
+    "id": "claim_39",
+    "category": "in_scope",
+    "source": "claims/claim_39_fire_de_other_language.txt",
+    "language": "other",
+    "damage_type": "fire",
+    "summary": "A fire broke out in Klaus Richter’s garage and damaged the roof.",
+    "expected_clause_ids": [
+      "C3.1"
+    ],
+    "companion_clause_ids": [
+      "C3.2"
+    ],
+    "note": "German claim, so no language filter is used."
+  },
+  {
+    "id": "claim_41",
+    "category": "in_scope",
+    "source": "claims/claim_41_fire_en_knockon_water.txt",
+    "language": "en",
+    "damage_type": "fire",
+    "summary": "A fire that started in the oven damaged the kitchen cupboards, and water used to extinguish it soaked the living room carpet and the flat below.",
+    "expected_clause_ids": [
+      "C3.1",
+      "C3.3"
+    ],
+    "companion_clause_ids": [
+      "C3.2"
+    ],
+    "note": "Oven fire and the fire brigade's water: fire plus extinguishing damage."
+  },
+  {
+    "id": "gap_g1_fence",
+    "category": "gap",
+    "source": "claims/claim_20_collision_es_numeric_date.txt",
+    "language": "es",
+    "damage_type": "collision",
+    "summary": "Un coche chocó contra la verja del jardín de Alejandro Ruiz y la destrozó.",
+    "expected_clause_ids": [],
+    "companion_clause_ids": [],
+    "note": "G1: a car hits the garden fence. Real extractor summary."
+  },
+  {
+    "id": "gap_g2_liability",
+    "category": "gap",
+    "source": "written",
+    "language": "en",
+    "damage_type": "water",
+    "summary": "A burst pipe in the claimant's flat flooded the neighbour's flat below, and the neighbour is asking for compensation.",
+    "expected_clause_ids": [],
+    "companion_clause_ids": [],
+    "note": "G2: liability to other people. Written for this evaluation."
+  },
+  {
+    "id": "gap_g3_business",
+    "category": "gap",
+    "source": "written",
+    "language": "en",
+    "damage_type": "theft",
+    "summary": "Power tools and stock used for the claimant's plumbing business were stolen from a work van.",
+    "expected_clause_ids": [],
+    "companion_clause_ids": [],
+    "note": "G3: property used for work or business. Written for this evaluation."
+  },
+  {
+    "id": "gap_g4_data",
+    "category": "gap",
+    "source": "written",
+    "language": "en",
+    "damage_type": "other",
+    "summary": "A ransomware attack locked the claimant's laptop and all of the family photos and documents were lost.",
+    "expected_clause_ids": [],
+    "companion_clause_ids": [],
+    "note": "G4: digital data and cyber events. Written for this evaluation."
+  },
+  {
+    "id": "gap_g5_power",
+    "category": "gap",
+    "source": "written",
+    "language": "en",
+    "damage_type": "other",
+    "summary": "A power cut lasted two days and all the food in the freezer was spoiled.",
+    "expected_clause_ids": [],
+    "companion_clause_ids": [],
+    "note": "G5: power cuts and spoiled food. Written for this evaluation."
+  },
+  {
+    "id": "off_garbage",
+    "category": "off_topic",
+    "source": "adversarial/adv_08_garbage.txt",
+    "language": "other",
+    "damage_type": "unclear",
+    "summary": "The text does not provide a clear insurance claim or incident.",
+    "expected_clause_ids": [],
+    "companion_clause_ids": [],
+    "note": "The real summary of the garbage claim."
+  },
+  {
+    "id": "off_health",
+    "category": "off_topic",
+    "source": "written",
+    "language": "en",
+    "damage_type": "other",
+    "summary": "The claimant visited a dentist for a root canal and wants the treatment costs reimbursed.",
+    "expected_clause_ids": [],
+    "companion_clause_ids": [],
+    "note": "A health claim, which this policy does not cover at all. Written for this evaluation."
+  }
+]
