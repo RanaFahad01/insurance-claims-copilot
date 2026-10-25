@@ -5,3 +5,4 @@ __pycache__/
 .idea/
 chroma_db/
 *.local.json
+docs/phase-notes/
