@@ -13,6 +13,7 @@ from app.rag.retriever import (
     build_query,
     get_clause,
     retrieve_clauses,
+    retrieve_context,
     retrieve_for_claim,
     search_language,
 )
@@ -129,6 +130,51 @@ def test_empty_index_returns_nothing(embedder):
     name = f"test_{uuid.uuid4().hex}"
     empty = client.create_collection(name, embedding_function=None)
     assert retrieve_clauses(empty, embedder, "water") == []
+    client.delete_collection(name)
+
+
+# ---- context for the coverage step: search results plus required clauses
+
+def clause_text_extraction(chunk_id: str, language: str):
+    """An extraction whose search query is exactly one clause's text, so that clause is the top result."""
+    target = next(c for c in load_policy_chunks() if c.chunk_id == chunk_id)
+    return make_extraction(damage_type="other", language=language, summary=target.document)
+
+
+def test_context_adds_the_required_clause_when_the_search_did_not_return_it(collection, embedder):
+    extraction = clause_text_extraction("en-C5.3", "en")
+    context = retrieve_context(collection, embedder, extraction, k=1)
+    assert [c.chunk_id for c in context] == ["en-C5.3", "en-C1.3"]
+    assert [c.added_by_rule for c in context] == [False, True]
+    assert context[0].distance < 1e-6
+    assert 0.0 <= context[1].distance <= 2.0  # a real distance to the query, not a placeholder
+
+
+def test_context_does_not_duplicate_a_required_clause_the_search_already_found(collection, embedder):
+    target = next(c for c in load_policy_chunks() if c.chunk_id == "en-C1.3")
+    extraction = make_extraction(damage_type="other", summary=target.document)
+    context = retrieve_context(collection, embedder, extraction)
+    assert [c.clause_id for c in context].count("C1.3") == 1
+    assert all(c.added_by_rule is False for c in context)
+
+
+def test_context_for_a_spanish_claim_adds_the_spanish_required_clause(collection, embedder):
+    context = retrieve_context(collection, embedder, clause_text_extraction("es-C5.3", "es"), k=1)
+    assert [c.chunk_id for c in context] == ["es-C5.3", "es-C1.3"]
+    assert context[1].added_by_rule is True
+
+
+def test_context_for_an_unsupported_language_adds_the_english_required_clause(collection, embedder):
+    context = retrieve_context(collection, embedder, clause_text_extraction("en-C5.3", "other"), k=1)
+    assert [c.chunk_id for c in context] == ["en-C5.3", "en-C1.3"]
+    assert context[1].added_by_rule is True
+
+
+def test_context_from_an_empty_index_is_empty(embedder):
+    client = chromadb.EphemeralClient()
+    name = f"test_{uuid.uuid4().hex}"
+    empty = client.create_collection(name, embedding_function=None)
+    assert retrieve_context(empty, embedder, make_extraction()) == []
     client.delete_collection(name)
 
 
