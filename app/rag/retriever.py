@@ -103,7 +103,6 @@ def retrieve_for_claim(
     language = search_language(extraction.language, available_languages(collection))
     return retrieve_clauses(collection, embedder, build_query(extraction), language=language, k=k)
 
-
 def get_clause(collection: Collection, chunk_id: str) -> Clause | None:
     """Exact lookup by chunk ID such as 'en-C2.1'. No embeddings: they are weak at exact identifiers."""
     chunk_id = chunk_id.strip()
