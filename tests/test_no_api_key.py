@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parent.parent
 CODE = """
 import os, dotenv
 dotenv.load_dotenv = lambda *args, **kwargs: False   # pretend there is no .env file
-import app.extractor, app.main, app.rag.embeddings, app.rag.coverage, app.rag.index, app.rag.retriever
+import app.extractor, app.main, app.rag.embeddings, app.rag.coverage, app.rag.dossier, app.rag.index, app.rag.retriever
 print("imported")
 """
 
