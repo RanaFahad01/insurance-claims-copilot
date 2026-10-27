@@ -23,7 +23,7 @@ REQUEST = httpx2.Request("POST", "http://example.invalid/v1/responses")
 
 
 def make_extraction(**overrides) -> ClaimExtraction:
-    base = dict(incident_date=None, claimant_name=None, policy_number=None, damage_type="water",
+    base = dict(incident_date=None, incident_location=None, claimant_name=None, policy_number=None, damage_type="water",
                 estimated_amount=None, currency=None, language="en",
                 summary="A pipe burst under the kitchen sink and flooded the floor.")
     base.update(overrides)

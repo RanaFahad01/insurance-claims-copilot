@@ -6,6 +6,7 @@ from app.schemas import ClaimExtraction
 def make_claim(**overrides) -> ClaimExtraction:
     base = dict(
         incident_date="2026-03-12",
+        incident_location="Valencia",
         claimant_name="Marcus Bell",
         policy_number="HG-2231-88",
         damage_type="water",
@@ -133,6 +134,20 @@ def test_multiple_reasons_accumulate_in_order():
     result = triage(make_claim(incident_date=None, damage_type="unclear", estimated_amount=6000.0))
     assert result.reasons == ["missing_incident_date", "damage_type_unclear", "amount_above_high_threshold"]
     assert result.severity_score == 65
+
+
+def test_missing_incident_location_does_not_escalate():
+    # Most claims never state a place, so the location is not a required field.
+    result = triage(make_claim(incident_location=None))
+    assert result.route == "auto_approve_candidate"
+    assert result.reasons == []
+
+
+def test_location_outside_the_policy_territory_does_not_change_this_decision():
+    # The territory is checked in the coverage step, not by these rules.
+    result = triage(make_claim(incident_location="Miami"))
+    assert result.route == "auto_approve_candidate"
+    assert result.severity_score == 10
 
 
 def test_severity_score_is_capped_at_100(monkeypatch):

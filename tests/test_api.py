@@ -13,6 +13,7 @@ VALID_TEXT = "Hi, this is Marcus Bell, policy HG-2231-88. A pipe burst under the
 def make_extraction() -> ClaimExtraction:
     return ClaimExtraction(
         incident_date="2026-03-12",
+        incident_location="Valencia",
         claimant_name="Marcus Bell",
         policy_number="HG-2231-88",
         damage_type="water",
@@ -41,6 +42,7 @@ def test_valid_claim_returns_extraction_and_decision(calls):
     assert response.status_code == 200
     body = response.json()
     assert body["extraction"]["claimant_name"] == "Marcus Bell"
+    assert body["extraction"]["incident_location"] == "Valencia"  # the response gained this field in extraction-v2
     assert body["decision"]["route"] == "auto_approve_candidate"
     assert body["decision"]["severity_score"] == 10
     assert body["decision"]["reasons"] == []

@@ -12,7 +12,18 @@ from .schemas import ClaimExtraction
 load_dotenv()
 
 MODEL = "gpt-6-luna"
-client = OpenAI(timeout=30.0, max_retries=3)
+# extraction-v1 is the Phase 2 prompt (tag v0.2-extraction). v2 adds incident_location.
+PROMPT_VERSION = "extraction-v2"
+
+_client: OpenAI | None = None
+
+
+def get_client() -> OpenAI:
+    """Created on first use, so importing this module (and running the tests) needs no API key."""
+    global _client
+    if _client is None:
+        _client = OpenAI(timeout=30.0, max_retries=3)
+    return _client
 
 SYSTEM_PROMPT = """You extract structured data from insurance claim texts.
 The text may be in English, Spanish or another language.
@@ -27,6 +38,16 @@ Dates (incident_date, format YYYY-MM-DD):
 - Only the date of the incident counts, not the date the message was written, sent or signed.
 - If two different dates are given for the same incident and it is not clear which is right, null.
 - If the text describes several separate incidents, incident_date is null.
+
+Location (incident_location):
+- The place where the incident happened, as written in the text: a country, region, city or street address. Leave out words such as "in" or "at". Do not translate it.
+- If the text gives both a city and a country for the incident, keep both as written. If it gives only one, use that one. Never add a country the text does not mention.
+- A room or part of a building ("the kitchen", "my flat") is not a location, so null.
+- A place in a letterhead, a date line or a signature is where the message was written, not where the incident happened.
+- The claimant's own address is not the incident location unless the text says the incident happened there.
+- If the claimant lives in one place and the incident happened in another, use the place of the incident.
+- Never infer the location from the language, the currency, the claimant's name or a postcode.
+- If two different places are given for the same incident and it is not clear which is right, null. If the text describes several separate incidents, null.
 
 Amounts (estimated_amount, a plain number):
 - Use the total amount claimed for the loss.
@@ -77,7 +98,7 @@ class ExtractionError(Exception):
 
 def extract_claim(raw_text: str) -> ClaimExtraction:
     try:
-        response = client.responses.parse(
+        response = get_client().responses.parse(
             model=MODEL,
             input=[
                 {"role": "system", "content": SYSTEM_PROMPT},

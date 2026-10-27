@@ -23,6 +23,7 @@ from app.schemas import ClaimExtraction
 def make_extraction(**overrides) -> ClaimExtraction:
     base = dict(
         incident_date="2026-03-12",
+        incident_location=None,
         claimant_name="Marcus Bell",
         policy_number="HG-2231-88",
         damage_type="water",

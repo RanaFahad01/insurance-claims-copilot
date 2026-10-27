@@ -48,7 +48,8 @@ class CachingEmbedder:
 
 def to_extraction(case: dict) -> ClaimExtraction:
     return ClaimExtraction(
-        incident_date=None, claimant_name=None, policy_number=None, damage_type=case["damage_type"],
+        incident_date=None, incident_location=case.get("incident_location"), claimant_name=None, policy_number=None,
+        damage_type=case["damage_type"],
         estimated_amount=None, currency=None, language=case["language"], summary=case["summary"],
     )
 

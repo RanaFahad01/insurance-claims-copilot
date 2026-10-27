@@ -8,6 +8,9 @@ class ClaimExtraction(BaseModel):
     incident_date: str | None = Field(
         description="Incident date as YYYY-MM-DD. Null if the text gives no explicit full date including year."
     )
+    incident_location: str | None = Field(
+        description="Place where the incident happened, as written in the claim (a city, region or country). Null if the text does not state one. Not a room, not the place a letter was written, not the claimant's address."
+    )
     claimant_name: str | None = Field(
         description="Full name of the person filing the claim, or null."
     )
