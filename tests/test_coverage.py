@@ -187,10 +187,26 @@ def test_user_message_does_not_contain_claimant_details_or_the_raw_claim():
     assert "Marcus" not in message and "HG-2231-88" not in message and "800" not in message
 
 
+def test_user_message_gives_the_incident_location_when_there_is_one():
+    message = build_user_message(make_extraction(incident_location="Florida"), RETRIEVED)
+    assert "Incident location (from the extraction): Florida" in message
+
+
+def test_user_message_says_not_stated_when_there_is_no_location():
+    message = build_user_message(make_extraction(incident_location=None), RETRIEVED)
+    assert "Incident location (from the extraction): not stated" in message
+
+
 def test_system_prompt_defines_the_three_statuses_and_has_a_version():
     for status in ("covered", "excluded", "cannot_determine"):
         assert status in SYSTEM_PROMPT
-    assert PROMPT_VERSION and COVERAGE_MODEL
+    assert PROMPT_VERSION == "coverage-v2" and COVERAGE_MODEL
+
+
+def test_system_prompt_ties_the_incident_location_to_the_territory_clause():
+    assert "incident location" in SYSTEM_PROMPT
+    assert "territory clause" in SYSTEM_PROMPT
+    assert "If no location is stated, assume the event happened inside the territory" in SYSTEM_PROMPT
 
 
 # ---- the OpenAI wrapper

@@ -23,7 +23,8 @@ from .retriever import DISTANCE_CUTOFF, RetrievedClause
 load_dotenv()
 
 COVERAGE_MODEL = "gpt-6-luna"
-PROMPT_VERSION = "coverage-v1"
+# coverage-v1 had no incident location. v2 adds it to the message and rewrites the territory rule.
+PROMPT_VERSION = "coverage-v2"
 
 CoverageStatus = Literal["covered", "excluded", "cannot_determine"]
 GateName = Literal["none", "low_retrieval_confidence", "citation_check_failed"]
@@ -44,7 +45,7 @@ Rules:
 - A related clause is not enough. If no clause actually addresses what happened, answer cannot_determine.
 - Do not assume an exclusion applies when the summary gives no fact pointing to it. If the summary contains a detail that hints an exclusion or condition might apply but does not settle it, answer cannot_determine.
 - Assume the claimant is the policyholder, the property or vehicle is insured, and the event happened during the policy period, unless the summary says otherwise.
-- Where the event happened matters: compare it with the territory clause when one is provided.
+- Where the event happened matters. You are given the incident location when the claim states one. Compare it with the territory clause when one is provided. Use general geography only to decide which country a stated place is in. If that country is not in the territory, the answer is excluded and the territory clause is the clause to cite. If no location is stated, assume the event happened inside the territory.
 - Do not calculate payouts, limits or deductibles. Amounts do not change the status. A missed notification deadline is only relevant if the summary says it was missed, and then the answer is cannot_determine.
 - If part of the claim is outside the policy, judge the main loss the claimant describes.
 - Write the rationale in two or three sentences in English.
@@ -87,7 +88,8 @@ def build_user_message(extraction: ClaimExtraction, clauses: list[RetrievedClaus
     blocks = [f"[{c.chunk_id}] {c.title}\n{c.text}" for c in clauses]
     return (
         f"Claim summary: {extraction.summary}\n"
-        f"Damage type (from the extraction): {extraction.damage_type}\n\n"
+        f"Damage type (from the extraction): {extraction.damage_type}\n"
+        f"Incident location (from the extraction): {extraction.incident_location or 'not stated'}\n\n"
         "Policy clauses:\n\n" + "\n\n".join(blocks)
     )
 
