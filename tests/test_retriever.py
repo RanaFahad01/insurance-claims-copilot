@@ -110,7 +110,7 @@ def test_a_clause_searched_by_its_own_text_comes_back_first_at_distance_zero(col
     target = next(c for c in load_policy_chunks() if c.chunk_id == "en-C5.3")
     clauses = retrieve_clauses(collection, embedder, target.document, language="en")
     assert clauses[0].chunk_id == "en-C5.3"
-    assert clauses[0].distance < 1e-6
+    assert 0.0 <= clauses[0].distance < 1e-6   # never slightly negative, which would print as -0.00
     assert clauses[0].title == target.title
     assert clauses[0].text == target.text
 

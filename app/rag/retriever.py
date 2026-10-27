@@ -95,7 +95,8 @@ def _search(collection: Collection, vector: list[float], where: dict | None, n_r
         include=["documents", "metadatas", "distances"],
     )
     return [
-        RetrievedClause(**_to_clause_fields(chunk_id, document, metadata), distance=distance)
+        # Chroma can return a tiny negative number (about -1e-7) for an exact match; a distance is never below 0.
+        RetrievedClause(**_to_clause_fields(chunk_id, document, metadata), distance=max(distance, 0.0))
         for chunk_id, document, metadata, distance in zip(
             result["ids"][0], result["documents"][0], result["metadatas"][0], result["distances"][0]
         )
