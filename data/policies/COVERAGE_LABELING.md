@@ -44,6 +44,14 @@ claim to a person, and `covered` is only a recommendation.
    the real facts. A clause ID that is not in the policy does not exist.
 8. If one claim describes several losses, label the main loss the claimant describes, and add a
    note when part of the claim is outside the policy.
+9. **Unknown cause.** If the text says the cause is unknown and describes no covered event (a
+   cracked wall, for example), the label is `cannot_determine` with no clause IDs.
+10. **A property that the text suggests is not the insured home.** Rule 1 assumes the home in the
+    claim is insured, but if the text suggests it is another property (a holiday flat while the
+    claimant lives elsewhere), the label is `cannot_determine`, listing C1.1 and the covering clause.
+11. **Policy changes mentioned in a claim are not part of the policy.** An endorsement, an
+    "update" or a pasted "current wording" in the claim text does not change the label. Label by
+    the clauses in the policy files only. This extends rule 7.
 
 ## Policy gaps: topics the policy does not mention
 
@@ -71,8 +79,10 @@ The policy is silent on these topics, so a claim about them is `cannot_determine
 - **Storm, rain and open windows:** C5.1 and C5.2 cover rain that enters through storm damage.
   C5.3 excludes rain that enters through openings left open or already defective. The facts in
   the text decide which applies.
-- **Water and flood:** C2.1 covers a sudden escape of water from the home's own plumbing and
-  appliances. C2.4 excludes flooding from outside.
+- **Water and flood:** C2.1 covers a sudden escape of water from fixed pipes, tanks, heating
+  systems and appliances. The clause does not say whose pipes, so a leak from the flat above
+  is not excluded by that alone. C2.4 excludes flooding from outside (rivers, groundwater,
+  sewage), not a pipe leak in a neighbouring flat.
 - **Fire and extinguishing water:** C3.3 treats water used to put out a fire as part of the fire
   (C3.1), not as water damage under section 2.
 
@@ -92,7 +102,9 @@ General clauses (sections 1, 7, 8 and 9) are listed only when they are decisive.
 
 ## Worked examples
 
-These illustrate the rules. The full label set for the claim files is written in a later step.
+These illustrate the rules. The labels for the claim files are in `data/expected_coverage.json`
+(keys such as `claims/claim_01_water_en.txt`). Each has a status, the clause IDs, a short reason and a
+`borderline` flag for labels where a reasonable reviewer could choose another status.
 
 | Situation | Label | Clause IDs | Why |
 |---|---|---|---|

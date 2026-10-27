@@ -493,5 +493,115 @@
     "currency": "EUR",
     "language": "en",
     "note": "Location rule 7: Oslo appears only in the quoted reply, so the location is null. Date rule 6 also applies: 5 September is the reply date."
+  },
+  "claim_46_water_en_neighbour_liability.txt": {
+    "incident_date": "2026-04-16",
+    "incident_location": null,
+    "claimant_name": "Sara Okafor",
+    "policy_number": "HG-1405-62",
+    "damage_type": "water",
+    "estimated_amount": 900.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Coverage test, gap G2. The claimed amount is the neighbour's bill."
+  },
+  "claim_47_theft_en_business_stock.txt": {
+    "incident_date": "2026-04-30",
+    "incident_location": null,
+    "claimant_name": "Dario Silva",
+    "policy_number": "HG-5418-29",
+    "damage_type": "theft",
+    "estimated_amount": 900.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Coverage test, gap G3. Plain extraction case."
+  },
+  "claim_48_other_en_ransomware.txt": {
+    "incident_date": "2026-06-08",
+    "incident_location": null,
+    "claimant_name": "Mina Haddad",
+    "policy_number": "HG-6048-21",
+    "damage_type": "other",
+    "estimated_amount": 700.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Coverage test, gap G4. A cyber event is 'other'."
+  },
+  "claim_49_other_es_power_cut.txt": {
+    "incident_date": "2026-06-12",
+    "incident_location": null,
+    "claimant_name": "Carmen Ibáñez",
+    "policy_number": "HG-6150-29",
+    "damage_type": "other",
+    "estimated_amount": 220.0,
+    "currency": "EUR",
+    "language": "es",
+    "note": "Coverage test, gap G5, in Spanish."
+  },
+  "claim_50_theft_en_shared_bike_room.txt": {
+    "incident_date": "2026-07-09",
+    "incident_location": null,
+    "claimant_name": "Peter Lindgren",
+    "policy_number": "HG-8264-03",
+    "damage_type": "theft",
+    "estimated_amount": 700.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Coverage test, boundary A3. The basement of an apartment block is not a place."
+  },
+  "claim_51_water_en_slow_drip_stated.txt": {
+    "incident_date": "2026-06-03",
+    "incident_location": null,
+    "claimant_name": "Isabel Moreau",
+    "policy_number": "HG-5719-44",
+    "damage_type": "water",
+    "estimated_amount": 780.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Coverage test, exclusion C2.3. The date is when the damage was found and described."
+  },
+  "claim_52_other_es_open_window_rain.txt": {
+    "incident_date": "2026-10-18",
+    "incident_location": null,
+    "claimant_name": "Raúl Domínguez",
+    "policy_number": "HG-4036-71",
+    "damage_type": "other",
+    "estimated_amount": 430.0,
+    "currency": "EUR",
+    "language": "es",
+    "note": "Coverage test, exclusion C5.3, in Spanish. Storm damage is 'other'."
+  },
+  "claim_53_collision_en_taxi_use.txt": {
+    "incident_date": "2026-08-14",
+    "incident_location": null,
+    "claimant_name": "Callum Reid",
+    "policy_number": "HG-6347-12",
+    "damage_type": "collision",
+    "estimated_amount": 960.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Coverage test, exclusion C6.3."
+  },
+  "claim_54_water_en_frost_occupied.txt": {
+    "incident_date": "2026-01-15",
+    "incident_location": null,
+    "claimant_name": "Anna Schmitt",
+    "policy_number": "HG-9318-52",
+    "damage_type": "water",
+    "estimated_amount": 540.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Coverage test, settled counterpart of claim_34: occupancy is stated."
+  },
+  "claim_55_fire_en_late_report.txt": {
+    "incident_date": "2026-02-04",
+    "incident_location": null,
+    "claimant_name": "Gareth Pugh",
+    "policy_number": "HG-2160-88",
+    "damage_type": "fire",
+    "estimated_amount": 420.0,
+    "currency": "EUR",
+    "language": "en",
+    "note": "Coverage test, rule 6 (late report). The incident date is the fire, not the report date."
   }
 }
