@@ -3,7 +3,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-from app.extractor import extract_claim, ExtractionError, MODEL
+from app.extractor import extract_claim, ExtractionError, MODEL, PROMPT_VERSION
 from app.rules import triage
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -33,7 +33,7 @@ def main():
                 print(f"{entry['file']:50s} run {run + 1}: {route}")
 
     out = ROOT / "docs" / "phase-notes" / f"phase2-run-{datetime.now():%Y%m%d-%H%M}.json"
-    out.write_text(json.dumps({"model": MODEL, "results": results}, indent=2, ensure_ascii=False), encoding="utf-8")
+    out.write_text(json.dumps({"model": MODEL, "extraction_prompt": PROMPT_VERSION, "results": results}, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"Saved {out}")
 
 
