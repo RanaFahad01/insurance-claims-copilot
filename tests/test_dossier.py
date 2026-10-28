@@ -43,6 +43,8 @@ def coverage_result(status="covered", gate="none", cited=("en-C2.1",)) -> Covera
                           rationale="Because of the clauses.", retrieved=retrieved, gate_triggered=gate)
 
 
+CLAIM_TEXT = "Hi, this is Marcus Bell, policy HG-2231-88. A pipe burst under the kitchen sink."
+
 AUTO = RouteDecision(route="auto_approve_candidate", severity_score=10, reasons=[])
 ESCALATE = RouteDecision(route="escalate", severity_score=60, reasons=["amount_above_high_threshold", "missing_incident_date"])
 
@@ -114,9 +116,11 @@ class FakeCoverageModel:
 
     def __init__(self):
         self.calls = 0
+        self.claim_texts: list[str] = []
 
-    def assess(self, extraction, clauses):
+    def assess(self, extraction, claim_text, clauses):
         self.calls += 1
+        self.claim_texts.append(claim_text)
         return CoverageAnswer(coverage_status="covered", cited_clause_ids=[clauses[0].chunk_id], rationale="Fits.")
 
 
@@ -168,22 +172,23 @@ def collection(embedder):
 
 def test_review_of_a_clean_covered_claim_is_an_auto_approve_candidate(collection, embedder):
     model = FakeCoverageModel()
-    dossier = review_claim(make_extraction(), collection, embedder, model, cutoff=2.0)
+    dossier = review_claim(make_extraction(), CLAIM_TEXT, collection, embedder, model, cutoff=2.0)
     assert dossier.final_route == "auto_approve_candidate"
     assert dossier.reasons == []
     assert dossier.coverage.status == "covered" and dossier.coverage.cited_clauses
     assert dossier.rules_decision == triage(make_extraction())
     assert model.calls == 1
+    assert model.claim_texts == [CLAIM_TEXT]
 
 
 def test_review_records_the_index_versions(collection, embedder):
-    dossier = review_claim(make_extraction(), collection, embedder, FakeCoverageModel(), cutoff=2.0)
+    dossier = review_claim(make_extraction(), CLAIM_TEXT, collection, embedder, FakeCoverageModel(), cutoff=2.0)
     assert dossier.versions.embedding_model == embedder.model
     assert dossier.versions.policy_hash == index_info(collection)["policy_hash"] == policy_hash()
 
 
 def test_review_escalates_when_the_rules_escalate_even_if_coverage_is_fine(collection, embedder):
-    dossier = review_claim(make_extraction(estimated_amount=9000.0), collection, embedder, FakeCoverageModel(), cutoff=2.0)
+    dossier = review_claim(make_extraction(estimated_amount=9000.0), CLAIM_TEXT, collection, embedder, FakeCoverageModel(), cutoff=2.0)
     assert dossier.coverage.status == "covered"
     assert dossier.final_route == "escalate"
     assert dossier.reasons == ["amount_above_high_threshold"]
@@ -191,7 +196,7 @@ def test_review_escalates_when_the_rules_escalate_even_if_coverage_is_fine(colle
 
 def test_review_escalates_without_calling_the_model_when_retrieval_is_not_confident(collection, embedder):
     model = FakeCoverageModel()
-    dossier = review_claim(make_extraction(), collection, embedder, model, cutoff=-1.0)
+    dossier = review_claim(make_extraction(), CLAIM_TEXT, collection, embedder, model, cutoff=-1.0)
     assert dossier.coverage.gate_triggered == "low_retrieval_confidence"
     assert dossier.final_route == "escalate"
     assert dossier.reasons == ["retrieval_low_confidence"]

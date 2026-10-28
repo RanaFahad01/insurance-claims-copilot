@@ -99,15 +99,17 @@ def build_dossier(
 
 def review_claim(
     extraction: ClaimExtraction,
+    claim_text: str,
     collection: Collection,
     embedder: Embedder,
     coverage_model: CoverageModel,
     cutoff: float = DISTANCE_CUTOFF,
 ) -> Dossier:
-    """Rules, retrieval, coverage and final routing for one extracted claim."""
+    """Rules, retrieval, coverage and final routing for one claim. Retrieval searches with the extraction's summary;
+    the coverage step reads the claim text as well."""
     rules_decision = triage(extraction)
     retrieved = retrieve_context(collection, embedder, extraction)
-    coverage = assess_coverage(extraction, retrieved, coverage_model, cutoff=cutoff)
+    coverage = assess_coverage(extraction, claim_text, retrieved, coverage_model, cutoff=cutoff)
     versions = collect_versions(coverage_model, index_info(collection), cutoff)
     return build_dossier(extraction, rules_decision, coverage, versions)
 

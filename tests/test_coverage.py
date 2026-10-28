@@ -21,6 +21,8 @@ from app.schemas import ClaimExtraction
 
 REQUEST = httpx2.Request("POST", "http://example.invalid/v1/responses")
 
+CLAIM_TEXT = "Hi, this is Marcus Bell, policy HG-2231-88. On 12 March 2026 a pipe burst under the kitchen sink."
+
 
 def make_extraction(**overrides) -> ClaimExtraction:
     base = dict(incident_date=None, incident_location=None, claimant_name=None, policy_number=None, damage_type="water",
@@ -44,7 +46,7 @@ class FakeCoverageModel:
         self.answer = answer
         self.calls = 0
 
-    def assess(self, extraction, clauses):
+    def assess(self, extraction, claim_text, clauses):
         self.calls += 1
         return self.answer
 
@@ -117,6 +119,19 @@ def test_plain_clause_id_is_rejected_when_it_could_mean_two_languages():
     assert result.gate_triggered == "citation_check_failed"
 
 
+@pytest.mark.parametrize("written", ["[en-C2.1]", "[ en-C2.1 ]", '"en-C2.1"', "'en-C2.1'", "[C2.1]"])
+def test_an_id_written_with_brackets_or_quotes_is_still_a_valid_citation(written):
+    result = verify_citations(answer("covered", [written]), RETRIEVED)
+    assert (result.status, result.gate_triggered) == ("covered", "none")
+    assert [c.chunk_id for c in result.cited_clauses] == ["en-C2.1"]
+
+
+@pytest.mark.parametrize("written", ["[en-C9.9]", "[C9.9]", "[]", "[[en-C2.1 and more]]"])
+def test_brackets_do_not_make_an_invented_id_valid(written):
+    result = verify_citations(answer("covered", [written]), RETRIEVED)
+    assert (result.status, result.gate_triggered) == ("cannot_determine", "citation_check_failed")
+
+
 def test_duplicate_and_padded_citations_are_collapsed():
     result = verify_citations(answer("covered", ["en-C2.1", " en-C2.1 ", "C2.1"]), RETRIEVED)
     assert [c.chunk_id for c in result.cited_clauses] == ["en-C2.1"]
@@ -127,7 +142,7 @@ def test_duplicate_and_padded_citations_are_collapsed():
 def test_best_match_beyond_the_cutoff_skips_the_model():
     model = FakeCoverageModel(answer())
     far = [clause("en-C2.1", DISTANCE_CUTOFF + 0.01), clause("en-C2.3", 0.9)]
-    result = assess_coverage(make_extraction(), far, model)
+    result = assess_coverage(make_extraction(), CLAIM_TEXT, far, model)
     assert (result.status, result.gate_triggered) == ("cannot_determine", "low_retrieval_confidence")
     assert result.rationale == LOW_CONFIDENCE_RATIONALE
     assert model.calls == 0
@@ -136,14 +151,14 @@ def test_best_match_beyond_the_cutoff_skips_the_model():
 
 def test_best_match_exactly_at_the_cutoff_still_reaches_the_model():
     model = FakeCoverageModel(answer())
-    result = assess_coverage(make_extraction(), [clause("en-C2.1", DISTANCE_CUTOFF)], model)
+    result = assess_coverage(make_extraction(), CLAIM_TEXT, [clause("en-C2.1", DISTANCE_CUTOFF)], model)
     assert result.gate_triggered == "none"
     assert model.calls == 1
 
 
 def test_nothing_retrieved_skips_the_model():
     model = FakeCoverageModel(answer())
-    result = assess_coverage(make_extraction(), [], model)
+    result = assess_coverage(make_extraction(), CLAIM_TEXT, [], model)
     assert result.gate_triggered == "low_retrieval_confidence"
     assert model.calls == 0
 
@@ -151,23 +166,23 @@ def test_nothing_retrieved_skips_the_model():
 def test_clauses_added_by_rule_do_not_count_toward_the_confidence_gate():
     model = FakeCoverageModel(answer("excluded", ["en-C1.3"]))
     only_added = [clause("en-C1.3", 0.05, added_by_rule=True)]
-    assert assess_coverage(make_extraction(), only_added, model).gate_triggered == "low_retrieval_confidence"
+    assert assess_coverage(make_extraction(), CLAIM_TEXT, only_added, model).gate_triggered == "low_retrieval_confidence"
     assert model.calls == 0
 
     far_search_close_added = [clause("en-C2.1", 0.9), clause("en-C1.3", 0.05, added_by_rule=True)]
-    assert assess_coverage(make_extraction(), far_search_close_added, model).gate_triggered == "low_retrieval_confidence"
+    assert assess_coverage(make_extraction(), CLAIM_TEXT, far_search_close_added, model).gate_triggered == "low_retrieval_confidence"
 
 
 def test_a_distant_clause_added_by_rule_does_not_trigger_the_gate():
     model = FakeCoverageModel(answer("covered", ["en-C2.1"]))
-    result = assess_coverage(make_extraction(), RETRIEVED, model)
+    result = assess_coverage(make_extraction(), CLAIM_TEXT, RETRIEVED, model)
     assert result.gate_triggered == "none" and result.status == "covered"
     assert model.calls == 1
 
 
 def test_the_full_path_runs_the_citation_check_on_the_models_answer():
     model = FakeCoverageModel(answer("covered", ["en-C9.9"]))
-    result = assess_coverage(make_extraction(), RETRIEVED, model)
+    result = assess_coverage(make_extraction(), CLAIM_TEXT, RETRIEVED, model)
     assert (result.status, result.gate_triggered) == ("cannot_determine", "citation_check_failed")
     assert model.calls == 1
 
@@ -175,32 +190,52 @@ def test_the_full_path_runs_the_citation_check_on_the_models_answer():
 # ---- prompt and message
 
 def test_user_message_contains_the_summary_and_every_clause_with_its_id():
-    message = build_user_message(make_extraction(), RETRIEVED)
+    message = build_user_message(make_extraction(), CLAIM_TEXT, RETRIEVED)
     assert "A pipe burst under the kitchen sink" in message
     for c in RETRIEVED:
         assert f"[{c.chunk_id}] {c.title}" in message and c.text in message
 
 
-def test_user_message_does_not_contain_claimant_details_or_the_raw_claim():
+def test_user_message_contains_the_claim_text_as_written():
+    text = "  On 3 June 2026 I was driving my own car as a taxi when another vehicle hit it.\n\nPlease advise.  "
+    message = build_user_message(make_extraction(), text, RETRIEVED)
+    assert text.strip() in message
+    assert message.index("Claim text:") < message.index("Claim summary:") < message.index("Policy clauses:")
+
+
+def test_user_message_does_not_copy_the_extracted_claimant_details_in_separately():
+    # the claim text itself may contain them, but the extraction's name, policy number and amount are not added
     extraction = make_extraction(claimant_name="Marcus Bell", policy_number="HG-2231-88", estimated_amount=800.0)
-    message = build_user_message(extraction, RETRIEVED)
+    message = build_user_message(extraction, "A pipe burst under the kitchen sink.", RETRIEVED)
     assert "Marcus" not in message and "HG-2231-88" not in message and "800" not in message
 
 
+def test_the_assessor_receives_the_claim_text_from_assess_coverage():
+    seen = []
+
+    class RecordingModel(FakeCoverageModel):
+        def assess(self, extraction, claim_text, clauses):
+            seen.append(claim_text)
+            return super().assess(extraction, claim_text, clauses)
+
+    assess_coverage(make_extraction(), CLAIM_TEXT, RETRIEVED, RecordingModel(answer()))
+    assert seen == [CLAIM_TEXT]
+
+
 def test_user_message_gives_the_incident_location_when_there_is_one():
-    message = build_user_message(make_extraction(incident_location="Florida"), RETRIEVED)
+    message = build_user_message(make_extraction(incident_location="Florida"), CLAIM_TEXT, RETRIEVED)
     assert "Incident location (from the extraction): Florida" in message
 
 
 def test_user_message_says_not_stated_when_there_is_no_location():
-    message = build_user_message(make_extraction(incident_location=None), RETRIEVED)
+    message = build_user_message(make_extraction(incident_location=None), CLAIM_TEXT, RETRIEVED)
     assert "Incident location (from the extraction): not stated" in message
 
 
 def test_system_prompt_defines_the_three_statuses_and_has_a_version():
     for status in ("covered", "excluded", "cannot_determine"):
         assert status in SYSTEM_PROMPT
-    assert PROMPT_VERSION == "coverage-v2" and COVERAGE_MODEL
+    assert PROMPT_VERSION == "coverage-v3" and COVERAGE_MODEL
 
 
 def test_system_prompt_ties_the_incident_location_to_the_territory_clause():
@@ -236,7 +271,7 @@ def make_model(**kwargs):
 def test_wrapper_returns_the_parsed_answer_and_sends_the_expected_request():
     expected = answer()
     model, api = make_model(response=parsed_response(expected))
-    assert model.assess(make_extraction(), RETRIEVED) == expected
+    assert model.assess(make_extraction(), CLAIM_TEXT, RETRIEVED) == expected
     assert api.kwargs["model"] == COVERAGE_MODEL
     assert api.kwargs["text_format"] is CoverageAnswer
     assert api.kwargs["temperature"] == 0
@@ -254,7 +289,7 @@ def test_incomplete_response_is_an_error():
     response.incomplete_details = SimpleNamespace(reason="max_output_tokens")
     model, _ = make_model(response=response)
     with pytest.raises(CoverageError) as raised:
-        model.assess(make_extraction(), RETRIEVED)
+        model.assess(make_extraction(), CLAIM_TEXT, RETRIEVED)
     assert raised.value.kind == "incomplete" and "max_output_tokens" in str(raised.value)
 
 
@@ -262,14 +297,14 @@ def test_refusal_is_an_error():
     refusal = SimpleNamespace(type="message", content=[SimpleNamespace(type="refusal", refusal="I cannot help")])
     model, _ = make_model(response=parsed_response(None, output=[refusal]))
     with pytest.raises(CoverageError) as raised:
-        model.assess(make_extraction(), RETRIEVED)
+        model.assess(make_extraction(), CLAIM_TEXT, RETRIEVED)
     assert raised.value.kind == "refusal"
 
 
 def test_missing_parsed_output_is_an_error():
     model, _ = make_model(response=parsed_response(None))
     with pytest.raises(CoverageError) as raised:
-        model.assess(make_extraction(), RETRIEVED)
+        model.assess(make_extraction(), CLAIM_TEXT, RETRIEVED)
     assert raised.value.kind == "no_parsed_output"
 
 
@@ -285,5 +320,5 @@ def test_missing_parsed_output_is_an_error():
 def test_api_errors_are_mapped_to_coverage_errors(error, kind):
     model, _ = make_model(error=error)
     with pytest.raises(CoverageError) as raised:
-        model.assess(make_extraction(), RETRIEVED)
+        model.assess(make_extraction(), CLAIM_TEXT, RETRIEVED)
     assert raised.value.kind == kind

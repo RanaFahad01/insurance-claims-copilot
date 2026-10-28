@@ -50,7 +50,7 @@ def review(
 ):
     try:
         extraction = extract_claim(req.text)
-        dossier = review_claim(extraction, collection, embedder, coverage_model)
+        dossier = review_claim(extraction, req.text, collection, embedder, coverage_model)
     except (ExtractionError, EmbeddingError, CoverageError) as e:
         raise http_error(e.kind, e)
 

@@ -24,7 +24,9 @@ load_dotenv()
 
 COVERAGE_MODEL = "gpt-6-luna"
 # coverage-v1 had no incident location. v2 adds it to the message and rewrites the territory rule.
-PROMPT_VERSION = "coverage-v2"
+# v3 also gives the model the claim text, because the one-sentence summary sometimes dropped the fact that decides
+# the answer (a taxi, a late report, business stock).
+PROMPT_VERSION = "coverage-v3"
 
 CoverageStatus = Literal["covered", "excluded", "cannot_determine"]
 GateName = Literal["none", "low_retrieval_confidence", "citation_check_failed"]
@@ -33,20 +35,20 @@ LOW_CONFIDENCE_RATIONALE = "No policy clause is close enough to this claim to as
 
 SYSTEM_PROMPT = """You assess whether an insurance claim is covered by a policy, using only the policy clauses provided.
 
-You are given a short summary of the claim and a list of policy clauses. Each clause is labeled with an ID in square brackets.
+You are given the text of the claim, a short summary of it, and a list of policy clauses. Each clause is labeled with an ID in square brackets.
 Answer with one of three statuses:
 - covered: a clause covers the event, and no exclusion or condition in the clauses provided removes the cover on the facts given.
 - excluded: a clause clearly removes cover on the facts given, for example the property or event is outside the territory, or a stated exclusion applies.
-- cannot_determine: none of the clauses provided addresses the situation, or the answer depends on a fact the summary does not state while the summary hints that it may matter, or the clauses conflict.
+- cannot_determine: none of the clauses provided addresses the situation, or the answer depends on a fact the claim does not state while the claim hints that it may matter, or the clauses conflict.
 
 Rules:
 - Use only the clauses provided. Never use outside knowledge about insurance and never invent a clause.
 - Cite the clause IDs you rely on in cited_clause_ids, exactly as written in the square brackets. A covered or excluded answer must cite at least one clause.
 - A related clause is not enough. If no clause actually addresses what happened, answer cannot_determine.
-- Do not assume an exclusion applies when the summary gives no fact pointing to it. If the summary contains a detail that hints an exclusion or condition might apply but does not settle it, answer cannot_determine.
-- Assume the claimant is the policyholder, the property or vehicle is insured, and the event happened during the policy period, unless the summary says otherwise.
+- Do not assume an exclusion applies when the claim gives no fact pointing to it. If the claim contains a detail that hints an exclusion or condition might apply but does not settle it, answer cannot_determine.
+- Assume the claimant is the policyholder, the property or vehicle is insured, and the event happened during the policy period, unless the claim says otherwise.
 - Where the event happened matters. You are given the incident location when the claim states one. Compare it with the territory clause when one is provided. Use general geography only to decide which country a stated place is in. If that country is not in the territory, the answer is excluded and the territory clause is the clause to cite. If no location is stated, assume the event happened inside the territory.
-- Do not calculate payouts, limits or deductibles. Amounts do not change the status. A missed notification deadline is only relevant if the summary says it was missed, and then the answer is cannot_determine.
+- Do not calculate payouts, limits or deductibles. Amounts do not change the status. A missed notification deadline is only relevant if the claim says it was missed, and then the answer is cannot_determine.
 - If part of the claim is outside the policy, judge the main loss the claimant describes.
 - Write the rationale in two or three sentences in English.
 """
@@ -80,13 +82,16 @@ class CoverageModel(Protocol):
     model: str
     prompt_version: str
 
-    def assess(self, extraction: ClaimExtraction, clauses: list[RetrievedClause]) -> CoverageAnswer:
+    def assess(self, extraction: ClaimExtraction, claim_text: str, clauses: list[RetrievedClause]) -> CoverageAnswer:
         ...
 
 
-def build_user_message(extraction: ClaimExtraction, clauses: list[RetrievedClause]) -> str:
+def build_user_message(extraction: ClaimExtraction, claim_text: str, clauses: list[RetrievedClause]) -> str:
+    """The claim text goes in as written. Only the summary, damage type and location come from the extraction:
+    the claimant's name, policy number and amount are not copied in separately."""
     blocks = [f"[{c.chunk_id}] {c.title}\n{c.text}" for c in clauses]
     return (
+        f'Claim text:\n"""\n{claim_text.strip()}\n"""\n\n'
         f"Claim summary: {extraction.summary}\n"
         f"Damage type (from the extraction): {extraction.damage_type}\n"
         f"Incident location (from the extraction): {extraction.incident_location or 'not stated'}\n\n"
@@ -100,13 +105,13 @@ class OpenAICoverageModel:
         self.prompt_version = PROMPT_VERSION
         self._client = client if client is not None else OpenAI(timeout=30.0, max_retries=3)
 
-    def assess(self, extraction: ClaimExtraction, clauses: list[RetrievedClause]) -> CoverageAnswer:
+    def assess(self, extraction: ClaimExtraction, claim_text: str, clauses: list[RetrievedClause]) -> CoverageAnswer:
         try:
             response = self._client.responses.parse(
                 model=self.model,
                 input=[
                     {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user", "content": build_user_message(extraction, clauses)},
+                    {"role": "user", "content": build_user_message(extraction, claim_text, clauses)},
                 ],
                 text_format=CoverageAnswer,
                 temperature=0,
@@ -138,8 +143,11 @@ class OpenAICoverageModel:
 
 def _resolve_citation(cited: str, retrieved: list[RetrievedClause]) -> RetrievedClause | None:
     """Match a cited ID to a retrieved clause. 'en-C2.1' must match exactly. A plain 'C2.1' is accepted
-    only when exactly one retrieved clause has that clause ID, so it cannot point at the wrong language."""
-    cited = cited.strip()
+    only when exactly one retrieved clause has that clause ID, so it cannot point at the wrong language.
+
+    The prompt shows IDs in square brackets, so the model sometimes writes '[en-C2.1]'. Brackets and quotes
+    around an ID are formatting, not part of it, and are removed. What is left must still match exactly."""
+    cited = cited.strip().strip("[]\"'").strip()
     for clause in retrieved:
         if clause.chunk_id == cited:
             return clause
@@ -181,6 +189,7 @@ def verify_citations(answer: CoverageAnswer, retrieved: list[RetrievedClause]) -
 
 def assess_coverage(
     extraction: ClaimExtraction,
+    claim_text: str,
     retrieved: list[RetrievedClause],
     model: CoverageModel,
     cutoff: float = DISTANCE_CUTOFF,
@@ -195,5 +204,5 @@ def assess_coverage(
         return CoverageResult(status="cannot_determine", cited_clauses=[], rationale=LOW_CONFIDENCE_RATIONALE,
                               retrieved=retrieved, gate_triggered="low_retrieval_confidence")
 
-    answer = model.assess(extraction, retrieved)
+    answer = model.assess(extraction, claim_text, retrieved)
     return verify_citations(answer, retrieved)

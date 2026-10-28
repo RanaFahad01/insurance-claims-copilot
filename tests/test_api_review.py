@@ -38,9 +38,11 @@ class FakeCoverageModel:
 
     def __init__(self):
         self.calls = 0
+        self.claim_texts: list[str] = []
 
-    def assess(self, extraction, clauses):
+    def assess(self, extraction, claim_text, clauses):
         self.calls += 1
+        self.claim_texts.append(claim_text)
         return CoverageAnswer(coverage_status="covered", cited_clause_ids=[clauses[0].chunk_id], rationale="Fits.")
 
 
@@ -49,7 +51,7 @@ class FailingCoverageModel(FakeCoverageModel):
         super().__init__()
         self.kind = kind
 
-    def assess(self, extraction, clauses):
+    def assess(self, extraction, claim_text, clauses):
         raise CoverageError(self.kind, "simulated")
 
 
@@ -133,6 +135,7 @@ def test_a_clean_covered_claim_returns_a_dossier_with_an_auto_approve_candidate(
     assert body["versions"]["policy_hash"] == policy_hash()
     assert body["versions"]["coverage_model"] == "fake-coverage"
     assert api.calls == 1
+    assert api.claim_texts == [VALID_TEXT]   # the coverage step reads the claim as sent, not only the summary
 
 
 def test_the_rules_can_escalate_a_claim_the_coverage_step_likes(api, extraction_calls):
