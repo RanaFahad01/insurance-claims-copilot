@@ -53,7 +53,10 @@ def main():
     if len(sys.argv) > 1:
         run_path = Path(sys.argv[1])
     else:
-        run_path = sorted((ROOT / "docs" / "phase-notes").glob("phase2-run-*.json"))[-1]
+        runs = sorted((ROOT / "docs" / "phase-notes").glob("phase2-run-*.json"))
+        if not runs:
+            sys.exit("No saved run found. Create one first with: python -m scripts.run_samples 3")
+        run_path = runs[-1]
     data = json.loads(run_path.read_text(encoding="utf-8"))
     expected = load_expected()
 

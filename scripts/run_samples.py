@@ -33,6 +33,7 @@ def main():
                 print(f"{entry['file']:50s} run {run + 1}: {route}")
 
     out = ROOT / "docs" / "phase-notes" / f"phase2-run-{datetime.now():%Y%m%d-%H%M}.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps({"model": MODEL, "extraction_prompt": PROMPT_VERSION, "results": results}, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"Saved {out}")
 

@@ -160,7 +160,13 @@ def short(file: str) -> str:
 def main():
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    run_path = Path(sys.argv[1]) if len(sys.argv) > 1 else sorted((ROOT / "docs" / "phase-notes").glob("phase3-coverage-run-*.json"))[-1]
+    if len(sys.argv) > 1:
+        run_path = Path(sys.argv[1])
+    else:
+        runs = sorted((ROOT / "docs" / "phase-notes").glob("phase3-coverage-run-*.json"))
+        if not runs:
+            sys.exit("No saved run found. Create one first with: python -m scripts.run_coverage 3")
+        run_path = runs[-1]
     data = json.loads(run_path.read_text(encoding="utf-8"))
     labels = json.loads((ROOT / "data" / "expected_coverage.json").read_text(encoding="utf-8"))
     rows = build_rows(data["results"], labels, load_expected())

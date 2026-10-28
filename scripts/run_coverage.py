@@ -85,6 +85,7 @@ def main():
 
     versions = collect_versions(coverage_model, details)
     out = ROOT / "docs" / "phase-notes" / f"phase3-coverage-run-{datetime.now():%Y%m%d-%H%M}.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
     config = {"versions": versions.model_dump(), "runs": runs, "files": len(files), "workers": workers,
               "started": datetime.now().isoformat(timespec="seconds")}
     out.write_text(json.dumps({"config": config, "results": results}, indent=2, ensure_ascii=False), encoding="utf-8")

@@ -173,6 +173,7 @@ def main() -> None:
 
     out = ROOT / "docs" / "phase-notes" / f"phase3-retrieval-{datetime.now():%Y%m%d-%H%M}.json"
     out.parent.mkdir(parents=True, exist_ok=True)
+    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps({
         "config": {"embedding_model": info["embedding_model"], "policy_hash": info["policy_hash"], "clauses": info["clauses"],
                    "top_k": TOP_K, "k_max": K_MAX, "cases_file": CASES_FILE.name},
