@@ -10,7 +10,7 @@ from pydantic import BaseModel, Field, field_validator
 
 from ..schemas import ClaimExtraction
 
-AgentStatus = Literal["not_run", "finished", "max_steps_exceeded", "error"]
+AgentStatus = Literal["not_run", "finished", "max_steps_exceeded", "budget_exceeded", "deadline_exceeded", "looping", "error"]
 
 
 class Mismatch(BaseModel):

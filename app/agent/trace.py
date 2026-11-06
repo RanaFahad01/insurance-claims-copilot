@@ -22,10 +22,20 @@ class ToolCallRecord(BaseModel):
     detail: str | None = None     # for us only, never shown to the model (for example the exception type)
 
 
+class TurnRecord(BaseModel):
+    """One call to the model."""
+    step: int
+    input_tokens: int
+    output_tokens: int
+    latency_ms: int
+    tool_calls: int               # how many function calls the model asked for in this turn
+
+
 class Trace:
     def __init__(self) -> None:
         self.step = 0             # the loop sets this before each model turn
         self.records: list[ToolCallRecord] = []
+        self.turns: list[TurnRecord] = []
 
     def record(
         self,
