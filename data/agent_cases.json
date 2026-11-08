@@ -1,0 +1,725 @@
+[
+  {
+    "id": "case_01",
+    "name": "clean invoice, fast-track claim",
+    "split": "dev",
+    "claim": "claims/claim_01_water_en.txt",
+    "documents": [
+      "doc_14"
+    ],
+    "agent_runs": true,
+    "expected_route": "auto_approve_candidate",
+    "reasons_include": [],
+    "reasons_exclude": [
+      "document_mismatch",
+      "required_check_missing"
+    ],
+    "expected_mismatches": [],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": ""
+  },
+  {
+    "id": "case_02",
+    "name": "clean invoice, total 1.5% above the claim",
+    "split": "test",
+    "claim": "claims/claim_01_water_en.txt",
+    "documents": [
+      "doc_19"
+    ],
+    "agent_runs": true,
+    "expected_route": "auto_approve_candidate",
+    "reasons_include": [],
+    "reasons_exclude": [
+      "document_mismatch",
+      "required_check_missing"
+    ],
+    "expected_mismatches": [],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": "Inside the tolerance: must not be flagged."
+  },
+  {
+    "id": "case_03",
+    "name": "clean receipt, fast-track claim",
+    "split": "test",
+    "claim": "claims/claim_31_fire_en_euro_symbol.txt",
+    "documents": [
+      "doc_18"
+    ],
+    "agent_runs": true,
+    "expected_route": "auto_approve_candidate",
+    "reasons_include": [],
+    "reasons_exclude": [
+      "document_mismatch",
+      "required_check_missing"
+    ],
+    "expected_mismatches": [],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": ""
+  },
+  {
+    "id": "case_04",
+    "name": "clean invoice, day-first date",
+    "split": "test",
+    "claim": "claims/claim_42_water_en_city_and_country.txt",
+    "documents": [
+      "doc_17"
+    ],
+    "agent_runs": true,
+    "expected_route": "auto_approve_candidate",
+    "reasons_include": [],
+    "reasons_exclude": [
+      "document_mismatch",
+      "required_check_missing"
+    ],
+    "expected_mismatches": [],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": ""
+  },
+  {
+    "id": "case_05",
+    "name": "clean invoice, frozen pipe",
+    "split": "test",
+    "claim": "claims/claim_54_water_en_frost_occupied.txt",
+    "documents": [
+      "doc_21"
+    ],
+    "agent_runs": true,
+    "expected_route": "auto_approve_candidate",
+    "reasons_include": [],
+    "reasons_exclude": [
+      "document_mismatch",
+      "required_check_missing"
+    ],
+    "expected_mismatches": [],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": ""
+  },
+  {
+    "id": "case_06",
+    "name": "two clean documents for one claim",
+    "split": "test",
+    "claim": "claims/claim_54_water_en_frost_occupied.txt",
+    "documents": [
+      "doc_21",
+      "doc_01"
+    ],
+    "agent_runs": true,
+    "expected_route": "auto_approve_candidate",
+    "reasons_include": [],
+    "reasons_exclude": [
+      "document_mismatch",
+      "required_check_missing"
+    ],
+    "expected_mismatches": [],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": "Name written surname first in capitals on the receipt."
+  },
+  {
+    "id": "case_07",
+    "name": "clean invoice, policy number with hyphens",
+    "split": "test",
+    "claim": "claims/claim_37_fire_en_policy_spaced.txt",
+    "documents": [
+      "doc_09"
+    ],
+    "agent_runs": true,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "amount_above_auto_threshold"
+    ],
+    "reasons_exclude": [
+      "document_mismatch",
+      "required_check_missing"
+    ],
+    "expected_mismatches": [],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": "The claim escalates on amount anyway. Must not be flagged as a mismatch."
+  },
+  {
+    "id": "case_08",
+    "name": "clean invoice, excluded claim in USD",
+    "split": "test",
+    "claim": "claims/claim_07_collision_en_usd.txt",
+    "documents": [
+      "doc_15"
+    ],
+    "agent_runs": true,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "currency_not_eur",
+      "coverage_possible_exclusion"
+    ],
+    "reasons_exclude": [
+      "document_mismatch",
+      "required_check_missing"
+    ],
+    "expected_mismatches": [],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": "A clean document cannot rescue an excluded claim."
+  },
+  {
+    "id": "case_09",
+    "name": "clean invoice, excluded claim (slow leak)",
+    "split": "dev",
+    "claim": "claims/claim_51_water_en_slow_drip_stated.txt",
+    "documents": [
+      "doc_05"
+    ],
+    "agent_runs": true,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "coverage_possible_exclusion"
+    ],
+    "reasons_exclude": [
+      "document_mismatch",
+      "required_check_missing"
+    ],
+    "expected_mismatches": [],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": "A clean document cannot rescue an excluded claim."
+  },
+  {
+    "id": "case_10",
+    "name": "clean invoice, excluded claim (open window), Spanish",
+    "split": "test",
+    "claim": "claims/claim_52_other_es_open_window_rain.txt",
+    "documents": [
+      "doc_13"
+    ],
+    "agent_runs": true,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "coverage_possible_exclusion"
+    ],
+    "reasons_exclude": [
+      "document_mismatch",
+      "required_check_missing"
+    ],
+    "expected_mismatches": [],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": "A clean document cannot rescue an excluded claim."
+  },
+  {
+    "id": "case_11",
+    "name": "amount much higher than the claim",
+    "split": "dev",
+    "claim": "claims/claim_01_water_en.txt",
+    "documents": [
+      "doc_22"
+    ],
+    "agent_runs": true,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "document_mismatch"
+    ],
+    "reasons_exclude": [
+      "required_check_missing"
+    ],
+    "expected_mismatches": [
+      {
+        "document": "doc_22",
+        "field": "amount"
+      }
+    ],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": ""
+  },
+  {
+    "id": "case_12",
+    "name": "amount slightly higher than the claim",
+    "split": "test",
+    "claim": "claims/claim_31_fire_en_euro_symbol.txt",
+    "documents": [
+      "doc_16"
+    ],
+    "agent_runs": true,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "document_mismatch"
+    ],
+    "reasons_exclude": [
+      "required_check_missing"
+    ],
+    "expected_mismatches": [
+      {
+        "document": "doc_16",
+        "field": "amount"
+      }
+    ],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": ""
+  },
+  {
+    "id": "case_13",
+    "name": "amount much lower than the claim",
+    "split": "test",
+    "claim": "claims/claim_23_fire_en_letter_date.txt",
+    "documents": [
+      "doc_20"
+    ],
+    "agent_runs": true,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "amount_above_auto_threshold",
+      "document_mismatch"
+    ],
+    "reasons_exclude": [
+      "required_check_missing"
+    ],
+    "expected_mismatches": [
+      {
+        "document": "doc_20",
+        "field": "amount"
+      }
+    ],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": ""
+  },
+  {
+    "id": "case_14",
+    "name": "amount much lower than the claim, Spanish",
+    "split": "test",
+    "claim": "claims/claim_03_fire_es.txt",
+    "documents": [
+      "doc_11"
+    ],
+    "agent_runs": true,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "amount_above_auto_threshold",
+      "document_mismatch"
+    ],
+    "reasons_exclude": [
+      "required_check_missing"
+    ],
+    "expected_mismatches": [
+      {
+        "document": "doc_11",
+        "field": "amount"
+      }
+    ],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": ""
+  },
+  {
+    "id": "case_15",
+    "name": "document dated before the incident",
+    "split": "test",
+    "claim": "claims/claim_42_water_en_city_and_country.txt",
+    "documents": [
+      "doc_06"
+    ],
+    "agent_runs": true,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "document_mismatch"
+    ],
+    "reasons_exclude": [
+      "required_check_missing"
+    ],
+    "expected_mismatches": [
+      {
+        "document": "doc_06",
+        "field": "date"
+      }
+    ],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": ""
+  },
+  {
+    "id": "case_16",
+    "name": "document dated six months after the incident",
+    "split": "test",
+    "claim": "claims/claim_54_water_en_frost_occupied.txt",
+    "documents": [
+      "doc_04"
+    ],
+    "agent_runs": true,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "document_mismatch"
+    ],
+    "reasons_exclude": [
+      "required_check_missing"
+    ],
+    "expected_mismatches": [
+      {
+        "document": "doc_04",
+        "field": "date"
+      }
+    ],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": ""
+  },
+  {
+    "id": "case_17",
+    "name": "invoice made out to another person",
+    "split": "dev",
+    "claim": "claims/claim_01_water_en.txt",
+    "documents": [
+      "doc_12"
+    ],
+    "agent_runs": true,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "document_mismatch"
+    ],
+    "reasons_exclude": [
+      "required_check_missing"
+    ],
+    "expected_mismatches": [
+      {
+        "document": "doc_12",
+        "field": "name"
+      }
+    ],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": ""
+  },
+  {
+    "id": "case_18",
+    "name": "surname off by one letter, Spanish",
+    "split": "test",
+    "claim": "claims/claim_03_fire_es.txt",
+    "documents": [
+      "doc_02"
+    ],
+    "agent_runs": true,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "amount_above_auto_threshold",
+      "document_mismatch"
+    ],
+    "reasons_exclude": [
+      "required_check_missing"
+    ],
+    "expected_mismatches": [
+      {
+        "document": "doc_02",
+        "field": "name"
+      }
+    ],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": ""
+  },
+  {
+    "id": "case_19",
+    "name": "policy number one digit off",
+    "split": "test",
+    "claim": "claims/claim_23_fire_en_letter_date.txt",
+    "documents": [
+      "doc_10"
+    ],
+    "agent_runs": true,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "amount_above_auto_threshold",
+      "document_mismatch"
+    ],
+    "reasons_exclude": [
+      "required_check_missing"
+    ],
+    "expected_mismatches": [
+      {
+        "document": "doc_10",
+        "field": "policy_number"
+      }
+    ],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": ""
+  },
+  {
+    "id": "case_20",
+    "name": "policy number with two digits swapped",
+    "split": "test",
+    "claim": "claims/claim_31_fire_en_euro_symbol.txt",
+    "documents": [
+      "doc_08"
+    ],
+    "agent_runs": true,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "document_mismatch"
+    ],
+    "reasons_exclude": [
+      "required_check_missing"
+    ],
+    "expected_mismatches": [
+      {
+        "document": "doc_08",
+        "field": "policy_number"
+      }
+    ],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": ""
+  },
+  {
+    "id": "case_21",
+    "name": "invoice in USD, claim in EUR",
+    "split": "test",
+    "claim": "claims/claim_42_water_en_city_and_country.txt",
+    "documents": [
+      "doc_03"
+    ],
+    "agent_runs": true,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "document_mismatch"
+    ],
+    "reasons_exclude": [
+      "required_check_missing"
+    ],
+    "expected_mismatches": [
+      {
+        "document": "doc_03",
+        "field": "currency"
+      }
+    ],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": ""
+  },
+  {
+    "id": "case_22",
+    "name": "one clean and one overcharged document",
+    "split": "dev",
+    "claim": "claims/claim_01_water_en.txt",
+    "documents": [
+      "doc_14",
+      "doc_22"
+    ],
+    "agent_runs": true,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "document_mismatch"
+    ],
+    "reasons_exclude": [
+      "required_check_missing"
+    ],
+    "expected_mismatches": [
+      {
+        "document": "doc_22",
+        "field": "amount"
+      }
+    ],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": "Only the second document may be flagged."
+  },
+  {
+    "id": "case_23",
+    "name": "unreadable scan",
+    "split": "test",
+    "claim": "claims/claim_42_water_en_city_and_country.txt",
+    "documents": [
+      "doc_07"
+    ],
+    "agent_runs": true,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "required_check_missing"
+    ],
+    "reasons_exclude": [
+      "document_mismatch"
+    ],
+    "expected_mismatches": [],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": "The check cannot be done, so the claim goes to a person."
+  },
+  {
+    "id": "case_24",
+    "name": "one clean and one unreadable document",
+    "split": "test",
+    "claim": "claims/claim_42_water_en_city_and_country.txt",
+    "documents": [
+      "doc_17",
+      "doc_07"
+    ],
+    "agent_runs": true,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "required_check_missing"
+    ],
+    "reasons_exclude": [
+      "document_mismatch"
+    ],
+    "expected_mismatches": [],
+    "must_call": [
+      "compare_documents"
+    ],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": "Not all attached documents were checked."
+  },
+  {
+    "id": "case_25",
+    "name": "no documents, fast-track claim",
+    "split": "test",
+    "claim": "claims/claim_01_water_en.txt",
+    "documents": [],
+    "agent_runs": false,
+    "expected_route": "auto_approve_candidate",
+    "reasons_include": [],
+    "reasons_exclude": [
+      "document_mismatch",
+      "required_check_missing"
+    ],
+    "expected_mismatches": [],
+    "must_call": [],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": "The agent is not run."
+  },
+  {
+    "id": "case_26",
+    "name": "no documents, second fast-track claim",
+    "split": "test",
+    "claim": "claims/claim_31_fire_en_euro_symbol.txt",
+    "documents": [],
+    "agent_runs": false,
+    "expected_route": "auto_approve_candidate",
+    "reasons_include": [],
+    "reasons_exclude": [
+      "document_mismatch",
+      "required_check_missing"
+    ],
+    "expected_mismatches": [],
+    "must_call": [],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": "The agent is not run."
+  },
+  {
+    "id": "case_27",
+    "name": "no documents, excluded claim in USD",
+    "split": "test",
+    "claim": "claims/claim_07_collision_en_usd.txt",
+    "documents": [],
+    "agent_runs": false,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "currency_not_eur",
+      "coverage_possible_exclusion"
+    ],
+    "reasons_exclude": [
+      "document_mismatch",
+      "required_check_missing"
+    ],
+    "expected_mismatches": [],
+    "must_call": [],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": "The agent is not run."
+  },
+  {
+    "id": "case_28",
+    "name": "no documents, excluded claim (slow leak)",
+    "split": "test",
+    "claim": "claims/claim_51_water_en_slow_drip_stated.txt",
+    "documents": [],
+    "agent_runs": false,
+    "expected_route": "escalate",
+    "reasons_include": [
+      "coverage_possible_exclusion"
+    ],
+    "reasons_exclude": [
+      "document_mismatch",
+      "required_check_missing"
+    ],
+    "expected_mismatches": [],
+    "must_call": [],
+    "must_not_call": [],
+    "max_steps": 5,
+    "note": "The agent is not run."
+  }
+]

@@ -1,0 +1,134 @@
+{
+  "doc_01": {
+    "file": "doc_01.txt",
+    "claim": "claims/claim_54_water_en_frost_occupied.txt",
+    "kind": "payment_receipt",
+    "language": "en"
+  },
+  "doc_02": {
+    "file": "doc_02.txt",
+    "claim": "claims/claim_03_fire_es.txt",
+    "kind": "repair_invoice",
+    "language": "es"
+  },
+  "doc_03": {
+    "file": "doc_03.txt",
+    "claim": "claims/claim_42_water_en_city_and_country.txt",
+    "kind": "repair_invoice",
+    "language": "en"
+  },
+  "doc_04": {
+    "file": "doc_04.txt",
+    "claim": "claims/claim_54_water_en_frost_occupied.txt",
+    "kind": "repair_invoice",
+    "language": "en"
+  },
+  "doc_05": {
+    "file": "doc_05.txt",
+    "claim": "claims/claim_51_water_en_slow_drip_stated.txt",
+    "kind": "repair_invoice",
+    "language": "en"
+  },
+  "doc_06": {
+    "file": "doc_06.txt",
+    "claim": "claims/claim_42_water_en_city_and_country.txt",
+    "kind": "repair_invoice",
+    "language": "en"
+  },
+  "doc_07": {
+    "file": "doc_07.txt",
+    "claim": "claims/claim_42_water_en_city_and_country.txt",
+    "kind": "scan",
+    "language": "en"
+  },
+  "doc_08": {
+    "file": "doc_08.txt",
+    "claim": "claims/claim_31_fire_en_euro_symbol.txt",
+    "kind": "receipt",
+    "language": "en"
+  },
+  "doc_09": {
+    "file": "doc_09.txt",
+    "claim": "claims/claim_37_fire_en_policy_spaced.txt",
+    "kind": "repair_invoice",
+    "language": "en"
+  },
+  "doc_10": {
+    "file": "doc_10.txt",
+    "claim": "claims/claim_23_fire_en_letter_date.txt",
+    "kind": "repair_invoice",
+    "language": "en"
+  },
+  "doc_11": {
+    "file": "doc_11.txt",
+    "claim": "claims/claim_03_fire_es.txt",
+    "kind": "repair_invoice",
+    "language": "es"
+  },
+  "doc_12": {
+    "file": "doc_12.txt",
+    "claim": "claims/claim_01_water_en.txt",
+    "kind": "repair_invoice",
+    "language": "en"
+  },
+  "doc_13": {
+    "file": "doc_13.txt",
+    "claim": "claims/claim_52_other_es_open_window_rain.txt",
+    "kind": "repair_invoice",
+    "language": "es"
+  },
+  "doc_14": {
+    "file": "doc_14.txt",
+    "claim": "claims/claim_01_water_en.txt",
+    "kind": "repair_invoice",
+    "language": "en"
+  },
+  "doc_15": {
+    "file": "doc_15.txt",
+    "claim": "claims/claim_07_collision_en_usd.txt",
+    "kind": "repair_invoice",
+    "language": "en"
+  },
+  "doc_16": {
+    "file": "doc_16.txt",
+    "claim": "claims/claim_31_fire_en_euro_symbol.txt",
+    "kind": "receipt",
+    "language": "en"
+  },
+  "doc_17": {
+    "file": "doc_17.txt",
+    "claim": "claims/claim_42_water_en_city_and_country.txt",
+    "kind": "repair_invoice",
+    "language": "en"
+  },
+  "doc_18": {
+    "file": "doc_18.txt",
+    "claim": "claims/claim_31_fire_en_euro_symbol.txt",
+    "kind": "receipt",
+    "language": "en"
+  },
+  "doc_19": {
+    "file": "doc_19.txt",
+    "claim": "claims/claim_01_water_en.txt",
+    "kind": "repair_invoice",
+    "language": "en"
+  },
+  "doc_20": {
+    "file": "doc_20.txt",
+    "claim": "claims/claim_23_fire_en_letter_date.txt",
+    "kind": "repair_invoice",
+    "language": "en"
+  },
+  "doc_21": {
+    "file": "doc_21.txt",
+    "claim": "claims/claim_54_water_en_frost_occupied.txt",
+    "kind": "repair_invoice",
+    "language": "en"
+  },
+  "doc_22": {
+    "file": "doc_22.txt",
+    "claim": "claims/claim_01_water_en.txt",
+    "kind": "repair_invoice",
+    "language": "en"
+  }
+}

@@ -1,0 +1,379 @@
+{
+  "doc_01": {
+    "claim": "claims/claim_54_water_en_frost_occupied.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Northgate Plumbing Services",
+      "document_date": "2026-01-21",
+      "total": 540.0,
+      "currency": "EUR",
+      "customer_name": "SCHMITT, ANNA",
+      "policy_number": "HG-9318-52",
+      "remarks": "Paid in full by bank transfer. Thank you for your business."
+    },
+    "mismatches": [],
+    "note": "Payment receipt for the same invoice. Name written surname first in capitals."
+  },
+  "doc_02": {
+    "claim": "claims/claim_03_fire_es.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Carpintería Hermanos Vega S.L.",
+      "document_date": "2026-01-27",
+      "total": 1450.0,
+      "currency": "EUR",
+      "customer_name": "Javier Molino",
+      "policy_number": "HG-6104-33",
+      "remarks": "Pagado mediante transferencia. Gracias por confiar en nosotros."
+    },
+    "mismatches": [
+      {
+        "field": "name",
+        "severity": "high"
+      }
+    ],
+    "note": "Surname differs by one letter."
+  },
+  "doc_03": {
+    "claim": "claims/claim_42_water_en_city_and_country.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Alves & Filhos Canalizações Lda",
+      "document_date": "2026-06-21",
+      "total": 640.0,
+      "currency": "USD",
+      "customer_name": "Joana Pereira",
+      "policy_number": "HG-7712-34",
+      "remarks": "Paid in full by bank transfer. Thank you for your business."
+    },
+    "mismatches": [
+      {
+        "field": "currency",
+        "severity": "high"
+      }
+    ],
+    "note": "Same figures in USD. Only the currency is reported."
+  },
+  "doc_04": {
+    "claim": "claims/claim_54_water_en_frost_occupied.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Northgate Plumbing Services",
+      "document_date": "2026-07-20",
+      "total": 540.0,
+      "currency": "EUR",
+      "customer_name": "Anna Schmitt",
+      "policy_number": "HG-9318-52",
+      "remarks": "Payment due within 30 days. Please quote the invoice number."
+    },
+    "mismatches": [
+      {
+        "field": "date",
+        "severity": "low"
+      }
+    ],
+    "note": "Dated 186 days after the incident (limit 90)."
+  },
+  "doc_05": {
+    "claim": "claims/claim_51_water_en_slow_drip_stated.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Clearwater Plumbing",
+      "document_date": "2026-06-05",
+      "total": 780.0,
+      "currency": "EUR",
+      "customer_name": "Isabel Moreau",
+      "policy_number": "HG-5719-44",
+      "remarks": "Work carried out in one visit. Guarantee: 12 months on parts and labour."
+    },
+    "mismatches": [],
+    "note": "Exact match. The claim is excluded by coverage anyway."
+  },
+  "doc_06": {
+    "claim": "claims/claim_42_water_en_city_and_country.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Alves & Filhos Canalizações Lda",
+      "document_date": "2026-06-02",
+      "total": 640.0,
+      "currency": "EUR",
+      "customer_name": "Joana Pereira",
+      "policy_number": "HG-7712-34",
+      "remarks": "Old parts removed and disposed of."
+    },
+    "mismatches": [
+      {
+        "field": "date",
+        "severity": "high"
+      }
+    ],
+    "note": "Dated 16 days before the incident."
+  },
+  "doc_07": {
+    "claim": "claims/claim_42_water_en_city_and_country.txt",
+    "readable": false,
+    "facts": null,
+    "mismatches": [],
+    "note": "Illegible scan. The check cannot be done."
+  },
+  "doc_08": {
+    "claim": "claims/claim_31_fire_en_euro_symbol.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Brightside Decorators",
+      "document_date": "2026-05-21",
+      "total": 460.0,
+      "currency": "EUR",
+      "customer_name": "Johan Berg",
+      "policy_number": "HG-1286-94",
+      "remarks": "Paid by card at the end of the visit."
+    },
+    "mismatches": [
+      {
+        "field": "policy_number",
+        "severity": "high"
+      }
+    ],
+    "note": "Two digits swapped."
+  },
+  "doc_09": {
+    "claim": "claims/claim_37_fire_en_policy_spaced.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Karlsson Electrical & Flooring",
+      "document_date": "2026-02-05",
+      "total": 1900.0,
+      "currency": "EUR",
+      "customer_name": "Reza Karimi",
+      "policy_number": "HG-4812-05",
+      "remarks": "Old parts removed and disposed of."
+    },
+    "mismatches": [],
+    "note": "Policy number written with hyphens; the claim has spaces."
+  },
+  "doc_10": {
+    "claim": "claims/claim_23_fire_en_letter_date.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Liffey Building & Repairs Ltd",
+      "document_date": "2026-08-19",
+      "total": 2800.0,
+      "currency": "EUR",
+      "customer_name": "Ciaran Doyle",
+      "policy_number": "HG-3055-19",
+      "remarks": "Work carried out in one visit. Guarantee: 12 months on parts and labour."
+    },
+    "mismatches": [
+      {
+        "field": "policy_number",
+        "severity": "high"
+      }
+    ],
+    "note": "Last digit differs."
+  },
+  "doc_11": {
+    "claim": "claims/claim_03_fire_es.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Carpintería Hermanos Vega S.L.",
+      "document_date": "2026-01-25",
+      "total": 520.0,
+      "currency": "EUR",
+      "customer_name": "Javier Molina",
+      "policy_number": "HG-6104-33",
+      "remarks": "Trabajo realizado en una sola visita. Garantía de 12 meses."
+    },
+    "mismatches": [
+      {
+        "field": "amount",
+        "severity": "high"
+      }
+    ],
+    "note": "Spanish. EUR 520 against EUR 1,450 claimed (-64%)."
+  },
+  "doc_12": {
+    "claim": "claims/claim_01_water_en.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Hartwell & Pike Plumbing Ltd",
+      "document_date": "2026-03-14",
+      "total": 800.0,
+      "currency": "EUR",
+      "customer_name": "Daniel Cooper",
+      "policy_number": "HG-2231-88",
+      "remarks": "Paid in full by bank transfer. Thank you for your business."
+    },
+    "mismatches": [
+      {
+        "field": "name",
+        "severity": "high"
+      }
+    ],
+    "note": "Made out to a different person."
+  },
+  "doc_13": {
+    "claim": "claims/claim_52_other_es_open_window_rain.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Tapicería y Limpieza Mediterráneo",
+      "document_date": "2026-10-20",
+      "total": 430.0,
+      "currency": "EUR",
+      "customer_name": "Raúl Domínguez",
+      "policy_number": "HG-4036-71",
+      "remarks": "Pagado mediante transferencia. Gracias por confiar en nosotros."
+    },
+    "mismatches": [],
+    "note": "Exact match, Spanish. The claim is excluded by coverage anyway."
+  },
+  "doc_14": {
+    "claim": "claims/claim_01_water_en.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Hartwell & Pike Plumbing Ltd",
+      "document_date": "2026-03-14",
+      "total": 800.0,
+      "currency": "EUR",
+      "customer_name": "Marcus Bell",
+      "policy_number": "HG-2231-88",
+      "remarks": "Paid in full by bank transfer. Thank you for your business."
+    },
+    "mismatches": [],
+    "note": "Exact match."
+  },
+  "doc_15": {
+    "claim": "claims/claim_07_collision_en_usd.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Palmetto Overhead Doors Inc.",
+      "document_date": "2026-04-06",
+      "total": 1350.0,
+      "currency": "USD",
+      "customer_name": "Daniel Whitfield",
+      "policy_number": "HG-8815-40",
+      "remarks": "Paid in full by bank transfer. Thank you for your business."
+    },
+    "mismatches": [],
+    "note": "Exact match in USD. The claim escalates anyway (currency, territory)."
+  },
+  "doc_16": {
+    "claim": "claims/claim_31_fire_en_euro_symbol.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Brightside Decorators",
+      "document_date": "2026-05-22",
+      "total": 520.0,
+      "currency": "EUR",
+      "customer_name": "Johan Berg",
+      "policy_number": "HG-1286-49",
+      "remarks": "Paid by card at the end of the visit."
+    },
+    "mismatches": [
+      {
+        "field": "amount",
+        "severity": "low"
+      }
+    ],
+    "note": "EUR 520 against EUR 460 claimed (+13%): outside the 5% tolerance, under 25%."
+  },
+  "doc_17": {
+    "claim": "claims/claim_42_water_en_city_and_country.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Alves & Filhos Canalizações Lda",
+      "document_date": "2026-06-20",
+      "total": 640.0,
+      "currency": "EUR",
+      "customer_name": "Joana Pereira",
+      "policy_number": "HG-7712-34",
+      "remarks": "Old parts removed and disposed of."
+    },
+    "mismatches": [],
+    "note": "Exact match, day-first date."
+  },
+  "doc_18": {
+    "claim": "claims/claim_31_fire_en_euro_symbol.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Brightside Decorators",
+      "document_date": "2026-05-22",
+      "total": 460.0,
+      "currency": "EUR",
+      "customer_name": "Johan Berg",
+      "policy_number": "HG-1286-49",
+      "remarks": "Paid by card at the end of the visit."
+    },
+    "mismatches": [],
+    "note": "Exact match."
+  },
+  "doc_19": {
+    "claim": "claims/claim_01_water_en.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Hartwell & Pike Plumbing Ltd",
+      "document_date": "2026-03-15",
+      "total": 812.0,
+      "currency": "EUR",
+      "customer_name": "Marcus Bell",
+      "policy_number": "HG-2231-88",
+      "remarks": "Work carried out in one visit. Guarantee: 12 months on parts and labour."
+    },
+    "mismatches": [],
+    "note": "Total is 1.5% above the claim, inside the 5% tolerance."
+  },
+  "doc_20": {
+    "claim": "claims/claim_23_fire_en_letter_date.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Liffey Building & Repairs Ltd",
+      "document_date": "2026-08-20",
+      "total": 900.0,
+      "currency": "EUR",
+      "customer_name": "Ciaran Doyle",
+      "policy_number": "HG-3055-18",
+      "remarks": "Payment due within 30 days. Please quote the invoice number."
+    },
+    "mismatches": [
+      {
+        "field": "amount",
+        "severity": "high"
+      }
+    ],
+    "note": "EUR 900 against EUR 2,800 claimed (-68%)."
+  },
+  "doc_21": {
+    "claim": "claims/claim_54_water_en_frost_occupied.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Northgate Plumbing Services",
+      "document_date": "2026-01-19",
+      "total": 540.0,
+      "currency": "EUR",
+      "customer_name": "Anna Schmitt",
+      "policy_number": "HG-9318-52",
+      "remarks": "Payment due within 30 days. Please quote the invoice number."
+    },
+    "mismatches": [],
+    "note": "Exact match."
+  },
+  "doc_22": {
+    "claim": "claims/claim_01_water_en.txt",
+    "readable": true,
+    "facts": {
+      "vendor": "Hartwell & Pike Plumbing Ltd",
+      "document_date": "2026-03-14",
+      "total": 1450.0,
+      "currency": "EUR",
+      "customer_name": "Marcus Bell",
+      "policy_number": "HG-2231-88",
+      "remarks": "Work carried out in one visit. Guarantee: 12 months on parts and labour."
+    },
+    "mismatches": [
+      {
+        "field": "amount",
+        "severity": "high"
+      }
+    ],
+    "note": "EUR 1,450 against EUR 800 claimed (+81%)."
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "currency": "EUR",
+  "source": "Clauses C7.1 (limits), C7.2 (deductible) and C7.3 (notifying a claim) of the fictional policy. A test checks every number below against the clause text in both languages.",
+  "insured_objects": {
+    "home": {
+      "deductible": 250,
+      "limit": 300000,
+      "limit_basis": "sum_insured",
+      "sub_limits": {},
+      "clauses": ["C7.1", "C7.2"]
+    },
+    "contents": {
+      "deductible": 250,
+      "limit": 50000,
+      "limit_basis": "sum_insured",
+      "sub_limits": {
+        "single_item": 2500,
+        "jewellery_and_watches_total": 5000,
+        "belongings_away_from_home_total": 3000
+      },
+      "clauses": ["C7.1", "C7.2", "C4.3"]
+    },
+    "vehicle": {
+      "deductible": 500,
+      "limit": null,
+      "limit_basis": "market_value",
+      "sub_limits": {},
+      "clauses": ["C7.1", "C7.2"]
+    }
+  },
+  "notification": {
+    "report_damage_within_days": 30,
+    "police_report_within_hours": 48,
+    "police_report_applies_to": ["theft", "burglary", "collision_with_unknown_driver"],
+    "clauses": ["C7.3"]
+  }
+}
