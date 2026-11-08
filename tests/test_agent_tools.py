@@ -158,7 +158,7 @@ def test_duplicate_names_are_rejected():
         build_registry([tool, tool])
 
 
-@pytest.mark.parametrize("name", ["Echo", "1echo", "echo-it", "", "a" * 65])
+@pytest.mark.parametrize("name", ["Echo", "1echo", "echo-it", "", "a" * 65, "echo\n"])
 def test_bad_names_are_rejected(name):
     with pytest.raises(ValueError, match="invalid tool name"):
         build_registry([Tool(name, "x", NoArgs, lambda c, a: {})])

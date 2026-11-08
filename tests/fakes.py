@@ -95,3 +95,19 @@ class FakeAgentModel:
         if isinstance(turn, Exception):
             raise turn
         return turn
+
+
+class FakeInvoiceModel:
+    """Returns one fixed reading (or raises one fixed error) and remembers which texts it was given."""
+
+    def __init__(self, result):
+        self.model = "fake-invoice"
+        self.prompt_version = "fake"
+        self.result = result
+        self.texts: list[str] = []
+
+    def extract(self, document_text):
+        self.texts.append(document_text)
+        if isinstance(self.result, Exception):
+            raise self.result
+        return self.result

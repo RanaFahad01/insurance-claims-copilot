@@ -44,7 +44,7 @@ Registry = Mapping[str, Tool]
 def build_registry(tools: Iterable[Tool]) -> dict[str, Tool]:
     registry: dict[str, Tool] = {}
     for tool in tools:
-        if not NAME_PATTERN.match(tool.name):
+        if not NAME_PATTERN.fullmatch(tool.name):
             raise ValueError(f"invalid tool name: {tool.name!r}")
         if tool.name in registry:
             raise ValueError(f"duplicate tool name: {tool.name}")

@@ -4,18 +4,22 @@ The final route is decided from this state and never from the agent's text. Only
 did not run, or ran and failed, leaves the state saying so.
 """
 from dataclasses import dataclass
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 from pydantic import BaseModel, Field, field_validator
 
 from ..schemas import ClaimExtraction
+from .policy_terms import PayoutResult
+
+if TYPE_CHECKING:
+    from .toolset import ToolDeps
 
 AgentStatus = Literal["not_run", "finished", "max_steps_exceeded", "budget_exceeded", "deadline_exceeded", "looping", "error"]
 
 
 class Mismatch(BaseModel):
     document_id: str
-    field: str
+    field: Literal["amount", "currency", "date", "name", "policy_number"]
     claim_value: str | None
     document_value: str | None
     severity: Literal["low", "high"]
@@ -27,7 +31,7 @@ class InvestigationState(BaseModel):
     compared_document_ids: list[str] = Field(default_factory=list)
     mismatches: list[Mismatch] = Field(default_factory=list)
     clause_ids_seen: list[str] = Field(default_factory=list)
-    payout: dict | None = None                                  # gets a real model when the payout tool exists
+    payout: PayoutResult | None = None                          # information for the reviewer, not used when routing
     agent_status: AgentStatus = "not_run"
     steps: int = 0
     tool_calls: int = 0
@@ -56,6 +60,14 @@ class InvestigationState(BaseModel):
     def add_mismatches(self, mismatches: list[Mismatch]) -> None:
         self.mismatches.extend(mismatches)
 
+    def record_comparison(self, document_id: str, mismatches: list[Mismatch]) -> None:
+        """Replaces anything recorded earlier for this document, so comparing it twice does not count its mismatches twice.
+        It raises before changing anything if the document is not attached."""
+        if document_id not in self.document_ids:
+            raise ValueError(f"{document_id} is not attached to this claim")
+        self.mismatches = [m for m in self.mismatches if m.document_id != document_id] + mismatches
+        self.mark_compared(document_id)
+
     def note_clause(self, clause_id: str) -> None:
         if clause_id not in self.clause_ids_seen:
             self.clause_ids_seen.append(clause_id)
@@ -66,6 +78,7 @@ class RunContext:
     """What the code knows about this run. The model does not control any of it."""
     extraction: ClaimExtraction
     state: InvestigationState
+    deps: "ToolDeps | None" = None    # the injected index, embedder, document store, invoice model, terms and review store
 
     @property
     def claim_id(self) -> str:

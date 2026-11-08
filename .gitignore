@@ -7,3 +7,4 @@ chroma_db/
 *.local.json
 docs/phase-notes/
 scratch/
+runs/

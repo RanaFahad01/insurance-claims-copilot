@@ -83,3 +83,24 @@ def test_the_run_context_reads_ids_from_the_state():
     ctx = RunContext(extraction=extraction, state=make_state(document_ids=["doc_1"]))
     assert ctx.claim_id == "abc123"
     assert ctx.document_ids == ["doc_1"]
+
+
+def test_recording_a_comparison_replaces_that_documents_earlier_mismatches_and_marks_it_done():
+    state = make_state(document_ids=["doc_1", "doc_2"])
+    state.record_comparison("doc_1", [make_mismatch("doc_1")])
+    state.record_comparison("doc_2", [make_mismatch("doc_2")])
+    state.record_comparison("doc_1", [])
+    assert [m.document_id for m in state.mismatches] == ["doc_2"]
+    assert state.compared_document_ids == ["doc_1", "doc_2"] and state.required_checks_done
+
+
+def test_recording_a_comparison_for_a_document_that_is_not_attached_changes_nothing():
+    state = make_state(document_ids=["doc_1"])
+    with pytest.raises(ValueError):
+        state.record_comparison("doc_9", [make_mismatch("doc_9")])
+    assert state.mismatches == [] and state.compared_document_ids == []
+
+
+def test_a_mismatch_must_name_a_known_field():
+    with pytest.raises(ValueError):
+        Mismatch(document_id="d", field="vendor", claim_value="1", document_value="2", severity="low")
