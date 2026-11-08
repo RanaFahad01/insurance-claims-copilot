@@ -1,7 +1,8 @@
 """The queue of claims waiting for a person. SQLite, one row per claim ID.
 
-The primary key makes writing a review idempotent: escalating the same claim twice leaves one record, and the first
-one is kept. A new connection is opened for every operation, so the store is safe to call from API worker threads.
+The primary key makes writing a review idempotent: escalating the same claim twice leaves one record. The first summary
+is kept, and reasons that are new are added to a pending record, so a later finding is never lost. A record that
+has already been resolved is left alone. A new connection is opened for every operation, so the store is safe to call from API worker threads.
 """
 import json
 import re
@@ -87,6 +88,13 @@ class ReviewStore:
             )
             created = cursor.rowcount == 1
             row = conn.execute("SELECT * FROM reviews WHERE claim_id = ?", (claim_id,)).fetchone()
+            if not created and row["status"] == "pending":
+                # A reason found later (for example from a second document) must not be lost. Reasons are only added.
+                known = json.loads(row["reasons"])
+                merged = (known + [r for r in clean_reasons if r not in known])[:MAX_REASONS]
+                if merged != known:
+                    conn.execute("UPDATE reviews SET reasons = ? WHERE claim_id = ?", (json.dumps(merged), claim_id))
+                    row = conn.execute("SELECT * FROM reviews WHERE claim_id = ?", (claim_id,)).fetchone()
         return self._to_review(row), created
 
     def get(self, claim_id: str) -> Review | None:

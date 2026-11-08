@@ -140,10 +140,11 @@ def default_registry() -> dict[str, Tool]:
     return build_registry([
         Tool(
             "search_policy_clauses",
-            "Search the policy for clauses relevant to a described event or question. Use it when you need policy wording "
-            "you have not seen yet. Returns up to 4 clauses with their full IDs (such as en-C2.1), titles, text and a "
-            "distance (lower is closer; above about 0.65 is a weak match). For a clause whose ID you already know, use "
-            "get_clause instead.",
+            "Search the policy for clauses about the damage or event in the claim: what is covered or excluded, time limits "
+            "and limits of cover. Use it when you need policy wording you have not seen yet. The policy says nothing about "
+            "how to treat invoices or other documents, so do not search for that. Returns up to 4 clauses with their full "
+            "IDs (such as en-C2.1), titles, text and a distance (lower is closer; above about 0.65 is a weak match). For a "
+            "clause whose ID you already know, use get_clause instead.",
             SearchPolicyArgs, search_policy_clauses,
         ),
         Tool(
@@ -162,15 +163,18 @@ def default_registry() -> dict[str, Tool]:
         Tool(
             "get_policy_terms",
             "Get the deductible, limits and notification periods for one kind of insured property: home, contents or "
-            "vehicle. Use it when you need the figures that apply to the claim. These are the policy's own figures: "
-            "quote them, do not guess.",
+            "vehicle. Use it only when you need those figures to answer a question about the claim, for example whether the "
+            "amount is near a limit or the claim was reported in time. These are the policy's own figures: quote them, do "
+            "not guess.",
             PolicyTermsArgs, get_policy_terms,
         ),
         Tool(
             "calculate_payout",
             "Calculate what the policy would pay for a claimed amount on one kind of insured property: home, contents or "
-            "vehicle. The deductible is taken off and the limit applied. Only EUR is supported. Use it instead of doing "
-            "the arithmetic yourself. The result is information for the reviewer and does not decide the claim.",
+            "vehicle. The deductible is taken off and the limit applied. Only EUR is supported. Call it only when every "
+            "attached document agrees with the claim: it works from the claimed amount, so it means nothing while a "
+            "document disagrees. Use it instead of doing the arithmetic yourself. The result is information for the "
+            "reviewer and does not decide the claim.",
             PayoutArgs, calculate_policy_payout,
         ),
         Tool(

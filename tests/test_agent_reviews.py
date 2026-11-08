@@ -27,12 +27,36 @@ def test_a_new_review_is_pending(store):
     assert review.resolution is None and review.resolved_at is None and review.resolution_note is None
 
 
-def test_escalating_the_same_claim_twice_keeps_one_record_and_the_first_one(store):
+def test_escalating_the_same_claim_twice_keeps_one_record_with_the_first_summary(store):
     first, created_first = store.create("abc123", ["document_mismatch"], "first summary")
-    second, created_second = store.create("abc123", ["something_else"], "second summary")
+    second, created_second = store.create("abc123", ["document_mismatch"], "second summary")
     assert (created_first, created_second) == (True, False)
-    assert second == first
+    assert second == first and second.summary == "first summary"
     assert len(store.list()) == 1
+
+
+def test_a_reason_found_later_is_added_to_a_pending_record_and_never_lost(store):
+    store.create("abc123", ["document_mismatch"], "first summary")
+    second, created = store.create("abc123", ["required_check_missing", "document_mismatch"], "second summary")
+    assert created is False
+    assert second.reasons == ["document_mismatch", "required_check_missing"]
+    assert second.summary == "first summary" and second.created_at == "2026-11-01T10:00:00+00:00"
+    assert store.get("abc123").reasons == ["document_mismatch", "required_check_missing"]
+    assert len(store.list()) == 1
+
+
+def test_merged_reasons_stay_within_the_limit(store):
+    store.create("abc123", [f"reason_{i}" for i in range(MAX_REASONS)], "s")
+    merged, _ = store.create("abc123", ["one_more"], "s")
+    assert len(merged.reasons) == MAX_REASONS and "one_more" not in merged.reasons
+
+
+def test_a_resolved_record_is_left_alone(store, tmp_path):
+    store.create("abc123", ["document_mismatch"], "s")
+    with sqlite3.connect(tmp_path / "runs" / "reviews.sqlite") as conn:
+        conn.execute("UPDATE reviews SET status = 'resolved' WHERE claim_id = 'abc123'")
+    again, created = store.create("abc123", ["something_else"], "s")
+    assert created is False and again.status == "resolved" and again.reasons == ["document_mismatch"]
 
 
 def test_different_claims_get_different_records(store):
