@@ -23,6 +23,7 @@ from .finalize import finalize
 from .loop import DEFAULT_LIMITS, AgentModel, AgentResult, Limits, run_agent
 from .policy_terms import PayoutResult
 from .prompt import PROMPT_VERSION, SYSTEM_PROMPT, build_task
+from .reviews import MAX_SUMMARY_CHARS
 from .state import InvestigationState, Mismatch, RunContext
 from .tools import Registry, execute_tool
 from .toolset import ToolDeps, default_registry
@@ -56,11 +57,35 @@ class Investigation(BaseModel):
     review_created: bool | None               # None when the claim was not escalated (or the record could not be written)
     review_error: str | None
     agent_versions: AgentVersions
+    run_id: str | None = None                 # set by the API; the trace of this run is under this ID
+
+
+def run_summary(inv: Investigation, started_at: str, elapsed_ms: int) -> dict:
+    """The last line of a run's trace. Totals and decisions only: no claim text, no document text, no agent text."""
+    agent = inv.agent
+    return {
+        "status": "completed", "claim_id": inv.claim_id, "started_at": started_at, "elapsed_ms": elapsed_ms,
+        "agent_status": agent.status if agent else "not_run",
+        "agent_error_kind": agent.error_kind if agent else None,
+        "steps": agent.steps if agent else 0,
+        "tool_calls": agent.tool_calls if agent else 0,
+        "input_tokens": agent.input_tokens if agent else 0,
+        "output_tokens": agent.output_tokens if agent else 0,
+        "agent_elapsed_ms": agent.elapsed_ms if agent else 0,
+        "final_route": inv.final_route, "reasons": inv.reasons, "phase3_route": inv.dossier.final_route,
+        "documents": inv.documents_attached, "documents_compared": inv.documents_compared,
+        "mismatches": [{"document_id": m.document_id, "field": m.field, "severity": m.severity} for m in inv.mismatches],
+        "review_created": inv.review_created, "review_error": inv.review_error,
+        "versions": inv.agent_versions.model_dump(),
+    }
 
 
 def escalation_summary(extraction: ClaimExtraction, reasons: list[str]) -> str:
-    """Built by code from the reasons and the extraction. Nothing the agent wrote goes into it."""
-    return f"Sent to a person because: {', '.join(reasons)}. Claim: {extraction.summary}"
+    """Built by code from the reasons and the extraction. Nothing the agent wrote goes into it.
+    Always within the limit the escalation tool accepts: the extraction's summary has no length limit of its own, and a claim
+    must never fail to reach the review queue because a sentence was long."""
+    text = f"Sent to a person because: {', '.join(reasons)}. Claim: {extraction.summary}"
+    return text if len(text) <= MAX_SUMMARY_CHARS else text[:MAX_SUMMARY_CHARS - 3] + "..."
 
 
 def investigate_claim(
@@ -75,13 +100,14 @@ def investigate_claim(
     trace: Trace | None = None,
     clock: Callable[[], float] = time.monotonic,
     cutoff: float = DISTANCE_CUTOFF,
+    run_id: str | None = None,
 ) -> Investigation:
     registry = registry if registry is not None else default_registry()
     trace = trace if trace is not None else Trace()
 
     dossier = review_claim(extraction, claim_text, deps.collection, deps.embedder, coverage_model, cutoff)
     state = InvestigationState(claim_id=claim_id_for(claim_text), document_ids=list(document_ids))
-    ctx = RunContext(extraction=extraction, state=state, deps=deps)
+    ctx = RunContext(extraction=extraction, state=state, deps=deps, run_id=run_id)
 
     agent_result = None
     if state.documents_attached:
@@ -121,4 +147,5 @@ def investigate_claim(
             agent_model=agent_model.model, agent_prompt=PROMPT_VERSION,
             invoice_model=deps.invoice_model.model, invoice_prompt=deps.invoice_model.prompt_version,
         ),
+        run_id=run_id,
     )

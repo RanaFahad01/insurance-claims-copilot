@@ -79,6 +79,7 @@ class RunContext:
     extraction: ClaimExtraction
     state: InvestigationState
     deps: "ToolDeps | None" = None    # the injected index, embedder, document store, invoice model, terms and review store
+    run_id: str | None = None         # links a review record back to the trace of the run that created it
 
     @property
     def claim_id(self) -> str:

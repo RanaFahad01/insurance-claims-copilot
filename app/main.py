@@ -5,6 +5,7 @@ from chromadb.api.models.Collection import Collection
 from fastapi import Depends, FastAPI, HTTPException, Path, Response
 from pydantic import BaseModel, Field
 
+from . import agent_routes
 from .dependencies import get_collection, get_coverage_model, get_embedder, http_error
 from .extractor import extract_claim, ExtractionError
 from .rag.coverage import CoverageError, CoverageModel
@@ -15,6 +16,7 @@ from .rules import triage
 from .schemas import TriageResult
 
 app = FastAPI(title="Insurance Claims Copilot")
+app.include_router(agent_routes.router)
 
 # One line per review. It holds IDs, distances and decisions, never the claim text. Without this handler the
 # line would not show under uvicorn, which only configures its own loggers.

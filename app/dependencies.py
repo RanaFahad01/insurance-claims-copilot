@@ -10,8 +10,14 @@ from chromadb.api.models.Collection import Collection
 from fastapi import Depends, HTTPException
 from openai import OpenAIError
 
+from .agent.documents import DocumentStore, InvoiceModel, OpenAIInvoiceModel
+from .agent.loop import OpenAIAgentModel
+from .agent.policy_terms import load_policy_terms
+from .agent.reviews import ReviewStore
+from .agent.toolset import ToolDeps
+from .agent.trace import TraceWriter
 from .rag.coverage import OpenAICoverageModel
-from .rag.embeddings import EMBEDDING_MODEL, OpenAIEmbedder
+from .rag.embeddings import EMBEDDING_MODEL, Embedder, OpenAIEmbedder
 from .rag.index import PolicyIndexError, check_index, open_client
 
 # Problems that are temporary or on our side of the fence (503). Anything else from upstream is a 502.
@@ -63,3 +69,73 @@ def get_coverage_model() -> OpenAICoverageModel:
         return _coverage_model()
     except OpenAIError as e:
         raise HTTPException(status_code=503, detail=f"not_configured: {e}") from e
+
+
+# ---- the agent (Phase 4)
+
+@lru_cache
+def _agent_model() -> OpenAIAgentModel:
+    return OpenAIAgentModel()
+
+
+@lru_cache
+def _invoice_model() -> OpenAIInvoiceModel:
+    return OpenAIInvoiceModel()
+
+
+@lru_cache
+def _document_store() -> DocumentStore:
+    return DocumentStore()
+
+
+@lru_cache
+def _policy_terms() -> dict:
+    return load_policy_terms()
+
+
+@lru_cache
+def _review_store() -> ReviewStore:
+    return ReviewStore()
+
+
+@lru_cache
+def _trace_writer() -> TraceWriter:
+    return TraceWriter()
+
+
+def get_agent_model() -> OpenAIAgentModel:
+    try:
+        return _agent_model()
+    except OpenAIError as e:
+        raise HTTPException(status_code=503, detail=f"not_configured: {e}") from e
+
+
+def get_invoice_model() -> OpenAIInvoiceModel:
+    try:
+        return _invoice_model()
+    except OpenAIError as e:
+        raise HTTPException(status_code=503, detail=f"not_configured: {e}") from e
+
+
+def get_document_store() -> DocumentStore:
+    return _document_store()
+
+
+def get_review_store() -> ReviewStore:
+    return _review_store()
+
+
+def get_trace_writer() -> TraceWriter:
+    return _trace_writer()
+
+
+def get_tool_deps(
+    # The index comes first, so a missing index fails before anything else is built.
+    collection: Collection = Depends(get_collection),
+    embedder: Embedder = Depends(get_embedder),
+    invoice_model: InvoiceModel = Depends(get_invoice_model),
+    documents: DocumentStore = Depends(get_document_store),
+    reviews: ReviewStore = Depends(get_review_store),
+) -> ToolDeps:
+    return ToolDeps(collection=collection, embedder=embedder, documents=documents, invoice_model=invoice_model,
+                    terms=_policy_terms(), reviews=reviews)

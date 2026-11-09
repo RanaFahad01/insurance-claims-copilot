@@ -15,7 +15,7 @@ from ..rag.retriever import TOP_K, get_clause, retrieve_clauses
 from .compare import clip, compare_invoice
 from .documents import DocumentError, DocumentStore, InvoiceError, InvoiceModel
 from .policy_terms import InsuredObject, calculate_payout, terms_for
-from .reviews import ReviewStore
+from .reviews import MAX_SUMMARY_CHARS, ReviewStore
 from .state import RunContext
 from .tools import Tool, ToolArgs, build_registry
 
@@ -59,7 +59,7 @@ class PayoutArgs(ToolArgs):
 
 
 class EscalateArgs(ToolArgs):
-    summary: str = Field(max_length=500, description="Why a person needs to look at this claim.")
+    summary: str = Field(max_length=MAX_SUMMARY_CHARS, description="Why a person needs to look at this claim.")
     reasons: list[str] = Field(max_length=20, description="The routing reasons.")
 
 
@@ -130,7 +130,7 @@ def calculate_policy_payout(ctx: RunContext, args: PayoutArgs) -> dict:
 
 
 def escalate_to_human(ctx: RunContext, args: EscalateArgs) -> dict:
-    review, created = ctx.deps.reviews.create(ctx.claim_id, args.reasons, args.summary)
+    review, created = ctx.deps.reviews.create(ctx.claim_id, args.reasons, args.summary, run_id=ctx.run_id)
     return {"review_id": review.claim_id, "created": created}
 
 

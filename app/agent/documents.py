@@ -90,6 +90,14 @@ class DocumentStore:
             raise DocumentError("too_large", "The document is too long to read.")
         return text
 
+    def exists(self, document_id: str) -> bool:
+        """True if the ID names a document on disk (a document that is too long still exists)."""
+        try:
+            self.load(document_id)
+        except DocumentError as e:
+            return e.kind == "too_large"
+        return True
+
 
 class InvoiceError(Exception):
     def __init__(self, kind: str, message: str):

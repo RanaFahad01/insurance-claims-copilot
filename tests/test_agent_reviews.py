@@ -3,7 +3,7 @@ import threading
 
 import pytest
 
-from app.agent.reviews import MAX_REASON_CHARS, MAX_REASONS, MAX_SUMMARY_CHARS, ReviewStore
+from app.agent.reviews import MAX_NOTE_CHARS, MAX_REASON_CHARS, MAX_REASONS, MAX_SUMMARY_CHARS, ReviewStore
 
 
 @pytest.fixture
@@ -109,6 +109,77 @@ def test_two_threads_escalating_the_same_claim_make_one_record(tmp_path):
         t.join()
     assert sorted(results) == [False] * 7 + [True]
     assert len(ReviewStore(path).list()) == 1
+
+
+# ---- resolving
+
+def test_resolving_a_pending_review_records_the_decision(store):
+    store.create("abc123", ["document_mismatch"], "s", run_id="run-1")
+    review, resolved_now = store.resolve("abc123", "rejected", "The invoice is for another person.")
+    assert resolved_now is True
+    assert (review.status, review.resolution, review.resolution_note) == ("resolved", "rejected", "The invoice is for another person.")
+    assert review.resolved_at is not None
+    # only the decision fields change
+    assert (review.reasons, review.summary, review.run_id, review.created_at) == (
+        ["document_mismatch"], "s", "run-1", "2026-11-01T10:00:00+00:00")
+    assert store.get("abc123") == review and store.list(status="pending") == [] and store.list(status="resolved") == [review]
+
+
+def test_a_note_is_optional(store):
+    store.create("abc123", ["r"], "s")
+    review, _ = store.resolve("abc123", "approved")
+    assert review.resolution == "approved" and review.resolution_note is None
+
+
+def test_a_review_can_only_be_resolved_once_and_the_first_decision_stays(store):
+    store.create("abc123", ["r"], "s")
+    first, _ = store.resolve("abc123", "approved", "first")
+    second, resolved_now = store.resolve("abc123", "rejected", "second")
+    assert resolved_now is False and second == first and second.resolution == "approved" and second.resolution_note == "first"
+
+
+def test_resolving_an_unknown_or_invalid_claim_id_finds_nothing(store):
+    assert store.resolve("missing", "approved") == (None, False)
+    for bad in ["", "ABC", "../x", "abc123\n", "x'; DROP TABLE reviews; --"]:
+        assert store.resolve(bad, "approved") == (None, False)
+
+
+def test_an_unknown_resolution_is_refused_and_changes_nothing(store):
+    store.create("abc123", ["r"], "s")
+    with pytest.raises(ValueError):
+        store.resolve("abc123", "maybe")
+    assert store.get("abc123").status == "pending"
+
+
+def test_a_long_note_is_limited(store):
+    store.create("abc123", ["r"], "s")
+    review, _ = store.resolve("abc123", "approved", "n" * 5000)
+    assert len(review.resolution_note) == MAX_NOTE_CHARS
+
+
+def test_a_resolved_claim_that_is_escalated_again_stays_resolved(store):
+    store.create("abc123", ["r"], "s")
+    store.resolve("abc123", "approved")
+    again, created = store.create("abc123", ["new_reason"], "s")
+    assert created is False and again.status == "resolved" and again.reasons == ["r"]
+
+
+def test_two_threads_resolving_the_same_review_give_one_winner(tmp_path):
+    path = tmp_path / "reviews.sqlite"
+    ReviewStore(path).create("abc123", ["r"], "s")
+    outcomes = []
+
+    def resolve(decision):
+        outcomes.append((decision, ReviewStore(path).resolve("abc123", decision)[1]))
+
+    threads = [threading.Thread(target=resolve, args=(d,)) for d in ["approved", "rejected"] * 4]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    winners = [d for d, won in outcomes if won]
+    assert len(winners) == 1 and len(outcomes) == 8
+    assert ReviewStore(path).get("abc123").resolution == winners[0]
 
 
 def test_connections_are_closed_after_each_operation(store, tmp_path):

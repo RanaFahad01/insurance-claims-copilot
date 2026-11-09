@@ -11,7 +11,7 @@ from collections.abc import Callable
 from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Literal
+from typing import Literal, get_args
 
 from pydantic import BaseModel
 
@@ -20,6 +20,7 @@ CLAIM_ID_PATTERN = re.compile(r"^[a-z0-9][a-z0-9_-]{0,63}$")
 MAX_SUMMARY_CHARS = 500
 MAX_REASONS = 20
 MAX_REASON_CHARS = 60
+MAX_NOTE_CHARS = 500
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS reviews (
@@ -36,6 +37,7 @@ CREATE TABLE IF NOT EXISTS reviews (
 """
 
 ReviewStatus = Literal["pending", "resolved"]
+Resolution = Literal["approved", "rejected", "needs_more_information"]
 
 
 class Review(BaseModel):
@@ -96,6 +98,24 @@ class ReviewStore:
                     conn.execute("UPDATE reviews SET reasons = ? WHERE claim_id = ?", (json.dumps(merged), claim_id))
                     row = conn.execute("SELECT * FROM reviews WHERE claim_id = ?", (claim_id,)).fetchone()
         return self._to_review(row), created
+
+    def resolve(self, claim_id: str, resolution: Resolution, note: str | None = None) -> tuple[Review | None, bool]:
+        """Records a person's decision on a pending review. Returns (record, whether this call resolved it).
+        (None, False) means there is no such review. (record, False) means it was already resolved and is unchanged.
+        The update only matches a pending row, so two simultaneous calls cannot both succeed."""
+        if resolution not in get_args(Resolution):
+            raise ValueError("invalid resolution")
+        if not CLAIM_ID_PATTERN.fullmatch(claim_id):
+            return None, False
+        with self._connect() as conn:
+            cursor = conn.execute(
+                "UPDATE reviews SET status = 'resolved', resolution = ?, resolved_at = ?, resolution_note = ? "
+                "WHERE claim_id = ? AND status = 'pending'",
+                (resolution, self._now(), note[:MAX_NOTE_CHARS] if note else None, claim_id),
+            )
+            resolved_now = cursor.rowcount == 1
+            row = conn.execute("SELECT * FROM reviews WHERE claim_id = ?", (claim_id,)).fetchone()
+        return (self._to_review(row) if row else None), resolved_now
 
     def get(self, claim_id: str) -> Review | None:
         with self._connect() as conn:

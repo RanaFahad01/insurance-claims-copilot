@@ -145,6 +145,24 @@ def test_the_review_summary_is_built_from_the_reasons_and_the_extraction(deps_fa
     assert "document_mismatch" in review.summary and EXTRACTION.summary in review.summary
 
 
+def test_a_very_long_claim_summary_cannot_stop_the_review_from_being_created(deps_factory):
+    # Found by the API tests: the summary has no length limit, and an over-long one made the escalation tool refuse the call.
+    deps = deps_factory(reading(total=1450.0))
+    long_summary = ClaimExtraction(**{**EXTRACTION.model_dump(), "summary": "A pipe burst. " * 400})
+    result, _ = run(deps, [agent_response(compare("doc_14", "c1")), agent_response(text="anything")], extraction=long_summary)
+    assert result.final_route == "escalate" and result.review_created is True and result.review_error is None
+    (review,) = deps.reviews.list()
+    assert len(review.summary) == 500 and review.summary.endswith("...") and review.summary.startswith("Sent to a person because: document_mismatch")
+
+
+def test_the_escalation_summary_is_never_longer_than_the_tool_accepts():
+    for length in (0, 1, 400, 460, 470, 480, 490, 5000):
+        extraction = ClaimExtraction(**{**EXTRACTION.model_dump(), "summary": "s" * length})
+        assert len(escalation_summary(extraction, ["document_mismatch", "required_check_missing"])) <= 500
+    short = escalation_summary(EXTRACTION, ["document_mismatch"])
+    assert short == f"Sent to a person because: document_mismatch. Claim: {EXTRACTION.summary}"   # a short one is left as it is
+
+
 # --- the safety net --------------------------------------------------------------------------------------------
 
 def test_an_agent_that_skips_the_comparison_is_caught(deps_factory):

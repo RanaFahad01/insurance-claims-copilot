@@ -12,6 +12,7 @@ dotenv.load_dotenv = lambda *args, **kwargs: False   # pretend there is no .env 
 import app.extractor, app.main, app.rag.embeddings, app.rag.coverage, app.rag.dossier, app.rag.index, app.rag.retriever
 import app.agent.compare, app.agent.documents, app.agent.loop, app.agent.policy_terms, app.agent.reviews, app.agent.state
 import app.agent.toolset, app.agent.tools, app.agent.trace, app.agent.prompt, app.agent.finalize, app.agent.investigate
+import app.agent_routes, app.dependencies
 print("imported")
 """
 
