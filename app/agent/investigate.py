@@ -88,47 +88,72 @@ def escalation_summary(extraction: ClaimExtraction, reasons: list[str]) -> str:
     return text if len(text) <= MAX_SUMMARY_CHARS else text[:MAX_SUMMARY_CHARS - 3] + "..."
 
 
-def investigate_claim(
+# The flow is four steps. investigate_claim runs them in order; the LangGraph version (graph.py) runs the same functions
+# as nodes. Keeping them as plain functions means both versions share the code that has been tested.
+
+def start_state(claim_text: str, document_ids: list[str]) -> InvestigationState:
+    return InvestigationState(claim_id=claim_id_for(claim_text), document_ids=list(document_ids))
+
+
+def investigate_step(
     extraction: ClaimExtraction,
-    claim_text: str,
-    document_ids: list[str],
+    dossier: Dossier,
+    state: InvestigationState,
     deps: ToolDeps,
-    coverage_model: CoverageModel,
     agent_model: AgentModel,
-    registry: Registry | None = None,
-    limits: Limits = DEFAULT_LIMITS,
-    trace: Trace | None = None,
-    clock: Callable[[], float] = time.monotonic,
-    cutoff: float = DISTANCE_CUTOFF,
-    run_id: str | None = None,
-) -> Investigation:
-    registry = registry if registry is not None else default_registry()
-    trace = trace if trace is not None else Trace()
-
-    dossier = review_claim(extraction, claim_text, deps.collection, deps.embedder, coverage_model, cutoff)
-    state = InvestigationState(claim_id=claim_id_for(claim_text), document_ids=list(document_ids))
+    registry: Registry,
+    limits: Limits,
+    trace: Trace,
+    clock: Callable[[], float],
+    run_id: str | None,
+) -> AgentResult | None:
+    """The bounded agent step. Returns None, and does nothing, when no documents are attached."""
+    if not state.documents_attached:
+        return None
     ctx = RunContext(extraction=extraction, state=state, deps=deps, run_id=run_id)
+    task = build_task(extraction, dossier, state.document_ids)
+    return run_agent(agent_model, SYSTEM_PROMPT, task, registry, ctx, trace, limits, clock)
 
-    agent_result = None
-    if state.documents_attached:
-        task = build_task(extraction, dossier, state.document_ids)
-        agent_result = run_agent(agent_model, SYSTEM_PROMPT, task, registry, ctx, trace, limits, clock)
 
-    route, reasons = finalize(dossier.final_route, dossier.reasons, state)
+def escalate_step(
+    extraction: ClaimExtraction,
+    route: str,
+    reasons: list[str],
+    state: InvestigationState,
+    deps: ToolDeps,
+    registry: Registry,
+    trace: Trace,
+    run_id: str | None,
+) -> tuple[bool | None, str | None]:
+    """Writes the review record for a claim that goes to a person. Returns (review_created, review_error);
+    both are None when the route is not escalate."""
+    if route != "escalate":
+        return None, None
+    ctx = RunContext(extraction=extraction, state=state, deps=deps, run_id=run_id)
+    trace.step = 0       # not a model turn: the surrounding code is making this call
+    call = SimpleNamespace(
+        name="escalate_to_human", call_id="envelope",
+        arguments=json.dumps({"summary": escalation_summary(extraction, reasons), "reasons": reasons}),
+    )
+    outcome = execute_tool(call, registry, ctx, trace, from_model=False)
+    if "created" in outcome:
+        return outcome["created"], None
+    return None, outcome.get("error", "unknown")
 
-    review_created, review_error = None, None
-    if route == "escalate":
-        trace.step = 0       # not a model turn: the surrounding code is making this call
-        call = SimpleNamespace(
-            name="escalate_to_human", call_id="envelope",
-            arguments=json.dumps({"summary": escalation_summary(extraction, reasons), "reasons": reasons}),
-        )
-        outcome = execute_tool(call, registry, ctx, trace, from_model=False)
-        if "created" in outcome:
-            review_created = outcome["created"]
-        else:
-            review_error = outcome.get("error", "unknown")
 
+def assemble_investigation(
+    dossier: Dossier,
+    state: InvestigationState,
+    agent_result: AgentResult | None,
+    trace: Trace,
+    route: str,
+    reasons: list[str],
+    review_created: bool | None,
+    review_error: str | None,
+    deps: ToolDeps,
+    agent_model: AgentModel,
+    run_id: str | None,
+) -> Investigation:
     return Investigation(
         claim_id=state.claim_id,
         dossier=dossier,
@@ -149,3 +174,29 @@ def investigate_claim(
         ),
         run_id=run_id,
     )
+
+
+def investigate_claim(
+    extraction: ClaimExtraction,
+    claim_text: str,
+    document_ids: list[str],
+    deps: ToolDeps,
+    coverage_model: CoverageModel,
+    agent_model: AgentModel,
+    registry: Registry | None = None,
+    limits: Limits = DEFAULT_LIMITS,
+    trace: Trace | None = None,
+    clock: Callable[[], float] = time.monotonic,
+    cutoff: float = DISTANCE_CUTOFF,
+    run_id: str | None = None,
+) -> Investigation:
+    registry = registry if registry is not None else default_registry()
+    trace = trace if trace is not None else Trace()
+
+    dossier = review_claim(extraction, claim_text, deps.collection, deps.embedder, coverage_model, cutoff)
+    state = start_state(claim_text, document_ids)
+    agent_result = investigate_step(extraction, dossier, state, deps, agent_model, registry, limits, trace, clock, run_id)
+    route, reasons = finalize(dossier.final_route, dossier.reasons, state)
+    review_created, review_error = escalate_step(extraction, route, reasons, state, deps, registry, trace, run_id)
+    return assemble_investigation(dossier, state, agent_result, trace, route, reasons, review_created, review_error,
+                                  deps, agent_model, run_id)

@@ -1,6 +1,6 @@
 """Run the agent test cases against the real system and save everything that happened.
 
-usage: python -m scripts.run_agent_cases [--split dev|test|all] [--runs N] [--workers N] [--cases case_01,case_05] [--show]
+usage: python -m scripts.run_agent_cases [--split dev|test|all] [--runs N] [--workers N] [--cases case_01,case_05] [--show] [--engine raw|graph]
 
 For each case it extracts the claim, runs the whole flow (rules, policy search, coverage, the agent with its documents, the
 final route) and records the route, the reasons, every tool call with its arguments and result, tokens and time. It calls the
@@ -15,6 +15,7 @@ from datetime import datetime
 from pathlib import Path
 
 from app.agent.documents import DocumentStore, InvoiceError, OpenAIInvoiceModel
+from app.agent.graph import FlowResources, investigate_with_graph
 from app.agent.investigate import Investigation, investigate_claim
 from app.agent.loop import OpenAIAgentModel
 from app.agent.policy_terms import load_policy_terms
@@ -58,13 +59,26 @@ def compact(inv: Investigation) -> dict:
     }
 
 
-def run_one(case: dict, run: int, deps: ToolDeps, coverage_model: OpenAICoverageModel, agent_model: OpenAIAgentModel) -> dict:
+def run_one(case: dict, run: int, deps: ToolDeps, coverage_model: OpenAICoverageModel, agent_model: OpenAIAgentModel,
+            engine: str = "raw") -> dict:
     entry = {"case": case["id"], "run": run, "claim": case["claim"], "documents": case["documents"]}
     try:
         text = (ROOT / "data" / case["claim"]).read_text(encoding="utf-8")
-        extraction = extract_claim(text)
-        entry["extraction"] = extraction.model_dump()
-        entry.update(compact(investigate_claim(extraction, text, case["documents"], deps, coverage_model, agent_model)))
+        if engine == "graph":
+            extracted = {}
+
+            def extract(claim_text):     # the real extraction, run inside the graph's first node; kept so it can be recorded
+                extracted["value"] = extract_claim(claim_text)
+                return extracted["value"]
+
+            resources = FlowResources(deps=deps, coverage_model=coverage_model, agent_model=agent_model, extract=extract)
+            investigation = investigate_with_graph(text, case["documents"], resources)
+            entry["extraction"] = extracted["value"].model_dump()
+        else:
+            extraction = extract_claim(text)
+            entry["extraction"] = extraction.model_dump()
+            investigation = investigate_claim(extraction, text, case["documents"], deps, coverage_model, agent_model)
+        entry.update(compact(investigation))
     except (ExtractionError, EmbeddingError, CoverageError, InvoiceError) as e:
         entry["error"] = f"{e.kind}: {e}"
     except Exception as e:  # keep the batch going if something else goes wrong
@@ -101,6 +115,7 @@ def main() -> None:
     parser.add_argument("--workers", type=int, default=2)
     parser.add_argument("--cases", help="comma-separated case ids, for example case_01,case_09")
     parser.add_argument("--show", action="store_true", help="print each run as a readable transcript")
+    parser.add_argument("--engine", choices=["raw", "graph"], default="raw", help="the hand-written flow or the LangGraph version")
     args = parser.parse_args()
 
     cases = json.loads(CASES_FILE.read_text(encoding="utf-8"))
@@ -117,7 +132,7 @@ def main() -> None:
     except PolicyIndexError as e:
         sys.exit(f"{e}\nBuild the policy index first: python -m scripts.ingest_policy")
 
-    stamp = f"{datetime.now():%Y%m%d-%H%M}"
+    stamp = f"{datetime.now():%Y%m%d-%H%M}" + ("-graph" if args.engine == "graph" else "")
     reviews = ReviewStore(ROOT / "runs" / f"eval-reviews-{stamp}.sqlite")
     deps = ToolDeps(collection=collection, embedder=OpenAIEmbedder(), documents=DocumentStore(),
                     invoice_model=OpenAIInvoiceModel(), terms=load_policy_terms(), reviews=reviews)
@@ -125,7 +140,7 @@ def main() -> None:
 
     jobs = [(case, run) for case in cases for run in range(1, args.runs + 1)]
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
-        results = list(pool.map(lambda job: run_one(job[0], job[1], deps, coverage_model, agent_model), jobs))
+        results = list(pool.map(lambda job: run_one(job[0], job[1], deps, coverage_model, agent_model, args.engine), jobs))
 
     if args.show:
         for entry in results:
@@ -133,7 +148,7 @@ def main() -> None:
 
     out = ROOT / "docs" / "phase-notes" / f"phase4-agent-run-{stamp}.json"
     out.parent.mkdir(parents=True, exist_ok=True)
-    config = {"split": args.split, "runs": args.runs, "cases": [c["id"] for c in cases],
+    config = {"split": args.split, "runs": args.runs, "cases": [c["id"] for c in cases], "engine": args.engine,
               "agent_model": agent_model.model, "agent_prompt": PROMPT_VERSION}
     out.write_text(json.dumps({"config": config, "results": results}, indent=2, ensure_ascii=False), encoding="utf-8")
     errors = sum("error" in r for r in results)
