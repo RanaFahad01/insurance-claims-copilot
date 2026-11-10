@@ -1,0 +1,728 @@
+{
+  "config": {
+    "split": "dev",
+    "runs": 1,
+    "cases": [
+      "case_01",
+      "case_09",
+      "case_11",
+      "case_17",
+      "case_22"
+    ],
+    "agent_model": "gpt-6-luna",
+    "agent_prompt": "agent-v1"
+  },
+  "results": [
+    {
+      "case": "case_01",
+      "run": 1,
+      "claim": "claims/claim_01_water_en.txt",
+      "documents": [
+        "doc_14"
+      ],
+      "extraction": {
+        "incident_date": "2026-03-12",
+        "incident_location": null,
+        "claimant_name": "Marcus Bell",
+        "policy_number": "HG-2231-88",
+        "damage_type": "water",
+        "estimated_amount": 800.0,
+        "currency": "EUR",
+        "language": "en",
+        "summary": "A pipe burst under the kitchen sink and flooded the floor, with repairs quoted at EUR 800."
+      },
+      "claim_id": "795051cf2f96",
+      "final_route": "auto_approve_candidate",
+      "reasons": [],
+      "phase3_route": "auto_approve_candidate",
+      "phase3_reasons": [],
+      "coverage_status": "covered",
+      "agent": {
+        "status": "finished",
+        "error_kind": null,
+        "steps": 3,
+        "tool_calls": 2,
+        "input_tokens": 3222,
+        "output_tokens": 127,
+        "elapsed_ms": 5078,
+        "turns": [
+          {
+            "step": 1,
+            "input_tokens": 962,
+            "output_tokens": 21,
+            "latency_ms": 985,
+            "tool_calls": 1
+          },
+          {
+            "step": 2,
+            "input_tokens": 1074,
+            "output_tokens": 28,
+            "latency_ms": 891,
+            "tool_calls": 1
+          },
+          {
+            "step": 3,
+            "input_tokens": 1186,
+            "output_tokens": 78,
+            "latency_ms": 1468,
+            "tool_calls": 0
+          }
+        ]
+      },
+      "tools_called": [
+        "compare_documents",
+        "calculate_payout"
+      ],
+      "documents_compared": [
+        "doc_14"
+      ],
+      "mismatches": [],
+      "payout": {
+        "insured_object": "home",
+        "currency": "EUR",
+        "claimed_amount": 800.0,
+        "deductible": 250.0,
+        "payable_before_limit": 550.0,
+        "limit": 300000.0,
+        "over_limit": false,
+        "payable": 550.0,
+        "notes": []
+      },
+      "findings": "- The attached plumbing document agrees with the claim: Hartwell & Pike Plumbing Ltd, dated 14 March 2026, for EUR 800. It notes the amount was paid in full by bank transfer.\n- Applying the home deductible of EUR 250, the expected payment is **EUR 550**; the EUR 300,000 limit does not affect it.",
+      "review_created": null,
+      "review_error": null,
+      "tool_trace": [
+        {
+          "step": 1,
+          "tool": "compare_documents",
+          "arguments": "{\"document_id\":\"doc_14\"}",
+          "outcome": "ok",
+          "result": "{\"document_id\": \"doc_14\", \"agrees_with_claim\": true, \"mismatches\": [], \"document\": {\"vendor\": \"Hartwell & Pike Plumbing Ltd\", \"date\": \"2026-03-14\", \"total\": 800.0, \"currency\": \"EUR\"}, \"remarks\": \"Paid in full by bank transfer. Thank you for your business.\"}",
+          "latency_ms": 1732,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 2,
+          "tool": "calculate_payout",
+          "arguments": "{\"insured_object\":\"home\",\"amount\":800,\"currency\":\"EUR\"}",
+          "outcome": "ok",
+          "result": "{\"insured_object\": \"home\", \"currency\": \"EUR\", \"claimed_amount\": 800.0, \"deductible\": 250.0, \"payable_before_limit\": 550.0, \"limit\": 300000.0, \"over_limit\": false, \"payable\": 550.0, \"notes\": []}",
+          "latency_ms": 0,
+          "side_effect": false,
+          "detail": null
+        }
+      ],
+      "versions": {
+        "agent_model": "gpt-6-luna",
+        "agent_prompt": "agent-v1",
+        "invoice_model": "gpt-6-luna",
+        "invoice_prompt": "invoice-v1"
+      }
+    },
+    {
+      "case": "case_09",
+      "run": 1,
+      "claim": "claims/claim_51_water_en_slow_drip_stated.txt",
+      "documents": [
+        "doc_05"
+      ],
+      "extraction": {
+        "incident_date": "2026-06-03",
+        "incident_location": null,
+        "claimant_name": "Isabel Moreau",
+        "policy_number": "HG-5719-44",
+        "damage_type": "water",
+        "estimated_amount": 780.0,
+        "currency": "EUR",
+        "language": "en",
+        "summary": "On 3 June 2026, a slowly dripping joint soaked and caused mould on the wall behind the bathroom sink, with repair costs of EUR 780."
+      },
+      "claim_id": "ab6a354a3d49",
+      "final_route": "escalate",
+      "reasons": [
+        "coverage_possible_exclusion"
+      ],
+      "phase3_route": "escalate",
+      "phase3_reasons": [
+        "coverage_possible_exclusion"
+      ],
+      "coverage_status": "excluded",
+      "agent": {
+        "status": "finished",
+        "error_kind": null,
+        "steps": 3,
+        "tool_calls": 2,
+        "input_tokens": 3243,
+        "output_tokens": 134,
+        "elapsed_ms": 5922,
+        "turns": [
+          {
+            "step": 1,
+            "input_tokens": 967,
+            "output_tokens": 21,
+            "latency_ms": 1094,
+            "tool_calls": 1
+          },
+          {
+            "step": 2,
+            "input_tokens": 1080,
+            "output_tokens": 24,
+            "latency_ms": 1110,
+            "tool_calls": 1
+          },
+          {
+            "step": 3,
+            "input_tokens": 1196,
+            "output_tokens": 89,
+            "latency_ms": 1594,
+            "tool_calls": 0
+          }
+        ]
+      },
+      "tools_called": [
+        "compare_documents",
+        "get_clause"
+      ],
+      "documents_compared": [
+        "doc_05"
+      ],
+      "mismatches": [],
+      "payout": null,
+      "findings": "- The Clearwater Plumbing document agrees with the claim: EUR 780, dated 5 June 2026. It notes the work was carried out in one visit and includes a 12-month guarantee.\n- The claim describes a joint dripping slowly for months. Clause en-C2.3 excludes damage caused by water escaping gradually or repeatedly over time.\n- No payout calculation was made because the coverage check identifies the claim as excluded.",
+      "review_created": true,
+      "review_error": null,
+      "tool_trace": [
+        {
+          "step": 1,
+          "tool": "compare_documents",
+          "arguments": "{\"document_id\":\"doc_05\"}",
+          "outcome": "ok",
+          "result": "{\"document_id\": \"doc_05\", \"agrees_with_claim\": true, \"mismatches\": [], \"document\": {\"vendor\": \"Clearwater Plumbing\", \"date\": \"2026-06-05\", \"total\": 780.0, \"currency\": \"EUR\"}, \"remarks\": \"Work carried out in one visit. Guarantee: 12 months on parts and labour.\"}",
+          "latency_ms": 2070,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 2,
+          "tool": "get_clause",
+          "arguments": "{\"clause_id\":\"en-C2.3\"}",
+          "outcome": "ok",
+          "result": "{\"clause_id\": \"en-C2.3\", \"title\": \"Water damage: gradual leaks excluded\", \"text\": \"We do not cover damage caused by water that escaped gradually or repeatedly over a period of time, such as a slow leak, seepage, condensation, rising damp or a constantly dripping fitting. We cover water only when it escapes suddenly (see C2.1).\"}",
+          "latency_ms": 71,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 3,
+          "tool": "escalate_to_human",
+          "arguments": "{\"summary\": \"Sent to a person because: coverage_possible_exclusion. Claim: On 3 June 2026, a slowly dripping joint soaked and caused mould on the wall behind the bathroom sink, with repair costs of EUR 780.\", \"reasons\": [\"coverage_possible_exclusion\"]}",
+          "outcome": "ok",
+          "result": "{\"review_id\": \"ab6a354a3d49\", \"created\": true}",
+          "latency_ms": 34,
+          "side_effect": true,
+          "detail": null
+        }
+      ],
+      "versions": {
+        "agent_model": "gpt-6-luna",
+        "agent_prompt": "agent-v1",
+        "invoice_model": "gpt-6-luna",
+        "invoice_prompt": "invoice-v1"
+      }
+    },
+    {
+      "case": "case_11",
+      "run": 1,
+      "claim": "claims/claim_01_water_en.txt",
+      "documents": [
+        "doc_22"
+      ],
+      "extraction": {
+        "incident_date": "2026-03-12",
+        "incident_location": null,
+        "claimant_name": "Marcus Bell",
+        "policy_number": "HG-2231-88",
+        "damage_type": "water",
+        "estimated_amount": 800.0,
+        "currency": "EUR",
+        "language": "en",
+        "summary": "Marcus Bell reports that a pipe burst under the kitchen sink and flooded the floor, with repairs quoted at EUR 800."
+      },
+      "claim_id": "795051cf2f96",
+      "final_route": "escalate",
+      "reasons": [
+        "document_mismatch"
+      ],
+      "phase3_route": "auto_approve_candidate",
+      "phase3_reasons": [],
+      "coverage_status": "covered",
+      "agent": {
+        "status": "finished",
+        "error_kind": null,
+        "steps": 4,
+        "tool_calls": 3,
+        "input_tokens": 5175,
+        "output_tokens": 187,
+        "elapsed_ms": 6641,
+        "turns": [
+          {
+            "step": 1,
+            "input_tokens": 970,
+            "output_tokens": 21,
+            "latency_ms": 1032,
+            "tool_calls": 1
+          },
+          {
+            "step": 2,
+            "input_tokens": 1118,
+            "output_tokens": 51,
+            "latency_ms": 1125,
+            "tool_calls": 1
+          },
+          {
+            "step": 3,
+            "input_tokens": 1471,
+            "output_tokens": 20,
+            "latency_ms": 922,
+            "tool_calls": 1
+          },
+          {
+            "step": 4,
+            "input_tokens": 1616,
+            "output_tokens": 95,
+            "latency_ms": 1500,
+            "tool_calls": 0
+          }
+        ]
+      },
+      "tools_called": [
+        "compare_documents",
+        "search_policy_clauses",
+        "get_policy_terms"
+      ],
+      "documents_compared": [
+        "doc_22"
+      ],
+      "mismatches": [
+        {
+          "document": "doc_22",
+          "field": "amount",
+          "severity": "high",
+          "claim_value": "800.0",
+          "document_value": "1450.0"
+        }
+      ],
+      "payout": null,
+      "findings": "- The repair document is dated 14 March 2026, two days after the reported incident, and records work completed in one visit.\n- The document’s EUR 1,450 total does not match the claimed EUR 800 (high-severity discrepancy). It also notes a 12-month guarantee on parts and labour.\n- The home deductible is EUR 250. The document amount differs from the claim, so I have not calculated an expected payment.",
+      "review_created": true,
+      "review_error": null,
+      "tool_trace": [
+        {
+          "step": 1,
+          "tool": "compare_documents",
+          "arguments": "{\"document_id\":\"doc_22\"}",
+          "outcome": "ok",
+          "result": "{\"document_id\": \"doc_22\", \"agrees_with_claim\": false, \"mismatches\": [{\"field\": \"amount\", \"claim_value\": \"800.0\", \"document_value\": \"1450.0\", \"severity\": \"high\"}], \"document\": {\"vendor\": \"Hartwell & Pike Plumbing Ltd\", \"date\": \"2026-03-14\", \"total\": 1450.0, \"currency\": \"EUR\"}, \"remarks\": \"Work carried out in one visit. Guarantee: 12 months on parts and labour.\"}",
+          "latency_ms": 1817,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 2,
+          "tool": "search_policy_clauses",
+          "arguments": "{\"query\":\"What policy terms or clauses apply when a supporting repair invoice amount differs from the claimed amount, and how should the payable amount be determined?\",\"language\":\"en\"}",
+          "outcome": "ok",
+          "result": "{\"clauses\": [{\"clause_id\": \"en-C9.1\", \"title\": \"How claims are assessed\", \"text\": \"A claims adjuster reviews every claim and makes the final decision. Software may be used to prepare a summary of the claim and the relevant policy clauses, but no claim is approved or refused automatically.\", \"distance\": 0.594}, {\"clause_id\": \"en-C7.2\", \"title\": \"Deductible\", \"text\": \"You pay the first EUR 250 of each claim for the insured home and its contents, and the first EUR 500 of each claim for an insured v...",
+          "latency_ms": 252,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 3,
+          "tool": "get_policy_terms",
+          "arguments": "{\"insured_object\":\"home\"}",
+          "outcome": "ok",
+          "result": "{\"insured_object\": \"home\", \"currency\": \"EUR\", \"deductible\": 250, \"limit\": 300000, \"limit_basis\": \"sum_insured\", \"sub_limits\": {}, \"notification\": {\"report_damage_within_days\": 30, \"police_report_within_hours\": 48, \"police_report_applies_to\": [\"theft\", \"burglary\", \"collision_with_unknown_driver\"]}, \"clauses\": [\"C7.1\", \"C7.2\", \"C7.3\"]}",
+          "latency_ms": 0,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 4,
+          "tool": "escalate_to_human",
+          "arguments": "{\"summary\": \"Sent to a person because: document_mismatch. Claim: Marcus Bell reports that a pipe burst under the kitchen sink and flooded the floor, with repairs quoted at EUR 800.\", \"reasons\": [\"document_mismatch\"]}",
+          "outcome": "ok",
+          "result": "{\"review_id\": \"795051cf2f96\", \"created\": true}",
+          "latency_ms": 17,
+          "side_effect": true,
+          "detail": null
+        }
+      ],
+      "versions": {
+        "agent_model": "gpt-6-luna",
+        "agent_prompt": "agent-v1",
+        "invoice_model": "gpt-6-luna",
+        "invoice_prompt": "invoice-v1"
+      }
+    },
+    {
+      "case": "case_17",
+      "run": 1,
+      "claim": "claims/claim_01_water_en.txt",
+      "documents": [
+        "doc_12"
+      ],
+      "extraction": {
+        "incident_date": "2026-03-12",
+        "incident_location": null,
+        "claimant_name": "Marcus Bell",
+        "policy_number": "HG-2231-88",
+        "damage_type": "water",
+        "estimated_amount": 800.0,
+        "currency": "EUR",
+        "language": "en",
+        "summary": "A pipe burst under the kitchen sink and flooded the floor, with repairs quoted at EUR 800."
+      },
+      "claim_id": "795051cf2f96",
+      "final_route": "escalate",
+      "reasons": [
+        "document_mismatch"
+      ],
+      "phase3_route": "auto_approve_candidate",
+      "phase3_reasons": [],
+      "coverage_status": "covered",
+      "agent": {
+        "status": "finished",
+        "error_kind": null,
+        "steps": 6,
+        "tool_calls": 5,
+        "input_tokens": 9593,
+        "output_tokens": 267,
+        "elapsed_ms": 9719,
+        "turns": [
+          {
+            "step": 1,
+            "input_tokens": 962,
+            "output_tokens": 21,
+            "latency_ms": 984,
+            "tool_calls": 1
+          },
+          {
+            "step": 2,
+            "input_tokens": 1102,
+            "output_tokens": 43,
+            "latency_ms": 1046,
+            "tool_calls": 1
+          },
+          {
+            "step": 3,
+            "input_tokens": 1495,
+            "output_tokens": 20,
+            "latency_ms": 1109,
+            "tool_calls": 1
+          },
+          {
+            "step": 4,
+            "input_tokens": 1640,
+            "output_tokens": 36,
+            "latency_ms": 1141,
+            "tool_calls": 1
+          },
+          {
+            "step": 5,
+            "input_tokens": 2141,
+            "output_tokens": 28,
+            "latency_ms": 921,
+            "tool_calls": 1
+          },
+          {
+            "step": 6,
+            "input_tokens": 2253,
+            "output_tokens": 119,
+            "latency_ms": 2360,
+            "tool_calls": 0
+          }
+        ]
+      },
+      "tools_called": [
+        "compare_documents",
+        "search_policy_clauses",
+        "get_policy_terms",
+        "search_policy_clauses",
+        "calculate_payout"
+      ],
+      "documents_compared": [
+        "doc_12"
+      ],
+      "mismatches": [
+        {
+          "document": "doc_12",
+          "field": "name",
+          "severity": "high",
+          "claim_value": "Marcus Bell",
+          "document_value": "Daniel Cooper"
+        }
+      ],
+      "payout": {
+        "insured_object": "home",
+        "currency": "EUR",
+        "claimed_amount": 800.0,
+        "deductible": 250.0,
+        "payable_before_limit": 550.0,
+        "limit": 300000.0,
+        "over_limit": false,
+        "payable": 550.0,
+        "notes": []
+      },
+      "findings": "- The repair document is for EUR 800, dated 14 March 2026, and marked paid in full by bank transfer. Its named customer is **Daniel Cooper**, not claimant Marcus Bell—a high-severity mismatch requiring clarification.\n- The claim describes sudden escape of water from a fixed pipe, which is within the stated coverage in clause C2.1; the document mismatch remains unresolved.\n- If the EUR 800 amount is accepted, the home deductible is EUR 250 and the calculated payment is **EUR 550**, below the EUR 300,000 limit.",
+      "review_created": false,
+      "review_error": null,
+      "tool_trace": [
+        {
+          "step": 1,
+          "tool": "compare_documents",
+          "arguments": "{\"document_id\":\"doc_12\"}",
+          "outcome": "ok",
+          "result": "{\"document_id\": \"doc_12\", \"agrees_with_claim\": false, \"mismatches\": [{\"field\": \"name\", \"claim_value\": \"Marcus Bell\", \"document_value\": \"Daniel Cooper\", \"severity\": \"high\"}], \"document\": {\"vendor\": \"Hartwell & Pike Plumbing Ltd\", \"date\": \"2026-03-14\", \"total\": 800.0, \"currency\": \"EUR\"}, \"remarks\": \"Paid in full by bank transfer. Thank you for your business.\"}",
+          "latency_ms": 1683,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 2,
+          "tool": "search_policy_clauses",
+          "arguments": "{\"query\":\"supporting invoice or repair document belongs to a different claimant or named customer; how to handle mismatch\",\"language\":\"en\"}",
+          "outcome": "ok",
+          "result": "{\"clauses\": [{\"clause_id\": \"en-C7.3\", \"title\": \"Notifying a claim\", \"text\": \"You must tell us about damage within 30 days of finding it. Theft, burglary and collisions with an unknown driver must also be reported to the police within 48 hours, and you must give us the police report number. If you tell us late and this makes the claim harder for us to assess, we may reduce or refuse the payment.\", \"distance\": 0.657}, {\"clause_id\": \"en-C9.1\", \"title\": \"How claims are assessed\", \"text\": \"A claims a...",
+          "latency_ms": 235,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 3,
+          "tool": "get_policy_terms",
+          "arguments": "{\"insured_object\":\"home\"}",
+          "outcome": "ok",
+          "result": "{\"insured_object\": \"home\", \"currency\": \"EUR\", \"deductible\": 250, \"limit\": 300000, \"limit_basis\": \"sum_insured\", \"sub_limits\": {}, \"notification\": {\"report_damage_within_days\": 30, \"police_report_within_hours\": 48, \"police_report_applies_to\": [\"theft\", \"burglary\", \"collision_with_unknown_driver\"]}, \"clauses\": [\"C7.1\", \"C7.2\", \"C7.3\"]}",
+          "latency_ms": 0,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 4,
+          "tool": "search_policy_clauses",
+          "arguments": "{\"query\":\"sudden unforeseen escape of water from fixed water pipes coverage\",\"language\":\"en\"}",
+          "outcome": "ok",
+          "result": "{\"clauses\": [{\"clause_id\": \"en-C2.1\", \"title\": \"Water damage: covered\", \"text\": \"We cover damage to the insured home and its contents caused by the sudden and unforeseen escape of water from fixed water pipes, tanks and heating systems, and from washing machines, dishwashers and similar fixed appliances, including their hoses. We also cover the reasonable cost of finding the source of the leak and opening up walls or floors to repair it. Water that escapes gradually is excluded by C2.3, flooding...",
+          "latency_ms": 220,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 5,
+          "tool": "calculate_payout",
+          "arguments": "{\"insured_object\":\"home\",\"amount\":800,\"currency\":\"EUR\"}",
+          "outcome": "ok",
+          "result": "{\"insured_object\": \"home\", \"currency\": \"EUR\", \"claimed_amount\": 800.0, \"deductible\": 250.0, \"payable_before_limit\": 550.0, \"limit\": 300000.0, \"over_limit\": false, \"payable\": 550.0, \"notes\": []}",
+          "latency_ms": 0,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 6,
+          "tool": "escalate_to_human",
+          "arguments": "{\"summary\": \"Sent to a person because: document_mismatch. Claim: A pipe burst under the kitchen sink and flooded the floor, with repairs quoted at EUR 800.\", \"reasons\": [\"document_mismatch\"]}",
+          "outcome": "ok",
+          "result": "{\"review_id\": \"795051cf2f96\", \"created\": false}",
+          "latency_ms": 1,
+          "side_effect": true,
+          "detail": null
+        }
+      ],
+      "versions": {
+        "agent_model": "gpt-6-luna",
+        "agent_prompt": "agent-v1",
+        "invoice_model": "gpt-6-luna",
+        "invoice_prompt": "invoice-v1"
+      }
+    },
+    {
+      "case": "case_22",
+      "run": 1,
+      "claim": "claims/claim_01_water_en.txt",
+      "documents": [
+        "doc_14",
+        "doc_22"
+      ],
+      "extraction": {
+        "incident_date": "2026-03-12",
+        "incident_location": null,
+        "claimant_name": "Marcus Bell",
+        "policy_number": "HG-2231-88",
+        "damage_type": "water",
+        "estimated_amount": 800.0,
+        "currency": "EUR",
+        "language": "en",
+        "summary": "A pipe burst under the kitchen sink and flooded the floor, with repairs quoted at EUR 800."
+      },
+      "claim_id": "795051cf2f96",
+      "final_route": "escalate",
+      "reasons": [
+        "document_mismatch"
+      ],
+      "phase3_route": "auto_approve_candidate",
+      "phase3_reasons": [],
+      "coverage_status": "covered",
+      "agent": {
+        "status": "finished",
+        "error_kind": null,
+        "steps": 5,
+        "tool_calls": 6,
+        "input_tokens": 7860,
+        "output_tokens": 300,
+        "elapsed_ms": 11078,
+        "turns": [
+          {
+            "step": 1,
+            "input_tokens": 966,
+            "output_tokens": 70,
+            "latency_ms": 1390,
+            "tool_calls": 3
+          },
+          {
+            "step": 2,
+            "input_tokens": 1375,
+            "output_tokens": 44,
+            "latency_ms": 1828,
+            "tool_calls": 1
+          },
+          {
+            "step": 3,
+            "input_tokens": 1749,
+            "output_tokens": 24,
+            "latency_ms": 797,
+            "tool_calls": 1
+          },
+          {
+            "step": 4,
+            "input_tokens": 1835,
+            "output_tokens": 24,
+            "latency_ms": 875,
+            "tool_calls": 1
+          },
+          {
+            "step": 5,
+            "input_tokens": 1935,
+            "output_tokens": 138,
+            "latency_ms": 2359,
+            "tool_calls": 0
+          }
+        ]
+      },
+      "tools_called": [
+        "compare_documents",
+        "compare_documents",
+        "get_policy_terms",
+        "search_policy_clauses",
+        "get_clause",
+        "get_clause"
+      ],
+      "documents_compared": [
+        "doc_14",
+        "doc_22"
+      ],
+      "mismatches": [
+        {
+          "document": "doc_22",
+          "field": "amount",
+          "severity": "high",
+          "claim_value": "800.0",
+          "document_value": "1450.0"
+        }
+      ],
+      "payout": null,
+      "findings": "- **doc_14** agrees with the claim: EUR 800, dated 14 March 2026; it says the amount was paid in full by bank transfer.\n- **doc_22** does not agree on amount: it records EUR 1,450, also dated 14 March 2026. The two documents are from the same vendor but show different totals.\n- The home deductible is EUR 250. The documents conflict, so the repair amount to use is unclear; no expected payment is calculated.\n- The policy states that a claims adjuster makes the final decision and that false or misleading information or exaggerating a loss may affect the claim.",
+      "review_created": false,
+      "review_error": null,
+      "tool_trace": [
+        {
+          "step": 1,
+          "tool": "compare_documents",
+          "arguments": "{\"document_id\":\"doc_14\"}",
+          "outcome": "ok",
+          "result": "{\"document_id\": \"doc_14\", \"agrees_with_claim\": true, \"mismatches\": [], \"document\": {\"vendor\": \"Hartwell & Pike Plumbing Ltd\", \"date\": \"2026-03-14\", \"total\": 800.0, \"currency\": \"EUR\"}, \"remarks\": \"Paid in full by bank transfer. Thank you for your business.\"}",
+          "latency_ms": 1773,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 1,
+          "tool": "compare_documents",
+          "arguments": "{\"document_id\":\"doc_22\"}",
+          "outcome": "ok",
+          "result": "{\"document_id\": \"doc_22\", \"agrees_with_claim\": false, \"mismatches\": [{\"field\": \"amount\", \"claim_value\": \"800.0\", \"document_value\": \"1450.0\", \"severity\": \"high\"}], \"document\": {\"vendor\": \"Hartwell & Pike Plumbing Ltd\", \"date\": \"2026-03-14\", \"total\": 1450.0, \"currency\": \"EUR\"}, \"remarks\": \"Work carried out in one visit. Guarantee: 12 months on parts and labour.\"}",
+          "latency_ms": 1816,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 1,
+          "tool": "get_policy_terms",
+          "arguments": "{\"insured_object\":\"home\"}",
+          "outcome": "ok",
+          "result": "{\"insured_object\": \"home\", \"currency\": \"EUR\", \"deductible\": 250, \"limit\": 300000, \"limit_basis\": \"sum_insured\", \"sub_limits\": {}, \"notification\": {\"report_damage_within_days\": 30, \"police_report_within_hours\": 48, \"police_report_applies_to\": [\"theft\", \"burglary\", \"collision_with_unknown_driver\"]}, \"clauses\": [\"C7.1\", \"C7.2\", \"C7.3\"]}",
+          "latency_ms": 0,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 2,
+          "tool": "search_policy_clauses",
+          "arguments": "{\"query\":\"How to handle conflicting invoices or supporting documents with different repair amounts; evidence required to establish claimed repair cost\",\"language\":\"en\"}",
+          "outcome": "ok",
+          "result": "{\"clauses\": [{\"clause_id\": \"en-C9.1\", \"title\": \"How claims are assessed\", \"text\": \"A claims adjuster reviews every claim and makes the final decision. Software may be used to prepare a summary of the claim and the relevant policy clauses, but no claim is approved or refused automatically.\", \"distance\": 0.667}, {\"clause_id\": \"en-C8.3\", \"title\": \"False or misleading claims\", \"text\": \"If you give false or misleading information in a claim, or you exaggerate your loss, we may refuse the whole claim....",
+          "latency_ms": 255,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 3,
+          "tool": "get_clause",
+          "arguments": "{\"clause_id\":\"en-C8.3\"}",
+          "outcome": "ok",
+          "result": "{\"clause_id\": \"en-C8.3\", \"title\": \"False or misleading claims\", \"text\": \"If you give false or misleading information in a claim, or you exaggerate your loss, we may refuse the whole claim.\"}",
+          "latency_ms": 2,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 4,
+          "tool": "get_clause",
+          "arguments": "{\"clause_id\":\"en-C9.1\"}",
+          "outcome": "ok",
+          "result": "{\"clause_id\": \"en-C9.1\", \"title\": \"How claims are assessed\", \"text\": \"A claims adjuster reviews every claim and makes the final decision. Software may be used to prepare a summary of the claim and the relevant policy clauses, but no claim is approved or refused automatically.\"}",
+          "latency_ms": 2,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 5,
+          "tool": "escalate_to_human",
+          "arguments": "{\"summary\": \"Sent to a person because: document_mismatch. Claim: A pipe burst under the kitchen sink and flooded the floor, with repairs quoted at EUR 800.\", \"reasons\": [\"document_mismatch\"]}",
+          "outcome": "ok",
+          "result": "{\"review_id\": \"795051cf2f96\", \"created\": false}",
+          "latency_ms": 1,
+          "side_effect": true,
+          "detail": null
+        }
+      ],
+      "versions": {
+        "agent_model": "gpt-6-luna",
+        "agent_prompt": "agent-v1",
+        "invoice_model": "gpt-6-luna",
+        "invoice_prompt": "invoice-v1"
+      }
+    }
+  ]
+}

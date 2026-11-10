@@ -1,0 +1,546 @@
+{
+  "config": {
+    "split": "dev",
+    "runs": 1,
+    "cases": [
+      "case_01",
+      "case_09",
+      "case_11",
+      "case_17",
+      "case_22"
+    ],
+    "engine": "graph",
+    "agent_model": "gpt-6-luna",
+    "agent_prompt": "agent-v1"
+  },
+  "results": [
+    {
+      "case": "case_01",
+      "run": 1,
+      "claim": "claims/claim_01_water_en.txt",
+      "documents": [
+        "doc_14"
+      ],
+      "extraction": {
+        "incident_date": "2026-03-12",
+        "incident_location": null,
+        "claimant_name": "Marcus Bell",
+        "policy_number": "HG-2231-88",
+        "damage_type": "water",
+        "estimated_amount": 800.0,
+        "currency": "EUR",
+        "language": "en",
+        "summary": "A pipe burst under the kitchen sink on 12 March 2026, flooding the floor, and repairs were quoted at EUR 800."
+      },
+      "claim_id": "795051cf2f96",
+      "final_route": "auto_approve_candidate",
+      "reasons": [],
+      "phase3_route": "auto_approve_candidate",
+      "phase3_reasons": [],
+      "coverage_status": "covered",
+      "agent": {
+        "status": "finished",
+        "error_kind": null,
+        "steps": 3,
+        "tool_calls": 2,
+        "input_tokens": 3507,
+        "output_tokens": 117,
+        "elapsed_ms": 16328,
+        "turns": [
+          {
+            "step": 1,
+            "input_tokens": 1057,
+            "output_tokens": 21,
+            "latency_ms": 3203,
+            "tool_calls": 1
+          },
+          {
+            "step": 2,
+            "input_tokens": 1169,
+            "output_tokens": 28,
+            "latency_ms": 4250,
+            "tool_calls": 1
+          },
+          {
+            "step": 3,
+            "input_tokens": 1281,
+            "output_tokens": 68,
+            "latency_ms": 7093,
+            "tool_calls": 0
+          }
+        ]
+      },
+      "tools_called": [
+        "compare_documents",
+        "calculate_payout"
+      ],
+      "documents_compared": [
+        "doc_14"
+      ],
+      "mismatches": [],
+      "payout": {
+        "insured_object": "home",
+        "currency": "EUR",
+        "claimed_amount": 800.0,
+        "deductible": 250.0,
+        "payable_before_limit": 550.0,
+        "limit": 300000.0,
+        "over_limit": false,
+        "payable": 550.0,
+        "notes": []
+      },
+      "findings": "- The attached document agrees with the claim: it records EUR 800 for plumbing work dated 14 March 2026.\n- The document says the invoice was paid in full by bank transfer.\n- Based on the home deductible of EUR 250 and the applicable limit, the expected payment is **EUR 550**.",
+      "review_created": null,
+      "review_error": null,
+      "tool_trace": [
+        {
+          "step": 1,
+          "tool": "compare_documents",
+          "arguments": "{\"document_id\":\"doc_14\"}",
+          "outcome": "ok",
+          "result": "{\"document_id\": \"doc_14\", \"agrees_with_claim\": true, \"mismatches\": [], \"document\": {\"vendor\": \"Hartwell & Pike Plumbing Ltd\", \"date\": \"2026-03-14\", \"total\": 800.0, \"currency\": \"EUR\"}, \"remarks\": \"Paid in full by bank transfer. Thank you for your business.\"}",
+          "latency_ms": 1782,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 2,
+          "tool": "calculate_payout",
+          "arguments": "{\"insured_object\":\"home\",\"amount\":800,\"currency\":\"EUR\"}",
+          "outcome": "ok",
+          "result": "{\"insured_object\": \"home\", \"currency\": \"EUR\", \"claimed_amount\": 800.0, \"deductible\": 250.0, \"payable_before_limit\": 550.0, \"limit\": 300000.0, \"over_limit\": false, \"payable\": 550.0, \"notes\": []}",
+          "latency_ms": 0,
+          "side_effect": false,
+          "detail": null
+        }
+      ],
+      "versions": {
+        "agent_model": "gpt-6-luna",
+        "agent_prompt": "agent-v1",
+        "invoice_model": "gpt-6-luna",
+        "invoice_prompt": "invoice-v1"
+      }
+    },
+    {
+      "case": "case_09",
+      "run": 1,
+      "claim": "claims/claim_51_water_en_slow_drip_stated.txt",
+      "documents": [
+        "doc_05"
+      ],
+      "extraction": {
+        "incident_date": "2026-06-03",
+        "incident_location": null,
+        "claimant_name": "Isabel Moreau",
+        "policy_number": "HG-5719-44",
+        "damage_type": "water",
+        "estimated_amount": 780.0,
+        "currency": "EUR",
+        "language": "en",
+        "summary": "Isabel Moreau reports water damage and mould behind her bathroom sink from a slowly dripping joint, with repair costs of EUR 780."
+      },
+      "claim_id": "ab6a354a3d49",
+      "final_route": "escalate",
+      "reasons": [
+        "coverage_possible_exclusion"
+      ],
+      "phase3_route": "escalate",
+      "phase3_reasons": [
+        "coverage_possible_exclusion"
+      ],
+      "coverage_status": "excluded",
+      "agent": {
+        "status": "finished",
+        "error_kind": null,
+        "steps": 3,
+        "tool_calls": 2,
+        "input_tokens": 3498,
+        "output_tokens": 124,
+        "elapsed_ms": 8813,
+        "turns": [
+          {
+            "step": 1,
+            "input_tokens": 1052,
+            "output_tokens": 21,
+            "latency_ms": 1657,
+            "tool_calls": 1
+          },
+          {
+            "step": 2,
+            "input_tokens": 1165,
+            "output_tokens": 24,
+            "latency_ms": 2094,
+            "tool_calls": 1
+          },
+          {
+            "step": 3,
+            "input_tokens": 1281,
+            "output_tokens": 79,
+            "latency_ms": 3078,
+            "tool_calls": 0
+          }
+        ]
+      },
+      "tools_called": [
+        "compare_documents",
+        "get_clause"
+      ],
+      "documents_compared": [
+        "doc_05"
+      ],
+      "mismatches": [],
+      "payout": null,
+      "findings": "- The invoice from Clearwater Plumbing dated 5 June 2026 agrees with the claim: EUR 780 for repair costs.\n- The cited policy clause excludes damage caused by water escaping gradually or repeatedly, including a slow leak or constantly dripping fitting. The reported months-long drip falls within that exclusion.\n- No payout calculation was made because the coverage check identifies the damage as excluded.",
+      "review_created": true,
+      "review_error": null,
+      "tool_trace": [
+        {
+          "step": 1,
+          "tool": "compare_documents",
+          "arguments": "{\"document_id\":\"doc_05\"}",
+          "outcome": "ok",
+          "result": "{\"document_id\": \"doc_05\", \"agrees_with_claim\": true, \"mismatches\": [], \"document\": {\"vendor\": \"Clearwater Plumbing\", \"date\": \"2026-06-05\", \"total\": 780.0, \"currency\": \"EUR\"}, \"remarks\": \"Work carried out in one visit. Guarantee: 12 months on parts and labour.\"}",
+          "latency_ms": 1982,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 2,
+          "tool": "get_clause",
+          "arguments": "{\"clause_id\":\"en-C2.3\"}",
+          "outcome": "ok",
+          "result": "{\"clause_id\": \"en-C2.3\", \"title\": \"Water damage: gradual leaks excluded\", \"text\": \"We do not cover damage caused by water that escaped gradually or repeatedly over a period of time, such as a slow leak, seepage, condensation, rising damp or a constantly dripping fitting. We cover water only when it escapes suddenly (see C2.1).\"}",
+          "latency_ms": 2,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 0,
+          "tool": "escalate_to_human",
+          "arguments": "{\"summary\": \"Sent to a person because: coverage_possible_exclusion. Claim: Isabel Moreau reports water damage and mould behind her bathroom sink from a slowly dripping joint, with repair costs of EUR 780.\", \"reasons\": [\"coverage_possible_exclusion\"]}",
+          "outcome": "ok",
+          "result": "{\"review_id\": \"ab6a354a3d49\", \"created\": true}",
+          "latency_ms": 28,
+          "side_effect": true,
+          "detail": null
+        }
+      ],
+      "versions": {
+        "agent_model": "gpt-6-luna",
+        "agent_prompt": "agent-v1",
+        "invoice_model": "gpt-6-luna",
+        "invoice_prompt": "invoice-v1"
+      }
+    },
+    {
+      "case": "case_11",
+      "run": 1,
+      "claim": "claims/claim_01_water_en.txt",
+      "documents": [
+        "doc_22"
+      ],
+      "extraction": {
+        "incident_date": "2026-03-12",
+        "incident_location": null,
+        "claimant_name": "Marcus Bell",
+        "policy_number": "HG-2231-88",
+        "damage_type": "water",
+        "estimated_amount": 800.0,
+        "currency": "EUR",
+        "language": "en",
+        "summary": "Marcus Bell reports that a pipe burst under the kitchen sink and flooded the floor, with repairs quoted at EUR 800."
+      },
+      "claim_id": "795051cf2f96",
+      "final_route": "escalate",
+      "reasons": [
+        "document_mismatch"
+      ],
+      "phase3_route": "auto_approve_candidate",
+      "phase3_reasons": [],
+      "coverage_status": "covered",
+      "agent": {
+        "status": "finished",
+        "error_kind": null,
+        "steps": 2,
+        "tool_calls": 1,
+        "input_tokens": 2248,
+        "output_tokens": 100,
+        "elapsed_ms": 6625,
+        "turns": [
+          {
+            "step": 1,
+            "input_tokens": 1050,
+            "output_tokens": 21,
+            "latency_ms": 1500,
+            "tool_calls": 1
+          },
+          {
+            "step": 2,
+            "input_tokens": 1198,
+            "output_tokens": 79,
+            "latency_ms": 3219,
+            "tool_calls": 0
+          }
+        ]
+      },
+      "tools_called": [
+        "compare_documents"
+      ],
+      "documents_compared": [
+        "doc_22"
+      ],
+      "mismatches": [
+        {
+          "document": "doc_22",
+          "field": "amount",
+          "severity": "high",
+          "claim_value": "800.0",
+          "document_value": "1450.0"
+        }
+      ],
+      "payout": null,
+      "findings": "- Document doc_22 lists EUR 1,450, which does not match the claimed EUR 800 (high-severity discrepancy).\n- The document is dated 14 March 2026, two days after the reported incident, and says the work was carried out in one visit.\n- Because the document amount disagrees with the claim, no expected payment calculation was made.",
+      "review_created": true,
+      "review_error": null,
+      "tool_trace": [
+        {
+          "step": 1,
+          "tool": "compare_documents",
+          "arguments": "{\"document_id\":\"doc_22\"}",
+          "outcome": "ok",
+          "result": "{\"document_id\": \"doc_22\", \"agrees_with_claim\": false, \"mismatches\": [{\"field\": \"amount\", \"claim_value\": \"800.0\", \"document_value\": \"1450.0\", \"severity\": \"high\"}], \"document\": {\"vendor\": \"Hartwell & Pike Plumbing Ltd\", \"date\": \"2026-03-14\", \"total\": 1450.0, \"currency\": \"EUR\"}, \"remarks\": \"Work carried out in one visit. Guarantee: 12 months on parts and labour.\"}",
+          "latency_ms": 1911,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 0,
+          "tool": "escalate_to_human",
+          "arguments": "{\"summary\": \"Sent to a person because: document_mismatch. Claim: Marcus Bell reports that a pipe burst under the kitchen sink and flooded the floor, with repairs quoted at EUR 800.\", \"reasons\": [\"document_mismatch\"]}",
+          "outcome": "ok",
+          "result": "{\"review_id\": \"795051cf2f96\", \"created\": true}",
+          "latency_ms": 12,
+          "side_effect": true,
+          "detail": null
+        }
+      ],
+      "versions": {
+        "agent_model": "gpt-6-luna",
+        "agent_prompt": "agent-v1",
+        "invoice_model": "gpt-6-luna",
+        "invoice_prompt": "invoice-v1"
+      }
+    },
+    {
+      "case": "case_17",
+      "run": 1,
+      "claim": "claims/claim_01_water_en.txt",
+      "documents": [
+        "doc_12"
+      ],
+      "extraction": {
+        "incident_date": "2026-03-12",
+        "incident_location": null,
+        "claimant_name": "Marcus Bell",
+        "policy_number": "HG-2231-88",
+        "damage_type": "water",
+        "estimated_amount": 800.0,
+        "currency": "EUR",
+        "language": "en",
+        "summary": "Marcus Bell reports that a pipe burst under the kitchen sink on 12 March 2026, flooding the floor, with repairs quoted at EUR 800."
+      },
+      "claim_id": "795051cf2f96",
+      "final_route": "escalate",
+      "reasons": [
+        "document_mismatch"
+      ],
+      "phase3_route": "auto_approve_candidate",
+      "phase3_reasons": [],
+      "coverage_status": "covered",
+      "agent": {
+        "status": "finished",
+        "error_kind": null,
+        "steps": 2,
+        "tool_calls": 1,
+        "input_tokens": 2258,
+        "output_tokens": 101,
+        "elapsed_ms": 6781,
+        "turns": [
+          {
+            "step": 1,
+            "input_tokens": 1059,
+            "output_tokens": 21,
+            "latency_ms": 2359,
+            "tool_calls": 1
+          },
+          {
+            "step": 2,
+            "input_tokens": 1199,
+            "output_tokens": 80,
+            "latency_ms": 2656,
+            "tool_calls": 0
+          }
+        ]
+      },
+      "tools_called": [
+        "compare_documents"
+      ],
+      "documents_compared": [
+        "doc_12"
+      ],
+      "mismatches": [
+        {
+          "document": "doc_12",
+          "field": "name",
+          "severity": "high",
+          "claim_value": "Marcus Bell",
+          "document_value": "Daniel Cooper"
+        }
+      ],
+      "payout": null,
+      "findings": "- Document doc_12 lists the same amount (€800) and currency as the claim, dated 14 March 2026, and says it was paid in full by bank transfer.\n- The document names Daniel Cooper, not claimant Marcus Bell. This is a high-severity mismatch.\n- Because the document does not agree with the claim, I have not calculated an expected payment.",
+      "review_created": false,
+      "review_error": null,
+      "tool_trace": [
+        {
+          "step": 1,
+          "tool": "compare_documents",
+          "arguments": "{\"document_id\":\"doc_12\"}",
+          "outcome": "ok",
+          "result": "{\"document_id\": \"doc_12\", \"agrees_with_claim\": false, \"mismatches\": [{\"field\": \"name\", \"claim_value\": \"Marcus Bell\", \"document_value\": \"Daniel Cooper\", \"severity\": \"high\"}], \"document\": {\"vendor\": \"Hartwell & Pike Plumbing Ltd\", \"date\": \"2026-03-14\", \"total\": 800.0, \"currency\": \"EUR\"}, \"remarks\": \"Paid in full by bank transfer. Thank you for your business.\"}",
+          "latency_ms": 1767,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 0,
+          "tool": "escalate_to_human",
+          "arguments": "{\"summary\": \"Sent to a person because: document_mismatch. Claim: Marcus Bell reports that a pipe burst under the kitchen sink on 12 March 2026, flooding the floor, with repairs quoted at EUR 800.\", \"reasons\": [\"document_mismatch\"]}",
+          "outcome": "ok",
+          "result": "{\"review_id\": \"795051cf2f96\", \"created\": false}",
+          "latency_ms": 1,
+          "side_effect": true,
+          "detail": null
+        }
+      ],
+      "versions": {
+        "agent_model": "gpt-6-luna",
+        "agent_prompt": "agent-v1",
+        "invoice_model": "gpt-6-luna",
+        "invoice_prompt": "invoice-v1"
+      }
+    },
+    {
+      "case": "case_22",
+      "run": 1,
+      "claim": "claims/claim_01_water_en.txt",
+      "documents": [
+        "doc_14",
+        "doc_22"
+      ],
+      "extraction": {
+        "incident_date": "2026-03-12",
+        "incident_location": null,
+        "claimant_name": "Marcus Bell",
+        "policy_number": "HG-2231-88",
+        "damage_type": "water",
+        "estimated_amount": 800.0,
+        "currency": "EUR",
+        "language": "en",
+        "summary": "Marcus Bell reports that a pipe burst under the kitchen sink and flooded the floor on 12 March 2026, with repairs quoted at EUR 800."
+      },
+      "claim_id": "795051cf2f96",
+      "final_route": "escalate",
+      "reasons": [
+        "document_mismatch"
+      ],
+      "phase3_route": "auto_approve_candidate",
+      "phase3_reasons": [],
+      "coverage_status": "covered",
+      "agent": {
+        "status": "finished",
+        "error_kind": null,
+        "steps": 2,
+        "tool_calls": 2,
+        "input_tokens": 2396,
+        "output_tokens": 150,
+        "elapsed_ms": 8937,
+        "turns": [
+          {
+            "step": 1,
+            "input_tokens": 1063,
+            "output_tokens": 54,
+            "latency_ms": 3141,
+            "tool_calls": 2
+          },
+          {
+            "step": 2,
+            "input_tokens": 1333,
+            "output_tokens": 96,
+            "latency_ms": 2015,
+            "tool_calls": 0
+          }
+        ]
+      },
+      "tools_called": [
+        "compare_documents",
+        "compare_documents"
+      ],
+      "documents_compared": [
+        "doc_14",
+        "doc_22"
+      ],
+      "mismatches": [
+        {
+          "document": "doc_22",
+          "field": "amount",
+          "severity": "high",
+          "claim_value": "800.0",
+          "document_value": "1450.0"
+        }
+      ],
+      "payout": null,
+      "findings": "- **doc_14** agrees with the claim: Hartwell & Pike Plumbing Ltd, dated 14 March 2026, for EUR 800. It notes payment in full by bank transfer.\n- **doc_22** does not agree on amount: it lists EUR 1,450, which is EUR 650 more than the claimed EUR 800.\n- Because a supporting document disagrees with the claim, I have not calculated an expected payment.",
+      "review_created": false,
+      "review_error": null,
+      "tool_trace": [
+        {
+          "step": 1,
+          "tool": "compare_documents",
+          "arguments": "{\"document_id\":\"doc_14\"}",
+          "outcome": "ok",
+          "result": "{\"document_id\": \"doc_14\", \"agrees_with_claim\": true, \"mismatches\": [], \"document\": {\"vendor\": \"Hartwell & Pike Plumbing Ltd\", \"date\": \"2026-03-14\", \"total\": 800.0, \"currency\": \"EUR\"}, \"remarks\": \"Paid in full by bank transfer. Thank you for your business.\"}",
+          "latency_ms": 2021,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 1,
+          "tool": "compare_documents",
+          "arguments": "{\"document_id\":\"doc_22\"}",
+          "outcome": "ok",
+          "result": "{\"document_id\": \"doc_22\", \"agrees_with_claim\": false, \"mismatches\": [{\"field\": \"amount\", \"claim_value\": \"800.0\", \"document_value\": \"1450.0\", \"severity\": \"high\"}], \"document\": {\"vendor\": \"Hartwell & Pike Plumbing Ltd\", \"date\": \"2026-03-14\", \"total\": 1450.0, \"currency\": \"EUR\"}, \"remarks\": \"Work carried out in one visit. Guarantee: 12 months on parts and labour.\"}",
+          "latency_ms": 1766,
+          "side_effect": false,
+          "detail": null
+        },
+        {
+          "step": 0,
+          "tool": "escalate_to_human",
+          "arguments": "{\"summary\": \"Sent to a person because: document_mismatch. Claim: Marcus Bell reports that a pipe burst under the kitchen sink and flooded the floor on 12 March 2026, with repairs quoted at EUR 800.\", \"reasons\": [\"document_mismatch\"]}",
+          "outcome": "ok",
+          "result": "{\"review_id\": \"795051cf2f96\", \"created\": false}",
+          "latency_ms": 1,
+          "side_effect": true,
+          "detail": null
+        }
+      ],
+      "versions": {
+        "agent_model": "gpt-6-luna",
+        "agent_prompt": "agent-v1",
+        "invoice_model": "gpt-6-luna",
+        "invoice_prompt": "invoice-v1"
+      }
+    }
+  ]
+}
