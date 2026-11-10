@@ -1,6 +1,9 @@
 """Read every supporting document with the real model and score the facts against data/expected_documents.json.
 
-usage: python -m scripts.check_invoices [runs] [workers]     (defaults: 3 runs, 4 workers)
+usage: python -m scripts.check_invoices [runs] [workers] [--attack]     (defaults: 3 runs, 4 workers)
+
+--attack reads the attack documents (data/attack_documents) instead and records which decision fields the reader got wrong:
+the 'reader fooled' level of the attack baseline.
 
 It calls the real OpenAI API (one call per document and run) and writes docs/phase-notes/phase4-invoice-run-<timestamp>.json.
 Nothing is fixed here: it records what the invoice reader does, per field.
@@ -12,6 +15,7 @@ from datetime import datetime
 from pathlib import Path
 
 from app.agent.documents import DocumentStore, InvoiceError, OpenAIInvoiceModel
+from scripts.eval_metrics import reader_fooled
 
 ROOT = Path(__file__).resolve().parent.parent
 FIELD_NAMES = {
@@ -37,6 +41,8 @@ def run_one(doc_id: str, run: int, store: DocumentStore, model: OpenAIInvoiceMod
         return entry
     entry["extracted"] = invoice.model_dump()
     facts = expected["facts"]
+    if facts is not None:
+        entry["fooled_fields"] = reader_fooled(facts, entry["extracted"])
     if facts is None:
         entry["unreadable_detected"] = invoice.is_unreadable
     else:
@@ -47,10 +53,13 @@ def run_one(doc_id: str, run: int, store: DocumentStore, model: OpenAIInvoiceMod
 def main() -> None:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    runs = int(sys.argv[1]) if len(sys.argv) > 1 else 3
-    workers = int(sys.argv[2]) if len(sys.argv) > 2 else 4
-    expected = json.loads((ROOT / "data/expected_documents.json").read_text(encoding="utf-8"))
-    store, model = DocumentStore(), OpenAIInvoiceModel()
+    attack = "--attack" in sys.argv
+    numbers = [a for a in sys.argv[1:] if not a.startswith("--")]
+    runs = int(numbers[0]) if numbers else 3
+    workers = int(numbers[1]) if len(numbers) > 1 else 4
+    expected_file = ROOT / "data" / "attack_documents" / "expected.json" if attack else ROOT / "data" / "expected_documents.json"
+    expected = json.loads(expected_file.read_text(encoding="utf-8"))
+    store, model = (DocumentStore(ROOT / "data" / "attack_documents") if attack else DocumentStore()), OpenAIInvoiceModel()
 
     jobs = [(doc_id, run) for doc_id in sorted(expected) for run in range(1, runs + 1)]
     with ThreadPoolExecutor(max_workers=workers) as pool:
@@ -75,9 +84,18 @@ def main() -> None:
     for r in errors:
         print(f"  ERROR {r['document']} run {r['run']}: {r['error']}")
 
-    out = ROOT / "docs" / "phase-notes" / f"phase4-invoice-run-{datetime.now():%Y%m%d-%H%M}.json"
+    if attack:
+        print("reader fooled (a field the comparison uses differs from the document):")
+        for doc_id in sorted(expected):
+            reads = [r for r in results if r["document"] == doc_id and "fooled_fields" in r]
+            fooled = [r for r in reads if r["fooled_fields"]]
+            detail = "; ".join(f"run {r['run']}: {r['fooled_fields']} -> {[r['extracted'][f] for f in r['fooled_fields']]}" for r in fooled)
+            print(f"  {doc_id}: {len(fooled)}/{len(reads)} reads fooled  {detail}")
+    prefix = "attack-reader" if attack else "invoice"
+    out = ROOT / "docs" / "phase-notes" / f"phase4-{prefix}-run-{datetime.now():%Y%m%d-%H%M}.json"
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps({"config": {"runs": runs, "model": model.model, "prompt": model.prompt_version}, "results": results},
+    out.write_text(json.dumps({"config": {"runs": runs, "model": model.model, "prompt": model.prompt_version, "set": "attack" if attack else "main"},
+                               "results": results},
                               indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"saved {out.relative_to(ROOT)}")
 
